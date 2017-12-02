@@ -41,7 +41,7 @@
                         </a>
                         <p class="description"><a href="javascript:;">{{ item.title }}</a></p>
                         <div class="qianm clearfloat">
-                            <span class="sp1">作者：{{ item.author | dataFilter }}</span>
+                            <span class="sp1">作者：{{ item.author  }}</span>
                             <span class="sp3">{{item.createTime}}</span>
                         </div>
                     </li>
@@ -110,13 +110,6 @@ export default {
        mounted () {
         this.getList()
       },
-       filters: {
-        dataFilter: function (value) { 
-            if (!value) return ''
-            value = value.toString().substr(1,4);
-            return value;
-        }
-        },
       methods: {
         getList () {
         this.$http.get(`${this.$url}?c=index&a=showBannerList&from=index`).then((res) => {
@@ -130,8 +123,4 @@ export default {
         }
 }
 </script>
-
-<style>
-
-</style>
 

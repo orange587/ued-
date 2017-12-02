@@ -82,13 +82,7 @@ export default {
       mounted () {
         this.getList()
       },
-      filters: {
-        dataFilter: function (value) { 
-            if (!value) return ''
-            value = value.toString().substr(1,4);
-            return value;
-        }
-        },
+     
       methods: {
         getList () {
        this.$http.get(`${this.$url}?c=index&a=showPcList&from=index`).then((res) => {
@@ -103,7 +97,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
 

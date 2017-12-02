@@ -71,7 +71,7 @@ export default {
       filters: {
         dataFilter: function (value) { 
             if (!value) return ''
-            value = value.toString().substr(1,4);
+            value = value.toString().substr(0,6);
             return value;
         }
   },
@@ -88,8 +88,4 @@ export default {
         }
 }
 </script>
-
-<style>
-
-</style>
 

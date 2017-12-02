@@ -59,7 +59,7 @@ export default {
       },
       
       methods:{  
-     // 获取文章图片
+     // 获取文章
     getStory(storyId) {
       this.$http.get(`${this.$url}?c=index&a=getoneArticleInfo&from=index&id=${storyId}`)
                 .then(res => {
@@ -83,16 +83,8 @@ export default {
      },
     
     },
-     computed: {
-    storyBody() {
-      return this.story.body.replace(/http\:\/\//g,'https://images.weserv.nl/?url=')
-    }
-  }
+    
      
         }
 </script>
-
-<style>
-
-</style>
 

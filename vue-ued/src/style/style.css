@@ -998,7 +998,7 @@
 /*banner列表*/
 
 .photo-panel {
-    position: absolute;
+    position: fixed;
     display: none;
     clear: both;
     top: 0;

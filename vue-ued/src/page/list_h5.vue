@@ -8,13 +8,13 @@
         <div class="choice_wrap">
             <ul class="choice_xuan">
                 <li>
-                    <a href="" class="active">全部</a><a href="">2017</a><a href="">2016</a><a href="">2015</a><a href="">2014</a><a href="">2013</a><a href="">2012</a><a href="">2011</a>
+                    <a  @click="yearAll" class="active">全部</a><a href="">2017</a><a href="">2016</a><a href="">2015</a><a href="">2014</a><a href="">2013</a><a href="">2012</a><a href="">2011</a>
                 </li>
                 <li>
                     <a href="">全部</a><a href="" class="active">新房DL</a><a href="">新房AI</a><a href="">平台运营</a><a href="">二媒</a><a href="">电商</a><a href="">市场部</a>
                 </li>
                 <li class="sexi">
-                    <a href="" class="all_color">全部</a>
+                    <a  @click="yearAll" class="all_color">全部</a>
                     <a href="" class="sexi01 active"></a>
                     <a href="" class="sexi02"></a>
                     <a href="" class="sexi03"></a>
@@ -41,7 +41,7 @@
                         </a>
                         <p class="description"><a href="javascript:;">{{ item.title }}</a></p>
                         <div class="qianm clearfloat">
-                            <span class="sp1">作者：{{item.author | dataFilter }}</span>
+                            <span class="sp1">作者：{{item.author }}</span>
                             <span class="sp3">{{item.createTime}}</span>
                         </div>
                     </li>
@@ -58,14 +58,14 @@
     <!--主体 end-->
         <!--弹窗 st-->
     <div class="mask" style="display: none;"></div>
-    <div class="popDetail pop1" v-for="item in tuLists" :key="item.id" >
+    <div class="popDetail pop1"  v-for="item in tuLists" :key="item.index">
         <div class="leftcolumn">
             <div class="picMain">
                 <div class="body">
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
                             <div class="swiper-slide"  v-for="item in tuLists.content" :key="item.index">
-                                <img :src="item | imageUrlPrefix" alt="">
+                                <img :src="item" alt="">
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                 <span>作者：{{item.author}}</span>
             </p>
             <div class="ewm-box clearfix">
-                <img :src="item.qr_code | imageUrlPrefix" alt="" class="ewm">
+                <img :src="item.qr_code" alt="" class="ewm">
                 <p class="title-ewm"><i></i>扫一扫，手机欣赏</p>
             </div>
         </div>
@@ -105,9 +105,9 @@
 <script>
 import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
-// import JqueryMasonryMin from '../utils/jquery_masonry_min.js'
-// import JQeasing from '../utils/jQeasing.js'
-// import Pubuliu from '../utils/pubuliu.js'
+import JqueryMasonryMin from '../utils/jquery_masonry_min.js'
+import JQeasing from '../utils/jQeasing.js'
+import Pubuliu from '../utils/pubuliu.js'
 import Index from '../utils/index'
 import swiper_min from '../utils/swiper_min'
 import h5_pop from '../utils/h5_pop'
@@ -117,7 +117,7 @@ export default {
     TopNav,TopFan
   },
   created() {
-    this.getList(this.$route.params.id)
+    this.getTuList(this.$route.params.id)
   },
   data () {
         return {
@@ -129,25 +129,33 @@ export default {
       mounted () {
         this.getList(),
          this.getTuList()
-      },
-            filters: {
-        dataFilter: function (value) { 
-            if (!value) return ''
-            value = value.toString().substr(1,4);
-            return value;
-        }
-        },
+      },  
+     
       methods: {
-        getList () {
-        this.$http.get(`${this.$url}?c=index&a=showH5List&from=index`).then((res) => {
+          getList () {
+          this.$http.get(`${this.$url}?c=index&a=showH5List&from=index`).then((res) => {
             this.PcLists = res.data.errmsg;
-            //   console.log(res.data.recent)
-            this.getTuList(this.$route.params.id)
+            //   console.log(res.data.errmsg);
             })
              .catch(e => {
                   console.log(e)
                 })
         },
+         yearAll () {
+          this.$http.post(`${this.$url}?c=index&a=showH5List&from=index`,{
+                "colorRange" : "7"
+          })
+          .then((res) => {
+            this.PcLists = res.data.errmsg;
+               console.log(res.data);
+            })
+             .catch(e => {
+                  console.log(e)
+                })
+        },
+     
+
+        // 弹窗函数
          getTuList (storyId) {
         this.$http.get(`${this.$url}?c=index&a=getOneH5Data&from=index&id=${storyId}`).then((res) => {
                this.tuLists = res.data.errmsg;
@@ -157,11 +165,9 @@ export default {
                   console.log(e)
                 })
         },
+        
         }
 }
 </script>
 
-<style scope>
-
-</style>
 

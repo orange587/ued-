@@ -83,16 +83,8 @@ export default {
      },
     
     },
-     computed: {
-    storyBody() {
-      return this.story.body.replace(/http\:\/\//g,'https://images.weserv.nl/?url=')
-    }
-  }
-     
+   
         }
 </script>
 
-<style>
-
-</style>
 

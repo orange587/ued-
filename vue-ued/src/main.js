@@ -6,6 +6,7 @@ import axios from 'axios'
 import router from './router'
 import { Breadcrumb, BreadcrumbItem } from 'element-ui'
 import Vuex from 'vuex'
+import 'babel-polyfill'
 
 Vue.use(Vuex)
 Vue.use(Breadcrumb)

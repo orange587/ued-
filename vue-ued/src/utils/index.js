@@ -66,6 +66,6 @@ $(function() {
         }
         //此处写调试日志
         // console.log(img_index);
-    }
-
+    };
+     
 });

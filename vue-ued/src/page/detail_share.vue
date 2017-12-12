@@ -61,9 +61,11 @@ export default {
       methods:{  
      // 获取文章
     getStory(storyId) {
+      this.zanStoryId = this.storyId;
       this.$http.get(`${this.$url}?c=index&a=getoneArticleInfo&from=index&id=${storyId}`)
                 .then(res => {
-                  this.longComments = res.data.errmsg
+                  this.longComments = res.data.errmsg,
+                  console.log(this.res.data.errmsg.like)
                 })
                 .catch(e => {
                   console.log(e)
@@ -80,8 +82,16 @@ export default {
            this.number--;
        }
        this.discuss = this.number;
-     },
-    
+       this.$http.post(`${this.$url}?c=index&a=getoneArticleInfo&from=index&id=19`,{
+           like : 'this.discuss',
+         })
+          .then(res => {
+                   console.log(res)
+           })
+           .catch(e => {
+                  console.log(e)
+                })
+     }
     },
     
      

@@ -6,14 +6,6 @@
             </div>
             <div class="fr nav_category" >
                 <router-link  v-for="link in links"  :to="link.url" :key="link.index" :class="link.class">{{ link.title }}</router-link>
-                <!-- <router-link  to="/" >首页</router-link>
-                <router-link  to="/list_uiix" >UI/UX</router-link>
-                <router-link  to="/list_pc" >Pc专题</router-link>
-                <router-link  to="/list_banner" >Banner</router-link>
-                <router-link  to="/list_design_standard" >设计规范</router-link>
-                <router-link  to="/list_site_navigation"  >网址导航</router-link>
-                <router-link  to="/list_h5" class="fang_nav_h5">H5</router-link>
-                <router-link  to="/list_hand_drawing"  class="fang_nav_hui"></router-link>      -->
           </div>
         </div>
         <router-view></router-view>

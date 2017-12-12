@@ -14,15 +14,7 @@
    <!--全部作品st -->
     <div class="all_zuop">
         <div class="all_zuo_sx">
-            <a href="" class="active">全部</a>
-            <a href="">交互设计</a>
-            <a href="">作品案例</a>
-            <a href="">前端技术</a>
-            <a href="">用户研究</a>
-            <a href="">视觉设计</a>
-            <a href="">资源推荐</a>
-            <a href="">项目总结</a>
-            <a href="">其他资源</a>
+             <a  v-for="(num,index) in nums" @click="iscur = index,worksAll(index)"  :class="{active:iscur==index}" :key="num.index" >{{num.titleTab }}</a>
         </div>
         <div class="all_zuo_con fang_responsive">
             <ul  class="list_ul">
@@ -39,7 +31,7 @@
             </ul>     
         </div>
         <!-- 分页 -->
-        <Page></Page>
+        <Page :total="total" :current-page='current' @pagechange="pagechange"  :get-parent="typeIndex"></Page>
     </div>
     <!--返回顶部 st-->
       <topFan></topFan>
@@ -69,6 +61,23 @@ export default {
         return {
           list: [],
           stories: [],
+          total: 200,// 记录总条数
+          display: 15,   // 每页显示条数
+          current: 1, // 当前的页数 
+          nums:[
+              {titleTab:'全部'},
+              {titleTab:'交互设计'},
+              {titleTab:'作品案例'},
+              {titleTab:'前端技术'},
+              {titleTab:'用户研究'},
+              {titleTab:'视觉设计'},
+              {titleTab:'资源推荐'},
+              {titleTab:'项目总结'},
+              {titleTab:'其他资源'},
+          ],
+          iscur:0 ,
+          typeIndex:0,
+          index:0
         }
       },
       
@@ -86,15 +95,40 @@ export default {
         },
         // 作品展示
         getStories(){
-        this.$http.get(`${this.$url}?c=index&a=showArticleList&type=&page=1&from=index&pagesize=15`)
+        this.$http.get(`${this.$url}?c=index&a=showArticleList&type=&page=current&from=index&pagesize=25`)
                       .then(res => {
-                          this.stories = res.data.errmsg
-                            //  console.log(res)
+                          this.stories = res.data.errmsg;
                       })
                       .catch(e => {
                         console.log(e)
                     })
     },
+    
+    // 作品切换展示
+     worksAll (index) {
+          this.typeIndex = index;
+          this.$http.get(`${this.$url}?c=index&a=showArticleList&type=${this.typeIndex}&page=current&from=index&pagesize=25`)
+          .then((res) => {
+            this.stories = res.data.errmsg;
+            //   console.log(res.data.errmsg)
+            })
+            .catch(e => {
+                  console.log(e)
+            });
+            
+        },
+        // 分页
+      pagechange:function(currentPage){
+        this.current = currentPage;
+        this.$http.get(`${this.$url}?c=index&a=showArticleList&type=${this.typeIndex}&page=${this.current}&from=index&pagesize=25`)
+                      .then(res => {
+                          this.stories = res.data.errmsg;
+                      })
+                      .catch(e => {
+                        console.log(e)
+                    })
+    },
+    
  }
   }
 </script>

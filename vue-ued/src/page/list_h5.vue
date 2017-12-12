@@ -8,13 +8,13 @@
         <div class="choice_wrap">
             <ul class="choice_xuan">
                 <li>
-                    <a  @click="yearAll" class="active">全部</a><a href="">2017</a><a href="">2016</a><a href="">2015</a><a href="">2014</a><a href="">2013</a><a href="">2012</a><a href="">2011</a>
+                    <a  @click="yearAll" class="active">全部</a><a  @click="year2018">2018</a><a  @click="year2017">2017</a><a @click="year2016">2016</a>
                 </li>
                 <li>
-                    <a href="">全部</a><a href="" class="active">新房DL</a><a href="">新房AI</a><a href="">平台运营</a><a href="">二媒</a><a href="">电商</a><a href="">市场部</a>
+                    <a  @click="departmentAll">全部</a><a @click="departmentDl" class="active">新房DL</a><a @click="departmentAi">新房AI</a><a @click="departmentAi">平台运营</a><a @click="departmentAi">二媒</a><a @click="departmentAi">电商</a><a @click="departmentAi">市场部</a><a @click="departmentOther">其他部门</a>
                 </li>
                 <li class="sexi">
-                    <a  @click="yearAll" class="all_color">全部</a>
+                    <a  @click="colorAll" class="all_color">全部</a>
                     <a href="" class="sexi01 active"></a>
                     <a href="" class="sexi02"></a>
                     <a href="" class="sexi03"></a>
@@ -141,17 +141,50 @@ export default {
                   console.log(e)
                 })
         },
+        // 年份筛选
+        // 全部
          yearAll () {
-          this.$http.post(`${this.$url}?c=index&a=showH5List&from=index`,{
-                "colorRange" : "7"
-          })
+          this.$http.get(`${this.$url}?c=index&a=showH5List&from=index`)
           .then((res) => {
             this.PcLists = res.data.errmsg;
-               console.log(res.data);
+            //    console.log(res.data);
             })
-             .catch(e => {
+            .catch(e => {
                   console.log(e)
-                })
+            })
+        },
+        // 2018
+         year2018 () {
+          this.$http.get(`${this.$url}?c=index&a=showH5List&from=index&selYear=2018`)
+          .then((res) => {
+            this.PcLists = res.data.errmsg;
+            //    console.log(res.data);
+            })
+            .catch(e => {
+                  console.log(e)
+            })
+        },
+        // 2017
+         year2017 () {
+          this.$http.get(`${this.$url}?c=index&a=showH5List&from=index&selYear=2017`)
+          .then((res) => {
+            this.PcLists = res.data.errmsg;
+            //    console.log(res.data);
+            })
+            .catch(e => {
+                  console.log(e)
+            })
+        },
+        // 2016
+         year2016 () {
+          this.$http.get(`${this.$url}?c=index&a=showH5List&from=index&selYear=2016`)
+          .then((res) => {
+            this.PcLists = res.data.errmsg;
+            //    console.log(res.data);
+            })
+            .catch(e => {
+                  console.log(e)
+            })
         },
      
 

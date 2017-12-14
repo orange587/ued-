@@ -26,7 +26,7 @@
                     <a href="" class="sexi09"></a>
                     <a href="" class="sexi10"></a>
                     <a href="" class="sexi11"></a> -->
-                    <a  v-for="(num,index) in colors" @click="iscur2 = index,worksAllColor(index)"  :class="{active:iscur1==index}" :key="num.index" >{{num.titleTab }}</a>
+                    <a  v-for="(num,index) in colors" @click="iscur2 = index,worksAllColor(index)"  :class="{active:iscur2==index}" :key="num.index" >{{num.titleTab }}</a>
 
                 </li>
             </ul>
@@ -111,6 +111,7 @@ export default {
           ],
           iscur:0 ,
           iscur1:0 ,
+          iscur2:0 ,
           typeIndex:0,
           typesIndex:0,
           index:0
@@ -155,7 +156,19 @@ export default {
                   console.log(e)
             });
         },
-
+         // 颜色切换展示
+        worksAllColor (index) {
+          let yearstime = [0,2016,2017,2018];
+          this.yearIndex = yearstime[index];
+          this.depIndex = index;
+          this.$http.get(`${this.$url}?c=index&a=showPcList&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&page=current&from=index&pagesize=25`)
+          .then((res) => {
+            this.stories = res.data.errmsg;
+            })
+            .catch(e => {
+                  console.log(e)
+            });
+        },
         
         }
 }

@@ -8,10 +8,10 @@
        <div class="choice_wrap">
             <ul class="choice_xuan">
                 <li>
-                    <a  class="active"  @click="getAll()">全部</a><a @click="getApp()">房APP</a><a  @click="getSfb()">搜房帮</a><a  @click="getOa()">OA</a>
+                    <a  v-for="(num,index) in projects" @click="iscur = index,worksAll(index)"  :class="{active:iscur==index}" :key="num.index" >{{num.titleTab }}</a>
                 </li>
                 <li style="margin-bottom:0">
-                    <a href=""  @click="getAll1()">全部</a><a  @click="getJm()" class="active">界面</a><a @click="getCh()">插画</a><a @click="getTb()">图标</a><a @click="getYdy()">引导页</a>
+                    <a  v-for="(num,index) in numsType" @click="iscur1 = index,worksAllType(index)"  :class="{active:iscur1==index}" :key="num.index" >{{num.titleTab }}</a>
                 </li>
 
             </ul>
@@ -65,7 +65,27 @@ export default {
   },
   data () {
         return {
-          stories: []
+          stories: [],
+          projects:[
+              {titleTab:'全部'},
+              {titleTab:'房app'},
+              {titleTab:'搜房帮'},
+              {titleTab:'OA'},
+              {titleTab:'工作台'},
+              {titleTab:'其他资源'}
+          ],
+          numsType:[
+              {titleTab:'全部'},
+              {titleTab:'界面'},
+              {titleTab:'插画'},
+              {titleTab:'图标'},
+              {titleTab:'引导页'}
+          ],
+          iscur:0 ,
+          iscur1:0 ,
+          typeIndex:0,
+          typesIndex:0,
+          index:0
         }
       }, 
       filters: {
@@ -84,6 +104,30 @@ export default {
                 .catch(e => {
                   console.log(e)
                 })
+        },
+         // 项目切换展示
+        worksAll (index) {
+          this.typeIndex = index;
+          this.$http.get(`${this.$url}?c=index&a=showAppList&type1=${this.typeIndex}&page=current&from=index&pagesize=25`)
+          .then((res) => {
+            this.stories = res.data.errmsg;
+            //   console.log(res.data.errmsg)
+            })
+            .catch(e => {
+                  console.log(e)
+            });
+        },
+        // 类型切换展示
+        worksAllType (index) {
+          this.typesIndex = index;
+          this.$http.get(`${this.$url}?c=index&a=showAppList&type1=${this.typeIndex}&type2=${this.typesIndex}&page=current&from=index&pagesize=25`)
+          .then((res) => {
+            this.stories = res.data.errmsg;
+            //   console.log(res.data.errmsg)
+            })
+            .catch(e => {
+                  console.log(e)
+            });
         },
         }
 }

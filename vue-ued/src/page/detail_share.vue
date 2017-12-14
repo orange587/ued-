@@ -14,8 +14,8 @@
                   <img :src="item | imageUrlPrefix" alt="">
                 </div>
                 <div class="vote">
-                	<a class="vote-icon"  @click="addAgree()"  :class="{cur:agree}"></a>
-                    <p >喜欢({{ number }})</p>
+                	<a class="vote-icon"  @click="submitAgree()"  :class="{cur:agreeS}"></a>
+                    <p >喜欢({{ longComments.like }})</p>
                 </div>
             </div>
             <div class="rightBox">
@@ -45,19 +45,17 @@ export default {
   components:{
     TopNav,TopFan,BreadCrumb
   },
+   created(){
+          this.getStory(this.$route.params.id);
+   },
   data () {
         return {
         story: {},
         comment:{},
         longComments: [],
-        agree:false,
-        number:0
+        agreeS:false
         }
       },
-      created(){
-          this.getStory(this.$route.params.id);
-      },
-      
       methods:{  
      // 获取文章
     getStory(storyId) {
@@ -65,32 +63,25 @@ export default {
       this.$http.get(`${this.$url}?c=index&a=getoneArticleInfo&from=index&id=${storyId}`)
                 .then(res => {
                   this.longComments = res.data.errmsg,
-                  console.log(this.res.data.errmsg.like)
+                  console.log(this.res.data.errmsg)
                 })
                 .catch(e => {
                   console.log(e)
                 })
     },
     //点赞
-   addAgree(){
-       if(!this.agree){
-          this.agree = true;
-          this.number++;
+   submitAgree(){
+     const agree = this.like;
+     this.$store.dispatch("agree",this.$store.state.storydetail.id)
+       if(!this.agreeS){
+          this.agreeS = true;
+          this.agree++;
        }
        else{
-         this.agree = false;
-           this.number--;
+         this.agreeS = false;
+           this.agree--;
        }
-       this.discuss = this.number;
-       this.$http.post(`${this.$url}?c=index&a=getoneArticleInfo&from=index&id=19`,{
-           like : 'this.discuss',
-         })
-          .then(res => {
-                   console.log(res)
-           })
-           .catch(e => {
-                  console.log(e)
-                })
+      
      }
     },
     

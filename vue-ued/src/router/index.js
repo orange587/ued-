@@ -9,7 +9,7 @@ import ListSiteNavigation from '@/page/list_site_navigation'
 import ListH5 from '@/page/list_h5'
 import DetailShare from '@/page/detail_share'
 import DetailShareUiix from '@/page/detail_share_uiix'
-import Page404 from '@/page/page404'
+// import Page404 from '@/page/page404'
 Vue.use(Router)
 export default new Router({
     mode: 'history',

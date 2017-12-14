@@ -4,31 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import axios from 'axios'
 import router from './router'
+import store from './store'
 import { Breadcrumb, BreadcrumbItem } from 'element-ui'
-import Vuex from 'vuex'
 import 'babel-polyfill'
 
-Vue.use(Vuex)
 Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
-
-//新增状态管理
-const store = new Vuex.Store({
-    state: {
-        breadListState: [
-            { name: 'index', path: '/', title: '首页' },
-        ]
-    },
-    mutations: {
-        breadListStateAdd(state, obj) {
-            state.breadListState.push(obj);
-        },
-        breadListStateRemove(state, num) {
-            state.breadListState = state.breadListState.slice(0, num);
-        }
-    }
-
-})
 
 //记录路由 ->
 let routeList = [];
@@ -85,7 +66,6 @@ Vue.filter('imageUrlPrefix', (value) => {
 
 import $ from 'jquery'
 Vue.config.productionTip = false
-
 
 /* eslint-disable no-new */
 new Vue({

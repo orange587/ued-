@@ -55,7 +55,7 @@ export default {
            },
            {
                title:'',
-               url:'/',
+               url:'',
                class:'fang_nav_hui'
            },
        ]

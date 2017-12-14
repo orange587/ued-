@@ -29,7 +29,7 @@
                         <p class="description"><router-link  :to="'/detail_share_uiix/'+ story.id">{{ story.title }}</router-link></p>
                         <div class="qianm clearfloat">
                             <span class="sp1">作者：{{story.author | dataFilter}}</span>
-                            <span class="sp3">{{story.createTime}}</span>
+                            <span class="sp3">{{story.shareTime}}</span>
                         </div>
                     </li>
                 </ul>
@@ -111,7 +111,7 @@ export default {
           this.$http.get(`${this.$url}?c=index&a=showAppList&type1=${this.typeIndex}&page=current&from=index&pagesize=25`)
           .then((res) => {
             this.stories = res.data.errmsg;
-            //   console.log(res.data.errmsg)
+            //   console.log(this.typeIndex)
             })
             .catch(e => {
                   console.log(e)

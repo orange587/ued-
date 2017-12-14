@@ -8,24 +8,13 @@
         <div class="choice_wrap">
             <ul class="choice_xuan">
                 <li>
-                    <a  @click="yearAll" class="active">全部</a><a  @click="year2018">2018</a><a  @click="year2017">2017</a><a @click="year2016">2016</a>
+                    <a  v-for="(num,index) in years" @click="iscur = index,worksAll(index)"  :class="{active:iscur==index}" :key="num.index" >{{num.titleTab }}</a>
                 </li>
                 <li>
-                    <a  @click="departmentAll">全部</a><a @click="departmentDl" class="active">新房DL</a><a @click="departmentAi">新房AI</a><a @click="departmentAi">平台运营</a><a @click="departmentAi">二媒</a><a @click="departmentAi">电商</a><a @click="departmentAi">市场部</a><a @click="departmentOther">其他部门</a>
+                    <a  v-for="(num,index) in departs" @click="iscur1 = index,worksAllDep(index)"  :class="{active:iscur1==index}" :key="num.index" >{{num.titleTab }}</a>
                 </li>
                 <li class="sexi">
-                    <a  @click="colorAll" class="all_color">全部</a>
-                    <a href="" class="sexi01 active"></a>
-                    <a href="" class="sexi02"></a>
-                    <a href="" class="sexi03"></a>
-                    <a href="" class="sexi04"></a>
-                    <a href="" class="sexi05"></a>
-                    <a href="" class="sexi06"></a>
-                    <a href="" class="sexi07"></a>
-                    <a href="" class="sexi08"></a>
-                    <a href="" class="sexi09"></a>
-                    <a href="" class="sexi10"></a>
-                    <a href="" class="sexi11"></a>
+                    <a  v-for="(num,index) in colors" @click="iscur2 = index,worksAllColor(index)"  :class="{active:iscur2==index}" :key="num.index" >{{num.titleTab }}</a>
                 </li>
             </ul>
 
@@ -35,14 +24,14 @@
             <!-- 瀑布流样式开始 -->
             <div class="waterfull clearfloat" id="waterfull">
                 <ul>
-                    <li class="item" v-for="item in PcLists" :key="item.id">
-                        <a href="javascript:;" class="a-img">
-                            <img :src="item.coverImg | imageUrlPrefix" alt="">
+                    <li class="item" v-for="story in PcLists" :key="story.id">
+                         <a  class="a-img" href="javascript:;">
+                           <img :src="story.coverImg | imageUrlPrefix" />
                         </a>
-                        <p class="description"><a href="javascript:;">{{ item.title }}</a></p>
+                        <p class="description"><a  href="javascript:;">{{ story.title }}</a></p>
                         <div class="qianm clearfloat">
-                            <span class="sp1">作者：{{item.author }}</span>
-                            <span class="sp3">{{item.createTime}}</span>
+                            <span class="sp1">作者：{{story.author}}</span>
+                            <span class="sp3">{{story.publishTime}}</span>
                         </div>
                     </li>
 
@@ -117,13 +106,50 @@ export default {
     TopNav,TopFan
   },
   created() {
-    this.getTuList(this.$route.params.id)
+  let storyId = this.getTuList(this.$route.params.id);
   },
+ 
   data () {
         return {
           PcLists: [],
           tuLists:[],
           loading: true,
+           years:[
+              {titleTab:'全部'},
+              {titleTab:'2016'},
+              {titleTab:'2017'},
+              {titleTab:'2018'}
+          ],
+          departs:[
+               {titleTab:'全部'},
+              {titleTab:'新房DL'},
+              {titleTab:'新房AI'},
+              {titleTab:'平台运营'},
+              {titleTab:'二媒'},
+              {titleTab:'二电'},
+              {titleTab:'市场部'},
+              {titleTab:'其它部门'}
+          ],
+          colors:[
+               {titleTab:'全部'},
+               {titleTab:''},
+               {titleTab:''},
+               {titleTab:''},
+               {titleTab:''},
+               {titleTab:''},
+               {titleTab:''},
+               {titleTab:''},
+               {titleTab:''},
+               {titleTab:''},
+               {titleTab:''},
+               {titleTab:''},
+          ],
+          iscur:0 ,
+          iscur1:0 ,
+          iscur2:0 ,
+          typeIndex:0,
+          typesIndex:0,
+          index:0
         }
       },
       mounted () {
@@ -136,63 +162,57 @@ export default {
           this.$http.get(`${this.$url}?c=index&a=showH5List&from=index`).then((res) => {
             this.PcLists = res.data.errmsg;
             //   console.log(res.data.errmsg);
+             
             })
              .catch(e => {
                   console.log(e)
                 })
         },
-        // 年份筛选
-        // 全部
-         yearAll () {
-          this.$http.get(`${this.$url}?c=index&a=showH5List&from=index`)
+         // 年份切换展示
+        worksAll (index) {
+          let yearstime = [0,2016,2017,2018];
+          this.yearIndex = yearstime[index];
+          this.$http.get(`${this.$url}?c=index&a=showH5List&selYear=${this.yearIndex}&page=current&from=index&pagesize=25`)
           .then((res) => {
-            this.PcLists = res.data.errmsg;
-            //    console.log(res.data);
+            this.stories = res.data.errmsg;
             })
             .catch(e => {
                   console.log(e)
-            })
+            });
         },
-        // 2018
-         year2018 () {
-          this.$http.get(`${this.$url}?c=index&a=showH5List&from=index&selYear=2018`)
+       // 部门切换展示
+        worksAllDep (index) {
+          let yearstime = [0,2016,2017,2018];
+          this.yearIndex = yearstime[index];
+          this.depIndex = index;
+          this.$http.get(`${this.$url}?c=index&a=showH5List&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&page=current&from=index&pagesize=25`)
           .then((res) => {
-            this.PcLists = res.data.errmsg;
-            //    console.log(res.data);
+            this.stories = res.data.errmsg;
             })
             .catch(e => {
                   console.log(e)
-            })
+            });
         },
-        // 2017
-         year2017 () {
-          this.$http.get(`${this.$url}?c=index&a=showH5List&from=index&selYear=2017`)
+         // 颜色切换展示
+        worksAllColor (index) {
+          let yearstime = [0,2016,2017,2018];
+          this.yearIndex = yearstime[index];
+          this.depIndex = index;
+          this.$http.get(`${this.$url}?c=index&a=showH5List&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&page=current&from=index&pagesize=25`)
           .then((res) => {
-            this.PcLists = res.data.errmsg;
-            //    console.log(res.data);
+            this.stories = res.data.errmsg;
             })
             .catch(e => {
                   console.log(e)
-            })
+            });
         },
-        // 2016
-         year2016 () {
-          this.$http.get(`${this.$url}?c=index&a=showH5List&from=index&selYear=2016`)
-          .then((res) => {
-            this.PcLists = res.data.errmsg;
-            //    console.log(res.data);
-            })
-            .catch(e => {
-                  console.log(e)
-            })
-        },
-     
+        
+       
 
         // 弹窗函数
          getTuList (storyId) {
-        this.$http.get(`${this.$url}?c=index&a=getOneH5Data&from=index&id=${storyId}`).then((res) => {
+        this.$http.get(`${this.$url}?c=index&a=getOneH5Data&from=index&id=15`).then((res) => {
                this.tuLists = res.data.errmsg;
-                //  console.log(res.data.errmsg)
             })
              .catch(e => {
                   console.log(e)

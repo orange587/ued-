@@ -14,19 +14,7 @@
                     <a  v-for="(num,index) in departs" @click="iscur1 = index,worksAllDep(index)"  :class="{active:iscur1==index}" :key="num.index" >{{num.titleTab }}</a>
                 </li>
                 <li class="sexi">
-                    <!-- <a href="" class="all_color">全部</a>
-                    <a href="" class="sexi01 active"></a>
-                    <a href="" class="sexi02"></a>
-                    <a href="" class="sexi03"></a>
-                    <a href="" class="sexi04"></a>
-                    <a href="" class="sexi05"></a>
-                    <a href="" class="sexi06"></a>
-                    <a href="" class="sexi07"></a>
-                    <a href="" class="sexi08"></a>
-                    <a href="" class="sexi09"></a>
-                    <a href="" class="sexi10"></a>
-                    <a href="" class="sexi11"></a> -->
-                    <a  v-for="(num,index) in colors" @click="iscur2 = index,worksAllColor(index)"  :class="{active:iscur1==index}" :key="num.index" >{{num.titleTab }}</a>
+                    <a  v-for="(num,index) in colors" @click="iscur2 = index,worksAllColor(index)"  :class="{active:iscur2==index}" :key="num.index" >{{num.titleTab }}</a>
 
                 </li>
             </ul>
@@ -37,17 +25,16 @@
             <!-- 瀑布流样式开始 -->
             <div class="waterfull clearfloat" id="waterfull">
                 <ul>
-                    <li class="item" v-for="item in PcLists" :key="item.id">
-                        <a class="a-img" :href="item.locateLink" >
-                            <img :src="item.coverImg | imageUrlPrefix" alt="">
+                    <li class="item" v-for="story in PcLists" :key="story.id"> 
+                      <a   class="a-img"   :href="story.locateLink">
+                           <img :src="story.coverImg | imageUrlPrefix" />
                         </a>
-                        <p class="description"><a :href="item.locateLink">{{ item.title }}</a></p>
+                        <p class="description"><a  :href="story.locateLink">{{ story.title }}</a></p>
                         <div class="qianm clearfloat">
-                            <span class="sp1">作者：{{item.author }}</span>
-                            <span class="sp3">{{item.createTime}}</span>
+                            <span class="sp1">作者：{{story.author }}</span>
+                            <span class="sp3">{{story.publishTime}}</span>
                         </div>
-                    </li>
-
+                     </li>
                 </ul>
             </div>
             <!-- loading按钮自己通过样式调整 -->
@@ -75,6 +62,9 @@ export default {
   name:'list_pc',
   components:{
     TopNav,TopFan
+  },
+  created () {
+        this.getList()
   },
   data () {
         return {
@@ -111,15 +101,12 @@ export default {
           ],
           iscur:0 ,
           iscur1:0 ,
+          iscur2:0 ,
           typeIndex:0,
           typesIndex:0,
           index:0
         }
       },
-      mounted () {
-        this.getList()
-      },
-     
       methods: {
         getList () {
        this.$http.get(`${this.$url}?c=index&a=showPcList&from=index`).then((res) => {
@@ -136,7 +123,8 @@ export default {
           this.yearIndex = yearstime[index];
           this.$http.get(`${this.$url}?c=index&a=showPcList&selYear=${this.yearIndex}&page=current&from=index&pagesize=25`)
           .then((res) => {
-            this.stories = res.data.errmsg;
+            this.PcLists = res.data.errmsg;
+            // console.log(res.data.errmsg)
             })
             .catch(e => {
                   console.log(e)
@@ -149,13 +137,26 @@ export default {
           this.depIndex = index;
           this.$http.get(`${this.$url}?c=index&a=showPcList&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&page=current&from=index&pagesize=25`)
           .then((res) => {
-            this.stories = res.data.errmsg;
+            this.PcLists = res.data.errmsg;
             })
             .catch(e => {
                   console.log(e)
             });
         },
-
+         // 色系切换展示
+        worksAllColor (index) {
+          let yearstime = [0,2016,2017,2018];
+          this.yearIndex = yearstime[index];
+          this.depIndex = index;
+          this.colorIndex = index;
+          this.$http.get(`${this.$url}?c=index&a=showPcList&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&colorRange=${this.colorIndex}&page=current&from=index&pagesize=25`)
+          .then((res) => {
+            this.PcLists = res.data.errmsg;
+            })
+            .catch(e => {
+                  console.log(e)
+            });
+        },
         
         }
 }

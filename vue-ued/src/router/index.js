@@ -35,7 +35,7 @@ export default new Router({
             name: 'list_pc',
             component: ListPc,
             meta: {
-                title: 'PCz专题'
+                title: 'PC专题'
             }
         },
         {

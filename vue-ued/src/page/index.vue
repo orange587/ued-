@@ -98,6 +98,7 @@ export default {
         this.$http.get(`${this.$url}?c=index&a=showArticleList&type=&page=current&from=index&pagesize=25`)
                       .then(res => {
                           this.stories = res.data.errmsg;
+                        //   console.log(res.data.errmsg)
                       })
                       .catch(e => {
                         console.log(e)

@@ -7,6 +7,7 @@ import router from './router'
 import store from './store'
 import { Breadcrumb, BreadcrumbItem } from 'element-ui'
 import 'babel-polyfill'
+import $ from 'jquery'
 
 Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
@@ -54,17 +55,8 @@ Vue.filter('imageUrlPrefix', (value) => {
     const url = value.substr(7)
     const prefix = 'https://images.weserv.nl/?url='
     return prefix + url
-})
+  })
 
-// const zhihu = 'http://localhost:3000'
-// Vue.prototype.$url = `${zhihu}`
-
-// 引用API文件
-// import api from './api/index.js'
-// 将API方法绑定到全局
-// Vue.prototype.$api = api
-
-import $ from 'jquery'
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

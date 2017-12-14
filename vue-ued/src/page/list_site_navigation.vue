@@ -5,19 +5,23 @@
     <!--全部作品st -->
         <div class="choice_wrap">
         <ul class="choice_xuan">
-            <li>
-                <a href="" class="active">全部</a><a href="">设计</a><a href="">制作</a>
-            </li>
-            <li style="margin-bottom:0">
-                <a href="">全部</a><a href="" class="active">设计导航</a><a href="">设计资讯</a><a href="">设计素材</a><a href="">图片助手</a><a href="">页面配色</a><a href="">动效收集
-
-</a><a href="">学习网站</a><a href="">字体</a><a href="">软件下载</a>
-            </li>
+              <li>
+                  <div class="fl wzdh_title">设计</div>
+                  <div class="fl">
+                    <a  v-for="(num,index) in designs" @click="iscur = index,worksAll(index)"  :class="{active:iscur==index}" :key="num.index" >{{num.titleTab }}</a>
+                   </div>
+                </li>
+                <li style="margin-bottom:0">
+                    <div class="fl wzdh_title">制作</div>
+                    <div class="fl">
+                    <a  v-for="(num,index) in webs" @click="iscur1 = index,worksAllType(index)"  :class="{active:iscur1==index}" :key="num.index" >{{num.titleTab }}</a>
+                     </div>
+                </li>
         </ul>
         </div>
         <div class="fang_responsive">        
             <div class="listBox">
-                <div class="tit">设计导航</div>
+                <div class="tit">全部导航</div>
                 <div class="con">
                     <div class="cBox">
                         <ul>
@@ -47,7 +51,36 @@ export default {
   },
   data () {
         return {
-          PcLists: []
+          PcLists: [],
+          designs:[
+              {titleTab:'全部'},
+              {titleTab:'设计导航'},
+              {titleTab:'设计资讯'},
+              {titleTab:'设计素材'},
+              {titleTab:'图片助手'},
+              {titleTab:'页面配色'},
+              {titleTab:'动效收集'},
+              {titleTab:'学习网站'},
+              {titleTab:'字体'},
+              {titleTab:'软件下载'},
+              {titleTab:'其他'}
+          ],
+          webs:[
+              {titleTab:'全部'},
+              {titleTab:'H5实例'},
+              {titleTab:'图片代码'},
+              {titleTab:'导航菜单'},
+              {titleTab:'选项卡'},
+              {titleTab:'文字特效'},
+              {titleTab:'表单代码'},
+              {titleTab:'提示层/浮层/弹出层'},
+              {titleTab:'其他'}
+          ],
+          iscur:0 ,
+          iscur1:0 ,
+          typeIndex:0,
+          typesIndex:0,
+          index:0
         }
       },
       mounted () {
@@ -55,13 +88,35 @@ export default {
       },
       methods: {
         getList () {
-       this.$http.get(`${this.$url}?c=index&a=showElseList&from=index`).then((res) => {
+       this.$http.get(`${this.$url}?c=index&a=showElseList&from=index&pagesize=all`).then((res) => {
                this.PcLists = res.data.errmsg;
-            //   console.log(lists)
             })
              .catch(e => {
                   console.log(e)
                 })
+        },
+         // 设计切换展示
+        worksAll (index) {
+          this.typeIndex = index;
+          this.$http.get(`${this.$url}?c=index&a=showElseList&type1=1&type2=${this.typeIndex}from=index`)
+          .then((res) => {
+            this.PcLists = res.data.errmsg;
+            })
+            .catch(e => {
+                  console.log(e)
+            });
+        },
+        // 制作切换展示
+        worksAllType (index) {
+          this.typesIndex = index;
+          this.$http.get(`${this.$url}?c=index&a=showElseList&type1=2&type2=${this.typesIndex}&from=index`)
+          .then((res) => {
+            this.PcLists = res.data.errmsg;
+    
+            })
+            .catch(e => {
+                  console.log(e)
+            });
         },
         }
 }

@@ -82,7 +82,6 @@ export default {
   components:{
    TopNav,TopFan
   },
-
   data () {
         return {
           PcLists: [],

@@ -8,20 +8,20 @@
               <li>
                   <div class="fl wzdh_title">设计</div>
                   <div class="fl">
-                    <a  v-for="(num,index) in designs" @click="iscur = index,worksAll(index)"  :class="{active:iscur==index}" :key="num.index" >{{num.titleTab }}</a>
+                    <a  v-for="(num,index) in designs" @click="iscur = index,worksAll(num,index)"  :class="{active:iscur==index}" :key="num.index" >{{num.titleTab }}</a>
                    </div>
                 </li>
                 <li style="margin-bottom:0">
                     <div class="fl wzdh_title">制作</div>
                     <div class="fl">
-                    <a  v-for="(num,index) in webs" @click="iscur1 = index,worksAllType(index)"  :class="{active:iscur1==index}" :key="num.index" >{{num.titleTab }}</a>
+                    <a  v-for="(num,index) in webs" @click="iscur1 = index,worksAllType(num,index)"  :class="{active:iscur1==index}" :key="num.index" >{{num.titleTab }}</a>
                      </div>
                 </li>
         </ul>
         </div>
         <div class="fang_responsive">        
             <div class="listBox">
-                <div class="tit">全部导航</div>
+                <div class="tit">{{title}}</div>
                 <div class="con">
                     <div class="cBox">
                         <ul>
@@ -80,7 +80,8 @@ export default {
           iscur1:0 ,
           typeIndex:0,
           typesIndex:0,
-          index:0
+          index:0,
+          title:'全部导航'
         }
       },
       mounted () {
@@ -88,7 +89,7 @@ export default {
       },
       methods: {
         getList () {
-       this.$http.get(`${this.$url}?c=index&a=showElseList&from=index&pagesize=all`).then((res) => {
+       this.$http.get(`${this.$url}?c=index&a=showElseList&from=index&pagesize=100`).then((res) => {
                this.PcLists = res.data.errmsg;
             })
              .catch(e => {
@@ -96,8 +97,10 @@ export default {
                 })
         },
          // 设计切换展示
-        worksAll (index) {
+        worksAll (num,index) {
           this.typeIndex = index;
+          this.title = num.titleTab;
+          this.iscur1 = 0;
           this.$http.get(`${this.$url}?c=index&a=showElseList&type1=1&type2=${this.typeIndex}from=index`)
           .then((res) => {
             this.PcLists = res.data.errmsg;
@@ -107,8 +110,10 @@ export default {
             });
         },
         // 制作切换展示
-        worksAllType (index) {
+        worksAllType (num,index) {
           this.typesIndex = index;
+          this.title = num.titleTab;
+          this.iscur = 0;
           this.$http.get(`${this.$url}?c=index&a=showElseList&type1=2&type2=${this.typesIndex}&from=index`)
           .then((res) => {
             this.PcLists = res.data.errmsg;

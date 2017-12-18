@@ -24,7 +24,7 @@
             <!-- 瀑布流样式开始 -->
             <div class="waterfull clearfloat" id="waterfull">
                 <ul>
-                    <li class="item" v-for="story in PcLists" :key="story.id">
+                    <li class="item" v-for="story in PcLists" :key="story.id" @click="getTuList(story.id)">
                          <a  class="a-img" href="javascript:;">
                            <img :src="story.coverImg | imageUrlPrefix" />
                         </a>
@@ -67,10 +67,10 @@
             </div>
         </div>
         <div class="rightcolumn">
-            <p class="h2">{{item.title}}</p>
+            <p class="h2">{{ item.title }}</p>
             <p class="h3">
-                <span class="time">{{item.createTime}}</span>
-                <span>作者：{{item.author}}</span>
+                <span class="time">{{ item.publishTime }}</span>
+                <span>作者：{{ item.author }}</span>
             </p>
             <div class="ewm-box clearfix">
                 <img :src="item.qr_code" alt="" class="ewm">
@@ -79,10 +79,10 @@
         </div>
         <a href="javascript:void(0);" class="pop-close"></a>
     </div>
-    <div class="pin-view-arrows">
+    <!-- <div class="pin-view-arrows">
         <a style="visibility: visible; position: fixed; right: 0px;" class="next x layer-view" href=""></a>
         <a style="visibility: visible; position: fixed; left: 0px;" class="prev x layer-view" href=""></a>
-    </div>
+    </div> -->
 
     <!--弹窗 end-->
     <!--返回顶部 st-->
@@ -105,14 +105,10 @@ export default {
   components:{
     TopNav,TopFan
   },
-  created() {
-  let storyId = this.getTuList(this.$route.params.id);
-  },
- 
   data () {
         return {
           PcLists: [],
-          tuLists:[],
+          tuLists:{},
           loading: true,
            years:[
               {titleTab:'全部'},
@@ -153,14 +149,15 @@ export default {
         }
       },
       mounted () {
-        this.getList(),
-         this.getTuList()
+         this.getList();
+         this.getTuList();
       },  
      
       methods: {
           getList () {
-          this.$http.get(`${this.$url}?c=index&a=showH5List&from=index`).then((res) => {
+          this.$http.get(`${this.$url}?c=index&a=showH5List&from=index&pagesize=25`).then((res) => {
             this.PcLists = res.data.errmsg;
+            // console.log(this.PcLists);
             //   console.log(res.data.errmsg);
              
             })
@@ -206,20 +203,18 @@ export default {
                   console.log(e)
             });
         },
-        
-       
-
         // 弹窗函数
          getTuList (storyId) {
-        this.$http.get(`${this.$url}?c=index&a=getOneH5Data&from=index&id=15`).then((res) => {
+            this.$http.get(`${this.$url}?c=index&a=getOneH5Data&from=index&id=${storyId}`).then((res) => {
                this.tuLists = res.data.errmsg;
+            //    console.log(this.tuLists)
             })
-             .catch(e => {
+            .catch(e => {
                   console.log(e)
-                })
+            })
         },
         
-        }
+    }
 }
 </script>
 

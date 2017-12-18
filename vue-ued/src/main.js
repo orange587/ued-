@@ -45,10 +45,8 @@ router.afterEach(function(to, from, next) {
         }
     })
     //记录路由 <-
-
 const jsonBird = 'https://bird.ioliu.cn/v1/?url='
 const zhihu = 'http://testued.light.fang.com/'
-
 Vue.prototype.$url = `${jsonBird}${zhihu}`
 Vue.prototype.$http = axios
 Vue.filter('imageUrlPrefix', (value) => {

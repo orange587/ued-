@@ -11,7 +11,7 @@
                     <a  v-for="(num,index) in years" @click="iscur = index,worksAll(index)"  :class="{active:iscur==index}" :key="num.index" >{{num.titleTab }}</a>
                 </li>
                 <li>
-                    <a  v-for="(num,index) in departs" @click="iscur1 = index,worksAllDep(index)"  :class="{active:iscur1==index}" :key="num.index" >{{num.titleTab }}</a>
+                    <a  v-for="(num,indexdp) in departs" @click="iscur1 = indexdp,worksAll(index,indexdp)"  :class="{active:iscur1==indexdp}" :key="num.indexdp" >{{num.titleTab }}</a>
                 </li>
                 <li class="sexi">
                     <a  v-for="(num,index) in colors" @click="iscur2 = index,worksAllColor(index)"  :class="{active:iscur2==index}" :key="num.index" >{{num.titleTab }}</a>
@@ -146,17 +146,18 @@ export default {
           iscur2:0 ,
           typeIndex:0,
           typesIndex:0,
-          index:0
+          index:0,
+          indexdp:0,
         }
       },
       mounted () {
          this.getList();
-         this.getTuList();
+        //  this.getTuList();
       },  
     
       methods: {
           getList () {
-          this.$http.get(`${this.$url}?c=index&a=showH5List&from=index&pagesize=25`).then((res) => {
+          this.$http.get(`api/?c=index&a=showH5List&from=index&pagesize=25`).then((res) => {
             this.PcLists = res.data.errmsg;
             // console.log(this.PcLists);
             //   console.log(res.data.errmsg);
@@ -167,25 +168,27 @@ export default {
                 })
         },
          // 年份切换展示
-        worksAll (index) {
-          let yearstime = [0,2016,2017,2018];
-          this.yearIndex = yearstime[index];
-          this.$http.get(`${this.$url}?c=index&a=showH5List&selYear=${this.yearIndex}&page=current&from=index&pagesize=25`)
-          .then((res) => {
-            this.stories = res.data.errmsg;
-            })
-            .catch(e => {
-                  console.log(e)
-            });
-        },
+        // worksAll (index) {
+        //   let yearstime = [0,2016,2017,2018];
+        //   this.yearIndex = yearstime[index];
+        //   this.$http.get(`api/?c=index&a=showH5List&selYear=${this.yearIndex}&page=current&from=index&pagesize=25`)
+        //   .then((res) => {
+        //     this.PcLists = res.data.errmsg;
+        //     // console.log(this.stories)
+        //     })
+        //     .catch(e => {
+        //           console.log(e)
+        //     });
+        // },
        // 部门切换展示
-        worksAllDep (index) {
+        worksAll (index,indexdp) {
           let yearstime = [0,2016,2017,2018];
           this.yearIndex = yearstime[index];
-          this.depIndex = index;
-          this.$http.get(`${this.$url}?c=index&a=showH5List&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&page=current&from=index&pagesize=25`)
+          console.log(indexdp)
+          this.$http.get(`api/?c=index&a=showH5List&selYear=${this.yearIndex}&ownGroup=${indexdp}&page=current&from=index&pagesize=25`)
           .then((res) => {
-            this.stories = res.data.errmsg;
+            this.PcLists = res.data.errmsg;
+            // console.log(this.PcLists)
             })
             .catch(e => {
                   console.log(e)
@@ -196,9 +199,10 @@ export default {
           let yearstime = [0,2016,2017,2018];
           this.yearIndex = yearstime[index];
           this.depIndex = index;
-          this.$http.get(`${this.$url}?c=index&a=showH5List&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&page=current&from=index&pagesize=25`)
+          this.colorIndex = index;
+          this.$http.get(`api/?c=index&a=showH5List&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&colorRange=${this.colorIndex}&page=current&from=index&pagesize=25`)
           .then((res) => {
-            this.stories = res.data.errmsg;
+            this.PcLists = res.data.errmsg;
             })
             .catch(e => {
                   console.log(e)
@@ -206,9 +210,9 @@ export default {
         },
         // 弹窗函数
          getTuList (storyId) {
-            this.$http.get(`${this.$url}?c=index&a=getOneH5Data&from=index&id=${storyId}`).then((res) => {
+            this.$http.get(`api/?c=index&a=getOneH5Data&from=index&id=${storyId}`).then((res) => {
                this.tuLists = res.data.errmsg;
-               console.log(this.tuLists)
+            //    console.log(this.tuLists)
             })
             .catch(e => {
                   console.log(e)

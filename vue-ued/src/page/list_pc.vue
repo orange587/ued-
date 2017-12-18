@@ -114,7 +114,7 @@ export default {
       },
       methods: {
         getList () {
-       this.$http.get(`${this.$url}?c=index&a=showPcList&from=index`).then((res) => {
+       this.$http.get(`api/?c=index&a=showPcList&from=index`).then((res) => {
                this.PcLists = res.data.errmsg;
             //   console.log(lists)
             })
@@ -126,7 +126,7 @@ export default {
         worksAll (index) {
           let yearstime = [0,2016,2017,2018];
           this.yearIndex = yearstime[index];
-          this.$http.get(`${this.$url}?c=index&a=showPcList&selYear=${this.yearIndex}&page=current&from=index&pagesize=25`)
+          this.$http.get(`api/?c=index&a=showPcList&selYear=${this.yearIndex}&page=current&from=index&pagesize=25`)
           .then((res) => {
             this.PcLists = res.data.errmsg;
             // console.log(res.data.errmsg)
@@ -140,7 +140,7 @@ export default {
           let yearstime = [0,2016,2017,2018];
           this.yearIndex = yearstime[index];
           this.depIndex = index;
-          this.$http.get(`${this.$url}?c=index&a=showPcList&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&page=current&from=index&pagesize=25`)
+          this.$http.get(`api/?c=index&a=showPcList&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&page=current&from=index&pagesize=25`)
           .then((res) => {
             this.PcLists = res.data.errmsg;
             })
@@ -154,7 +154,7 @@ export default {
           this.yearIndex = yearstime[index];
           this.depIndex = index;
           this.colorIndex = index;
-          this.$http.get(`${this.$url}?c=index&a=showPcList&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&colorRange=${this.colorIndex}&page=current&from=index&pagesize=25`)
+          this.$http.get(`api/?c=index&a=showPcList&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&colorRange=${this.colorIndex}&page=current&from=index&pagesize=25`)
           .then((res) => {
             this.PcLists = res.data.errmsg;
             })

@@ -84,10 +84,10 @@ export default {
       methods: {
         // 轮播图
         getList () {
-        this.$http.get(`${this.$url}?c=index&a=showCarousal&from=index`)
+        this.$http.get(`api/?c=index&a=showCarousal&from=index`)
         .then((res) => {
                this.list = res.data.errmsg;
-            //    console.log(res)
+               console.log(this.list)
             })
             .catch(e => {
                   console.log(e)
@@ -95,7 +95,7 @@ export default {
         },
         // 作品展示
         getStories(){
-        this.$http.get(`${this.$url}?c=index&a=showArticleList&type=&page=current&from=index&pagesize=25`)
+        this.$http.get(`api/?c=index&a=showArticleList&type=&page=current&from=index&pagesize=25`)
                       .then(res => {
                           this.stories = res.data.errmsg;
                         //   console.log(res.data.errmsg)
@@ -108,7 +108,7 @@ export default {
     // 作品切换展示
      worksAll (index) {
           this.typeIndex = index;
-          this.$http.get(`${this.$url}?c=index&a=showArticleList&type=${this.typeIndex}&page=current&from=index&pagesize=25`)
+          this.$http.get(`api/?c=index&a=showArticleList&type=${this.typeIndex}&page=current&from=index&pagesize=25`)
           .then((res) => {
             this.stories = res.data.errmsg;
             //   console.log(res.data.errmsg)
@@ -121,7 +121,7 @@ export default {
         // 分页
       pagechange:function(currentPage){
         this.current = currentPage;
-        this.$http.get(`${this.$url}?c=index&a=showArticleList&type=${this.typeIndex}&page=${this.current}&from=index&pagesize=25`)
+        this.$http.get(`api/?c=index&a=showArticleList&type=${this.typeIndex}&page=${this.current}&from=index&pagesize=25`)
                       .then(res => {
                           this.stories = res.data.errmsg;
                       })

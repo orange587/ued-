@@ -89,7 +89,7 @@ export default {
       },
       methods: {
         getList () {
-       this.$http.get(`${this.$url}?c=index&a=showElseList&from=index&pagesize=100`).then((res) => {
+       this.$http.get(`api/?c=index&a=showElseList&from=index&pagesize=100`).then((res) => {
                this.PcLists = res.data.errmsg;
             })
              .catch(e => {
@@ -101,7 +101,7 @@ export default {
           this.typeIndex = index;
           this.title = num.titleTab;
           this.iscur1 = 0;
-          this.$http.get(`${this.$url}?c=index&a=showElseList&type1=1&type2=${this.typeIndex}from=index`)
+          this.$http.get(`api/?c=index&a=showElseList&type1=1&type2=${this.typeIndex}from=index`)
           .then((res) => {
             this.PcLists = res.data.errmsg;
             })
@@ -114,7 +114,7 @@ export default {
           this.typesIndex = index;
           this.title = num.titleTab;
           this.iscur = 0;
-          this.$http.get(`${this.$url}?c=index&a=showElseList&type1=2&type2=${this.typesIndex}&from=index`)
+          this.$http.get(`api/?c=index&a=showElseList&type1=2&type2=${this.typesIndex}&from=index`)
           .then((res) => {
             this.PcLists = res.data.errmsg;
     

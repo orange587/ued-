@@ -61,7 +61,7 @@ export default {
       methods:{  
      // 获取文章
     getStory(storyId) {
-      this.$http.get(`${this.$url}?c=index&a=getoneArticleInfo&from=index&id=${storyId}`)
+      this.$http.get(`${this.$url}/?c=index&a=getoneArticleInfo&from=index&id=${storyId}`)
                 .then(res => {
                   this.longComments = res.data.errmsg,
                   // console.log(this.res.data.errmsg)
@@ -78,7 +78,7 @@ export default {
           this.likeNum++;
           let numlike = this.likeNum;
           // let param = new URLSearchParams();
-          this.$http.post(`${this.$url}?c=index&a=addLikeInfo`,
+          this.$http.post(`api/?c=index&a=addLikeInfo`,
               {
                   params:{
                   like:numlike,

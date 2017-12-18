@@ -30,7 +30,10 @@ module.exports = {
         proxyTable: {
             '/api': {
                 target: 'http://testued.light.fang.com/',
-                changeOrigin: true
+                changeOrigin: true,
+                pathRewrite: {  
+                    '^/api': '/'  
+                }  
             }
             
         },

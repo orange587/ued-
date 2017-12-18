@@ -41,6 +41,12 @@
             <div id="imloading" style="width:150px;height:30px;line-height:30px;font-size:16px;text-align:center;border-radius:3px;opacity:0.7;background:#000;margin:10px auto 30px;color:#fff;display:none">
                 素材加载中.....
             </div>
+            <!-- <waterfall :line-gap="200" :watch="PcLists" :grow="grow" @reflowed="reflowed" ref="waterfall">
+                <waterfall-slot 
+                v-for="(item, index) in PcLists":key="item.id" >                
+                </waterfall-slot>
+            </waterfall> -->
+
         </div>
     </div>
     <!--全部作品end -->
@@ -56,8 +62,7 @@ import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
 import JqueryMasonryMin from '../utils/jquery_masonry_min.js'
 import JQeasing from '../utils/jQeasing.js'
-import Pubuliu from '../utils/pubuliu.js'
-import Index from '../utils/index'
+import Pubuliu from '../utils/pubuliu_pc.js'
 export default {
   name:'list_pc',
   components:{
@@ -161,5 +166,10 @@ export default {
         }
 }
 </script>
-
+<style scoped>
+      .item-move {
+        transition: all .5s cubic-bezier(.55,0,.1,1);
+        -webkit-transition: all .5s cubic-bezier(.55,0,.1,1);
+      }
+</style>
 

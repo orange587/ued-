@@ -14,8 +14,8 @@
                   <img :src="item | imageUrlPrefix" alt="">
                 </div>
                 <div class="vote">
-                	<a class="vote-icon"  @click="submitAgree()"  :class="{cur:agreeS}"></a>
-                    <p >喜欢({{ longComments.like }})</p>
+                	<a class="vote-icon"  @click="flag && submitAgree(longComments.id)"  :class="{cur:agreeS}"></a>
+                    <p >喜欢({{ likeNum }})</p>
                 </div>
             </div>
             <div class="rightBox">
@@ -53,38 +53,53 @@ export default {
         story: {},
         comment:{},
         longComments: [],
-        agreeS:false
+        agreeS:false,
+        likeNum:0,
+        flag:true
         }
       },
       methods:{  
      // 获取文章
     getStory(storyId) {
-      this.zanStoryId = this.storyId;
       this.$http.get(`${this.$url}?c=index&a=getoneArticleInfo&from=index&id=${storyId}`)
                 .then(res => {
                   this.longComments = res.data.errmsg,
-                  console.log(this.res.data.errmsg)
+                  // console.log(this.res.data.errmsg)
+                   this.likeNum = this.longComments.like
                 })
                 .catch(e => {
                   console.log(e)
                 })
     },
     //点赞
-   submitAgree(){
-     const agree = this.like;
-     this.$store.dispatch("agree",this.$store.state.storydetail.id)
+   submitAgree(storyId){
        if(!this.agreeS){
           this.agreeS = true;
-          this.agree++;
+          this.likeNum++;
+          let numlike = this.likeNum;
+          // let param = new URLSearchParams();
+          this.$http.post(`${this.$url}?c=index&a=addLikeInfo`,
+              {
+                  params:{
+                  like:numlike,
+                  id:storyId
+                  }
+              }).then(res => {
+                 console.log(res.data)
+                })
+                .catch(e => {
+                  console.log(e)
+                })
+          
        }
        else{
          this.agreeS = false;
-           this.agree--;
-       }
-      
+         alert('您已经点过赞了！！');
+          this.flag = false; 
+       };
+       
      }
-    },
-    
+    }
      
         }
 </script>

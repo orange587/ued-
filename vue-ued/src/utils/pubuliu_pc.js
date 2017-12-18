@@ -49,7 +49,7 @@ $(function() {
             ajaxFlag = false;
             $.ajax({
                 type: "GET",
-                url: "https://bird.ioliu.cn/v1/?url=http://testued.light.fang.com/?c=index&a=showH5List&from=index",
+                url: "https://bird.ioliu.cn/v1/?url=http://testued.light.fang.com/?c=index&a=showPcList&from=index",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 async: false,
@@ -81,7 +81,7 @@ $(function() {
             loading.data("on", false).fadeIn(800);
             (function(sJson) {
                 /*这里会根据后台返回的数据来判断是否你进行分页或者数据加载完毕这里假设大于30就不在加载数据*/
-                if (itemNum > 30) {
+                if (itemNum > itemNum) {
                     loading.text('就有这么多了！');
                 } else {
                     var html = "";
@@ -120,7 +120,7 @@ $(function() {
             return img.src;
         };
     };
-    loadImage('../images/one.jpg');
+    // loadImage('../images/one.jpg');
     /*item hover效果*/
     //				var rbgB=['#71D3F5','#F0C179','#F28386','#8BD38B'];
     //				$('#waterfull').on('mouseover','.item',function(){

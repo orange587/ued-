@@ -53,7 +53,7 @@ import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
 import JqueryMasonryMin from '../utils/jquery_masonry_min.js'
 import JQeasing from '../utils/jQeasing.js'
-import Pubuliu from '../utils/pubuliu.js'
+import Pubuliu from '../utils/pubuliu_uiix.js'
 import Index from '../utils/index'
 export default {
   name:'list_uiix',

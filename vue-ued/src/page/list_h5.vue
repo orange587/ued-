@@ -47,14 +47,14 @@
     <!--主体 end-->
         <!--弹窗 st-->
     <div class="mask" style="display: none;"></div>
-    <div class="popDetail pop1"  v-for="item in tuLists" :key="item.index">
+    <div class="popDetail pop1"   >
         <div class="leftcolumn">
             <div class="picMain">
                 <div class="body">
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide"  v-for="item in tuLists.content" :key="item.index">
-                                <img :src="item" alt="">
+                            <div class="swiper-slide"  v-for="imglist in tuLists.content" :key="imglist.index">
+                                <img :src="imglist" alt="">
                             </div>
                         </div>
                     </div>
@@ -67,13 +67,13 @@
             </div>
         </div>
         <div class="rightcolumn">
-            <p class="h2">{{ item.title }}</p>
+            <p class="h2">{{tuLists.title}}</p>
             <p class="h3">
-                <span class="time">{{ item.publishTime }}</span>
-                <span>作者：{{ item.author }}</span>
+                <span class="time">{{tuLists.publishTime}}</span>
+                <span>作者：{{tuLists.author}}</span>
             </p>
             <div class="ewm-box clearfix">
-                <img :src="item.qr_code" alt="" class="ewm">
+                <img :src="tuLists.qr_code" alt="" class="ewm">
                 <p class="title-ewm"><i></i>扫一扫，手机欣赏</p>
             </div>
         </div>
@@ -96,7 +96,7 @@ import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
 import JqueryMasonryMin from '../utils/jquery_masonry_min.js'
 import JQeasing from '../utils/jQeasing.js'
-import Pubuliu from '../utils/pubuliu.js'
+import Pubuliu from '../utils/pubuliu_h5.js'
 import Index from '../utils/index'
 import swiper_min from '../utils/swiper_min'
 import h5_pop from '../utils/h5_pop'
@@ -109,6 +109,7 @@ export default {
         return {
           PcLists: [],
           tuLists:{},
+          indexlist:0,
           loading: true,
            years:[
               {titleTab:'全部'},
@@ -152,7 +153,7 @@ export default {
          this.getList();
          this.getTuList();
       },  
-     
+    
       methods: {
           getList () {
           this.$http.get(`${this.$url}?c=index&a=showH5List&from=index&pagesize=25`).then((res) => {
@@ -207,7 +208,7 @@ export default {
          getTuList (storyId) {
             this.$http.get(`${this.$url}?c=index&a=getOneH5Data&from=index&id=${storyId}`).then((res) => {
                this.tuLists = res.data.errmsg;
-            //    console.log(this.tuLists)
+               console.log(this.tuLists)
             })
             .catch(e => {
                   console.log(e)

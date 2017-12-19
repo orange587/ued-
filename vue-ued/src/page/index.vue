@@ -87,7 +87,7 @@ export default {
         this.$http.get(`api/?c=index&a=showCarousal&from=index`)
         .then((res) => {
                this.list = res.data.errmsg;
-            //    console.log(res)
+               console.log(this.list)
             })
             .catch(e => {
                   console.log(e)

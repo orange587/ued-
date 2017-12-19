@@ -11,7 +11,11 @@
                     <a  v-for="(num,index) in years" @click="iscur = index,searchList(num.titleTab,'year')"  :class="{active:iscur==index}" :key="num.index" >{{num.titleTab }}</a>
                 </li>
                 <li>
+<<<<<<< HEAD
                     <a  v-for="(num,index) in departs" @click="iscur1 = index,searchList(index,'depart')"  :class="{active:iscur1==index}" :key="num.index" >{{num.titleTab }}</a>
+=======
+                    <a  v-for="(num,indexdp) in departs" @click="iscur1 = indexdp,worksAll(index,indexdp)"  :class="{active:iscur1==indexdp}" :key="num.indexdp" >{{num.titleTab }}</a>
+>>>>>>> d21a391b758d9a1c0a70d102dbada7b788a3f681
                 </li>
                 <li class="sexi">
                     <a  v-for="(num,index) in colors" @click="iscur2 = index,searchList(index,'color')"  :class="{active:iscur2==index}" :key="num.index" >{{num.titleTab }}</a>
@@ -147,16 +151,24 @@ export default {
           typeIndex:0,
           typesIndex:0,
           index:0,
+<<<<<<< HEAD
           searchData:{
               selYear:'',
               ownGroup:'',
               colorRange:''
 
           }
+=======
+          indexdp:0,
+>>>>>>> d21a391b758d9a1c0a70d102dbada7b788a3f681
         }
       },
       mounted () {
          this.getList();
+<<<<<<< HEAD
+=======
+        //  this.getTuList();
+>>>>>>> d21a391b758d9a1c0a70d102dbada7b788a3f681
       },  
     
       methods: {
@@ -171,6 +183,7 @@ export default {
                   console.log(e)
                 })
         },
+<<<<<<< HEAD
         // 筛选函数
         searchList(obj,type){
             let that = this;
@@ -191,6 +204,44 @@ export default {
            })
           .then((res) => {
             that.PcLists = res.data.errmsg;
+=======
+         // 年份切换展示
+        // worksAll (index) {
+        //   let yearstime = [0,2016,2017,2018];
+        //   this.yearIndex = yearstime[index];
+        //   this.$http.get(`api/?c=index&a=showH5List&selYear=${this.yearIndex}&page=current&from=index&pagesize=25`)
+        //   .then((res) => {
+        //     this.PcLists = res.data.errmsg;
+        //     // console.log(this.stories)
+        //     })
+        //     .catch(e => {
+        //           console.log(e)
+        //     });
+        // },
+       // 部门切换展示
+        worksAll (index,indexdp) {
+          let yearstime = [0,2016,2017,2018];
+          this.yearIndex = yearstime[index];
+          console.log(indexdp)
+          this.$http.get(`api/?c=index&a=showH5List&selYear=${this.yearIndex}&ownGroup=${indexdp}&page=current&from=index&pagesize=25`)
+          .then((res) => {
+            this.PcLists = res.data.errmsg;
+            // console.log(this.PcLists)
+            })
+            .catch(e => {
+                  console.log(e)
+            });
+        },
+         // 颜色切换展示
+        worksAllColor (index) {
+          let yearstime = [0,2016,2017,2018];
+          this.yearIndex = yearstime[index];
+          this.depIndex = index;
+          this.colorIndex = index;
+          this.$http.get(`api/?c=index&a=showH5List&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&colorRange=${this.colorIndex}&page=current&from=index&pagesize=25`)
+          .then((res) => {
+            this.PcLists = res.data.errmsg;
+>>>>>>> d21a391b758d9a1c0a70d102dbada7b788a3f681
             })
             .catch(e => {
                   console.log(e)

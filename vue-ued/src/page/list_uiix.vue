@@ -97,7 +97,11 @@ export default {
   },
       methods: {
         getSubject () {
+<<<<<<< HEAD
         this.$http.get(`api/?c=index&a=showAppList&page=current&from=index&pagesize=25`)
+=======
+        this.$http.get(`api/?c=index&a=showAppList&from=index`)
+>>>>>>> d21a391b758d9a1c0a70d102dbada7b788a3f681
        .then(res => {
                    this.stories = res.data.errmsg
                 })

@@ -366,7 +366,11 @@
     margin-right: 0;
     margin-top: 3px;
 }
+<<<<<<< HEAD
 .choice_xuan li.sexi a:nth-child(1){margin-top: -2px;margin-right: 10px}
+=======
+.choice_xuan li.sexi a:nth-child(1){margin-top: -2px;    margin-right: 10px;}
+>>>>>>> d21a391b758d9a1c0a70d102dbada7b788a3f681
 .choice_xuan li.sexi a:nth-child(1).active::after{background: none}
 .choice_xuan li.sexi a:nth-child(2),.choice_xuan li.sexi a.sexi01{
     background-color: #8a52f9;

@@ -133,11 +133,7 @@ export default {
       },
       methods: {
         getList () {
-<<<<<<< HEAD
         this.$http.get(`api/?c=index&a=showBannerList&from=index&from=index&pagesize=30`).then((res) => {
-=======
-        this.$http.get(`api/?c=index&a=showBannerList&from=index`).then((res) => {
->>>>>>> d21a391b758d9a1c0a70d102dbada7b788a3f681
                this.PcLists = res.data.errmsg;
             //   console.log(res.data.errmsg)
             })
@@ -145,7 +141,6 @@ export default {
                   console.log(e)
                 })
         },
-<<<<<<< HEAD
           // 筛选函数
         searchList(obj,type)  {
          let that = this;
@@ -165,40 +160,6 @@ export default {
           this.$http.get(`api/?c=index&a=showBannerList&page=current&from=index&pagesize=25`,{
               params:that.searchData
           })
-=======
-          // 年份切换展示
-        worksAll (index) {
-          let yearstime = [0,2016,2017,2018];
-          this.yearIndex = yearstime[index];
-          this.$http.get(`api/?c=index&a=showBannerList&selYear=${this.yearIndex}&page=current&from=index&pagesize=25`)
-          .then((res) => {
-            this.PcLists = res.data.errmsg;
-            })
-            .catch(e => {
-                  console.log(e)
-            });
-        },
-       // 部门切换展示
-        worksAllDep (index) {
-          let yearstime = [0,2016,2017,2018];
-          this.yearIndex = yearstime[index];
-          this.depIndex = index;
-          this.$http.get(`api/?c=index&a=showBannerList&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&page=current&from=index&pagesize=25`)
-          .then((res) => {
-            this.PcLists = res.data.errmsg;
-            })
-            .catch(e => {
-                  console.log(e)
-            });
-        },
-         // 色系切换展示
-        worksAllColor (index) {
-          let yearstime = [0,2016,2017,2018];
-          this.yearIndex = yearstime[index];
-          this.depIndex = index;
-          this.colorIndex = index;
-          this.$http.get(`api/?c=index&a=showBannerList&selYear=${this.yearIndex}&ownGroup=${this.depIndex}&colorRange=${this.colorIndex}&page=current&from=index&pagesize=25`)
->>>>>>> d21a391b758d9a1c0a70d102dbada7b788a3f681
           .then((res) => {
             that.PcLists = res.data.errmsg;
             })

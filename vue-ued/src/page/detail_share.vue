@@ -77,7 +77,6 @@ export default {
           this.agreeS = true;
           this.likeNum++;
           let numlike = this.likeNum;
-<<<<<<< HEAD
           // this.$http.post(`http://localhost:8080/api/?c=index&a=addLikeInfo`,
           //     {
           //         params:{
@@ -94,12 +93,6 @@ export default {
             type:'post',
             url:`http://localhost:8080/api/?c=index&a=addLikeInfo`,
             data:{
-=======
-          // let param = new URLSearchParams();
-          this.$http.post(`api/?c=index&a=addLikeInfo`,
-              {
-                  params:{
->>>>>>> d21a391b758d9a1c0a70d102dbada7b788a3f681
                   like:numlike,
                   id:storyId
                   },

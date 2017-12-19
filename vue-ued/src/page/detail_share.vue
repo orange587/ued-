@@ -77,20 +77,30 @@ export default {
           this.agreeS = true;
           this.likeNum++;
           let numlike = this.likeNum;
-          // let param = new URLSearchParams();
-          this.$http.post(`${this.$url}?c=index&a=addLikeInfo`,
-              {
-                  params:{
+          // this.$http.post(`http://localhost:8080/api/?c=index&a=addLikeInfo`,
+          //     {
+          //         params:{
+          //         like:numlike,
+          //         id:storyId
+          //         }
+          //     }).then(res => {
+          //        console.log(res.data)
+          //       })
+          //       .catch(e => {
+          //         console.log(e)
+          //       })
+          $.ajax({
+            type:'post',
+            url:`http://localhost:8080/api/?c=index&a=addLikeInfo`,
+            data:{
                   like:numlike,
                   id:storyId
-                  }
-              }).then(res => {
-                 console.log(res.data)
-                })
-                .catch(e => {
-                  console.log(e)
-                })
-          
+                  },
+            success: function(data) {
+              console.log(data)
+            }      
+          }
+          )
        }
        else{
          this.agreeS = false;

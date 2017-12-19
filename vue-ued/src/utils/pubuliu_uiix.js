@@ -38,10 +38,6 @@ $(function() {
             }
         });
     });
-    /*模拟从后台获取到的数据*/
-    // var sqlJson = $.getJSON("https://bird.ioliu.cn/v1/?url=http://news-at.zhihu.com/api/4/news/latest", function(data) {
-    //     return data;
-    // });
     var ajaxFlag = true;
     var sqlJson = (function() {
         var returnData;
@@ -49,23 +45,25 @@ $(function() {
             ajaxFlag = false;
             $.ajax({
                 type: "GET",
-                url: "https://bird.ioliu.cn/v1/?url=http://testued.light.fang.com/?c=index&a=showAppList&from=index",
+                url: "https://bird.ioliu.cn/v1/?url=http://testued.light.fang.com/?c=index&a=showAppList&page=current&from=index&pagesize=25",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 async: false,
                 success: function(data) {
                     returnData = data;
+                    return returnData;
+                    
                 },
                 complete: function() {
                     ajaxFlag = true;
                 }
             });
             return returnData;
+            console.log(returnData)
         }
-
+         
     })();
     var sJson = sqlJson.stories;
-
     /*本应该通过ajax从后台请求过来类似sqljson的数据然后，便利，进行填充，这里我们用sqlJson来模拟一下数据*/
     $(window).scroll(function() {
         if (!loading.data("on")) return;
@@ -81,7 +79,7 @@ $(function() {
             loading.data("on", false).fadeIn(800);
             (function(sJson) {
                 /*这里会根据后台返回的数据来判断是否你进行分页或者数据加载完毕这里假设大于30就不在加载数据*/
-                if (itemNum > itemNum) {
+                if (itemNum > 300) {
                     loading.text('就有这么多了！');
                 } else {
                     var html = "";
@@ -120,14 +118,4 @@ $(function() {
             return img.src;
         };
     };
-    // loadImage('../images/one.jpg');
-    /*item hover效果*/
-    //				var rbgB=['#71D3F5','#F0C179','#F28386','#8BD38B'];
-    //				$('#waterfull').on('mouseover','.item',function(){
-    //					var random=Math.floor(Math.random() * 4);
-    //					$(this).stop(true).animate({'backgroundColor':rbgB[random]},1000);
-    //				});
-    //				$('#waterfull').on('mouseout','.item',function(){
-    //					$(this).stop(true).animate({'backgroundColor':'#fff'},1000);
-    //				});
 })

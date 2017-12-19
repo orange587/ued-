@@ -14,8 +14,8 @@
                   <img :src="item | imageUrlPrefix" alt="">
                 </div>
                 <div class="vote">
-                	<a class="vote-icon"  @click="addAgree()"  :class="{cur:agree}"></a>
-                    <p >喜欢({{ number }})</p>
+                	<a class="vote-icon" @click="flag && submitAgree(longComments.id)"  :class="{cur:agreeS}"></a>
+                    <p >喜欢({{ likeNum }})</p>
                 </div>
             </div>
             <div class="rightBox">
@@ -50,8 +50,9 @@ export default {
         story: {},
         comment:{},
         longComments: [],
-        agree:false,
-        number:0
+       agreeS:false,
+        likeNum:0,
+        flag:true
         }
       },
       created(){
@@ -61,7 +62,7 @@ export default {
       methods:{  
      // 获取文章图片
     getStory(storyId) {
-      this.$http.get(`${this.$url}?c=index&a=getoneArticleInfo&from=index&id=${storyId}`)
+      this.$http.get(`${this.$url}?c=index&a=getoneArticleInfo&a=getOneAppInfo&from=index&id=${storyId}`)
                 .then(res => {
                   this.longComments = res.data.errmsg
                 })
@@ -70,18 +71,33 @@ export default {
                 })
     },
     //点赞
-   addAgree(){
-       if(!this.agree){
-          this.agree = true;
-          this.number++;
+   submitAgree(storyId){
+       if(!this.agreeS){
+          this.agreeS = true;
+          this.likeNum++;
+          let numlike = this.likeNum;
+          // let param = new URLSearchParams();
+          this.$http.post(`${this.$url}?c=index&a=addLikeInfo`,
+              {
+                  params:{
+                  like:numlike,
+                  id:storyId
+                  }
+              }).then(res => {
+                 console.log(res.data)
+                })
+                .catch(e => {
+                  console.log(e)
+                })
+          
        }
        else{
-         this.agree = false;
-           this.number--;
-       }
-       this.discuss = this.number;
-     },
-    
+         this.agreeS = false;
+         alert('您已经点过赞了！！');
+          this.flag = false; 
+       };
+       
+     }
     },
    
         }

@@ -366,7 +366,7 @@
     margin-right: 0;
     margin-top: 3px;
 }
-.choice_xuan li.sexi a:nth-child(1){margin-top: -2px}
+.choice_xuan li.sexi a:nth-child(1){margin-top: -2px;margin-right: 10px}
 .choice_xuan li.sexi a:nth-child(1).active::after{background: none}
 .choice_xuan li.sexi a:nth-child(2),.choice_xuan li.sexi a.sexi01{
     background-color: #8a52f9;
@@ -790,12 +790,13 @@
 }
 
 .popDetail {
-    position: absolute;
+    position: fixed;
     width: 980px;
     height: 826px;
     left: 50%;
+    top:50%;
     margin-left: -490px;
-    top: 40px;
+    margin-top: -413px;
     background-color: #ffffff;
     z-index: 99;
     display: none;

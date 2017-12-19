@@ -7,8 +7,8 @@ module.exports = {
         index: path.resolve(__dirname, '../dist/index.html'),
         assetsRoot: path.resolve(__dirname, '../dist'),
         assetsSubDirectory: 'static',
-        assetsPublicPath: '/',
-        productionSourceMap: false, // 取消生Sourcemaps文件
+        assetsPublicPath: './',
+        productionSourceMap: true, // 取消生Sourcemaps文件
         // Gzip off by default as many popular static hosts such as
         // Surge or Netlify already gzip all static assets for you.
         // Before setting to `true`, make sure to:
@@ -30,7 +30,10 @@ module.exports = {
         proxyTable: {
             '/api': {
                 target: 'http://testued.light.fang.com/',
-                changeOrigin: true
+                changeOrigin: true,
+                pathRewrite:{
+                    '^/api':'/'
+                }
             }
             
         },

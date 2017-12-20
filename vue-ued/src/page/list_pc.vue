@@ -22,25 +22,6 @@
         </div>
         <!--选择头 end-->
         <div class="content">
-            <!-- 瀑布流样式开始 -->
-            <!-- <div class="waterfull clearfloat" id="waterfull">
-                <ul>
-                    <li class="item" v-for="story in PcLists" :key="story.id"> 
-                      <a   class="a-img"   :href="story.locateLink">
-                           <img :src="story.coverImg | imageUrlPrefix" />
-                        </a>
-                        <p class="description"><a  :href="story.locateLink">{{ story.title }}</a></p>
-                        <div class="qianm clearfloat">
-                            <span class="sp1">作者：{{story.author }}</span>
-                            <span class="sp3">{{story.publishTime}}</span>
-                        </div>
-                     </li>
-                </ul>
-            </div> -->
-            <!-- loading按钮自己通过样式调整 -->
-            <!-- <div id="imloading" style="width:150px;height:30px;line-height:30px;font-size:16px;text-align:center;border-radius:3px;opacity:0.7;background:#000;margin:10px auto 30px;color:#fff;display:none">
-                素材加载中.....
-            </div> -->
            <vue-waterfall-easy :imgsArr="imgsArr" @scrollLoadImg="fetchImgsData">
                <template slot-scope="props">
                 <p class="description"><a  :href="props.value.link">{{ props.value.title }}</a></p>
@@ -64,9 +45,6 @@
 <script>
 import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
-// import JqueryMasonryMin from '../utils/jquery_masonry_min.js'
-// import JQeasing from '../utils/jQeasing.js'
-// import Pubuliu from '../utils/pubuliu_pc.js'
 import vueWaterfallEasy from '../components/vue-waterfall-easy.vue'
 export default {
   name:'list_pc',
@@ -75,8 +53,8 @@ export default {
   },
   created () {
         this.getList(),
-        this.imgsArr = this.initImgsArr(),
-        this.fetchImgsArr = this.initImgsArr() // 模拟每次请求的新的图片的数据数据
+        this.imgsArr = this.initImgsArr(0,10),
+        this.fetchImgsArr = this.initImgsArr(10,20) // 模拟每次请求的新的图片的数据数据
   },
   data () {
         return {
@@ -138,16 +116,29 @@ export default {
                 })
         },
          //   pubuliu
-          initImgsArr() { //num 图片数量
-            this.$http.get(`api/?c=index&a=showPcList&from=index`).then((res) => {
-               this.PcLists = res.data.errmsg;
-            })
-             .catch(e => {
-                  console.log(e)
-                })
-             return this.PcLists;
-             console
-              },   
+          initImgsArr(n,m) { //num 图片数量
+          let arr = [];
+          $.ajax({
+            type:'get',
+            url:`api/?c=index&a=showPcList&from=index&pagesize=20`,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+             async: false,
+            success: function(data) {
+              this.PcLists = data.errmsg;
+                for (let i = n; i < m; i++) {
+                    arr.push({ 
+                    src: 'https://images.weserv.nl/?url='+ this.PcLists[i].coverImg.substr(7),
+                    author: this.PcLists[i].author, 
+                    title: this.PcLists[i].title,
+                    publishTime:this.PcLists[i].publishTime
+                    }) 
+                };
+            }      
+          });
+          console.log(arr)
+            return arr ;
+            },
             fetchImgsData() {
             this.imgsArr = this.imgsArr.concat(this.fetchImgsArr)
             },

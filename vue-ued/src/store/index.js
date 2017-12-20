@@ -23,14 +23,6 @@ const store = new Vuex.Store({
     },
   },
   actions:{
-    agree(context,storyId){
-      // 进行请求,获取点赞后的agree字段属性值
-      this.$http.post("https://bird.ioliu.cn/v1/?url=http://testued.light.fang.com/?c=index&a=getoneArticleInfo&from=index&id=${storyId}",{emulateJSON:true}).then(function (res) {
-          // 处理业务
-          // 调用上面setAgree方法更新点赞数
-          context.commit("setAgree",res.body.agree);
-      },function(){})
-  }
   }
 
 })

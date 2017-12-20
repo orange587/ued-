@@ -23,7 +23,7 @@
         <!--选择头 end-->
         <div class="content">
             <!-- 瀑布流样式开始 -->
-            <div class="waterfull clearfloat" id="waterfull">
+            <!-- <div class="waterfull clearfloat" id="waterfull">
                 <ul>
                     <li class="item" v-for="story in PcLists" :key="story.id"> 
                       <a   class="a-img"   :href="story.locateLink">
@@ -36,13 +36,21 @@
                         </div>
                      </li>
                 </ul>
-            </div>
+            </div> -->
             <!-- loading按钮自己通过样式调整 -->
-            <div id="imloading" style="width:150px;height:30px;line-height:30px;font-size:16px;text-align:center;border-radius:3px;opacity:0.7;background:#000;margin:10px auto 30px;color:#fff;display:none">
+            <!-- <div id="imloading" style="width:150px;height:30px;line-height:30px;font-size:16px;text-align:center;border-radius:3px;opacity:0.7;background:#000;margin:10px auto 30px;color:#fff;display:none">
                 素材加载中.....
-            </div>
-           <!-- <vue-waterfall-easy :imgsArr="imgsArr" @scrollLoadImg="fetchImgsData">
-            </vue-waterfall-easy> -->
+            </div> -->
+           <vue-waterfall-easy :imgsArr="imgsArr" @scrollLoadImg="fetchImgsData">
+               <template slot-scope="props">
+                <p class="description"><a  :href="props.value.link">{{ props.value.title }}</a></p>
+                <div class="qianm clearfloat">
+                 <span class="sp1">作者：{{props.value.author }}</span>
+                   <span class="sp3">{{props.value.publishTime}}</span>
+                 </div>
+              </template>
+            </vue-waterfall-easy>
+            
         </div>
     </div>
     <!--全部作品end -->
@@ -56,23 +64,22 @@
 <script>
 import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
-import JqueryMasonryMin from '../utils/jquery_masonry_min.js'
-import JQeasing from '../utils/jQeasing.js'
-import Pubuliu from '../utils/pubuliu_pc.js'
-// import vueWaterfallEasy from '../components/vue-waterfall-easy'
+// import JqueryMasonryMin from '../utils/jquery_masonry_min.js'
+// import JQeasing from '../utils/jQeasing.js'
+// import Pubuliu from '../utils/pubuliu_pc.js'
+import vueWaterfallEasy from '../components/vue-waterfall-easy.vue'
 export default {
   name:'list_pc',
   components:{
-    TopNav,TopFan
+    TopNav,TopFan,vueWaterfallEasy
   },
   created () {
-        this.getList()
-        // this.imgsArr = this.initImgsArr(0, 10),
-        // this.fetchImgsArr = this.initImgsArr(10, 20) // 模拟每次请求的新的图片的数据数据
+        this.getList(),
+        this.imgsArr = this.initImgsArr(),
+        this.fetchImgsArr = this.initImgsArr() // 模拟每次请求的新的图片的数据数据
   },
   data () {
         return {
-            
           PcLists: [],
           years:[
               {titleTab:'全部'},
@@ -114,32 +121,36 @@ export default {
               selYear:'',
               ownGroup:'',
               colorRange:'',
-          }
-        //   imgsArr: [],         //存放所有已加载图片的数组（即当前页面会加载的所有图片）
-        //   fetchImgsArr: []     //存放每次滚动时下一批要加载的图片的数组
+          },
+          results:[],
+          imgsArr: [],         //存放所有已加载图片的数组（即当前页面会加载的所有图片）
+          fetchImgsArr: []     //存放每次滚动时下一批要加载的图片的数组
         }
       },
-      methods: {
-        //   瀑布流
-        //   initImgsArr(n, m) { //num 图片数量
-        //     var arr = []
-        //     for (var i = n; i < m; i++) {
-        //         arr.push({ src: `./static/img/${i + 1}.jpg`, link: 'https://www.baidu.com', info: '一些图片描述文字' })
-        //     }
-        //     return arr
-        //     },
-        //     fetchImgsData() {
-        //     this.imgsArr = this.imgsArr.concat(this.fetchImgsArr)
-        //     },
-        getList () {
-       this.$http.get(`api/?c=index&a=showPcList&from=index`).then((res) => {
+
+      methods: {         
+         getList () {
+          this.$http.get(`api/?c=index&a=showPcList&from=index`).then((res) => {
                this.PcLists = res.data.errmsg;
-            //   console.log(lists)
             })
              .catch(e => {
                   console.log(e)
                 })
         },
+         //   pubuliu
+          initImgsArr() { //num 图片数量
+            this.$http.get(`api/?c=index&a=showPcList&from=index`).then((res) => {
+               this.PcLists = res.data.errmsg;
+            })
+             .catch(e => {
+                  console.log(e)
+                })
+             return this.PcLists;
+             console
+              },   
+            fetchImgsData() {
+            this.imgsArr = this.imgsArr.concat(this.fetchImgsArr)
+            },
          // 筛选函数
         searchList(obj,type){
              let that = this;
@@ -154,6 +165,7 @@ export default {
                 this.searchData.colorRange = obj;
                 break;
              }
+
              this.$http.get(`api/?c=index&a=showPcList&from=index`,{
                  params:that.searchData
              }).then((res) => {
@@ -166,12 +178,8 @@ export default {
         }
         
         }
-}
+       
+          }
 </script>
-<style scoped>
-      .item-move {
-        transition: all .5s cubic-bezier(.55,0,.1,1);
-        -webkit-transition: all .5s cubic-bezier(.55,0,.1,1);
-      }
-</style>
+
 

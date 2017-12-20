@@ -14,7 +14,6 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
       .img-wraper {
         width: 100%;
-        background: yellow;
       }
       img {
         width: 100%;
@@ -22,7 +21,37 @@
       }
       .img-info {
         background: #fff;
-        padding: .6em;
+        padding: 0 20px;
+        .description{
+          padding-top: 9px,
+        }
+        .description a {
+            height: 30px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            overflow: hidden;
+            line-height: 30px;
+            color: #333333;
+            font-size: 14px;
+            background: #fff;
+            display: block;
+        }
+        .qianm {
+          background: #fff;
+          font-size: 12px;
+           height: 30px;
+           line-height: 30px;
+          padding-bottom: 9px;
+          .sp1 {
+              float: left;
+              color: #666666;
+              }
+          .sp3 {
+              float: right;
+              color: #999999;
+              }
+      }
       }
     }
   }
@@ -130,7 +159,6 @@ export default {
       columnCount: NaN, // 列数，根据窗口大小初始化
       isMobile: navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i), // 初始化移动端
       beginIndex: NaN, // 第二列首张图片的index，从这一张开始重新计算图片位置
-
       colsHeightArr: [], // 每一列的图片总和高度为元素组成的数组
       imgBoxEls: null, // 所有的.img-box元素
       isPreloading: true, // 预加载状态中（1.以等待图片替换 2.图片全部预加载完显示）

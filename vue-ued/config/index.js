@@ -31,15 +31,9 @@ module.exports = {
             '/api': {
                 target: 'http://testued.light.fang.com/',
                 changeOrigin: true,
-<<<<<<< HEAD
                 pathRewrite:{
                     '^/api':'/'
                 }
-=======
-                pathRewrite: {  
-                    '^/api': '/'  
-                }  
->>>>>>> d21a391b758d9a1c0a70d102dbada7b788a3f681
             }
             
         },

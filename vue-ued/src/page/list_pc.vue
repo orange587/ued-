@@ -52,10 +52,11 @@ export default {
     TopNav,TopFan,vueWaterfallEasy
   },
   created () {
-        this.getList(),
-        this.imgsArr = this.initImgsArr(0,10),
-        this.fetchImgsArr = this.initImgsArr(10,20) // 模拟每次请求的新的图片的数据数据
+        // this.imgsArr = this.initImgsArr()
+        // this.fetchImgsArr = this.initImgsArr(n)
+        // this.fetchImgsArr = this.initImgsArr(10,20) // 模拟每次请求的新的图片的数据数据
   },
+ 
   data () {
         return {
           PcLists: [],
@@ -100,33 +101,33 @@ export default {
               ownGroup:'',
               colorRange:'',
           },
-          results:[],
+          n:0,
+          m:0,
           imgsArr: [],         //存放所有已加载图片的数组（即当前页面会加载的所有图片）
           fetchImgsArr: []     //存放每次滚动时下一批要加载的图片的数组
         }
       },
-
+      computed:{
+     
+      },
       methods: {         
-         getList () {
-          this.$http.get(`api/?c=index&a=showPcList&from=index`).then((res) => {
-               this.PcLists = res.data.errmsg;
-            })
-             .catch(e => {
-                  console.log(e)
-                })
-        },
          //   pubuliu
-          initImgsArr(n,m) { //num 图片数量
+          initImgsArr(n) { //num 图片数量
           let arr = [];
           $.ajax({
             type:'get',
-            url:`api/?c=index&a=showPcList&from=index&pagesize=20`,
+            url:`api/?c=index&a=showPcList&from=index&page=${this.n}`,
             contentType: "application/json;charset=utf-8",
+            data:{
+               'selYear':this.searchData.selYear,
+               'ownGroup':this.searchData.ownGroup,
+               'colorRange':this.searchData.colorRange
+            },
             dataType: "json",
-             async: false,
+            async: false,
             success: function(data) {
               this.PcLists = data.errmsg;
-                for (let i = n; i < m; i++) {
+                for (let i =0; i <this.PcLists.length; i++) {
                     arr.push({ 
                     src: 'https://images.weserv.nl/?url='+ this.PcLists[i].coverImg.substr(7),
                     author: this.PcLists[i].author, 
@@ -134,17 +135,20 @@ export default {
                     publishTime:this.PcLists[i].publishTime
                     }) 
                 };
-            }      
+            }     
           });
           console.log(arr)
             return arr ;
             },
             fetchImgsData() {
-            this.imgsArr = this.imgsArr.concat(this.fetchImgsArr)
+                this.m = this.n++,
+                this.fetchImgsArr = this.initImgsArr(this.m),
+                this.imgsArr = this.imgsArr.concat(this.fetchImgsArr)
             },
          // 筛选函数
         searchList(obj,type){
-             let that = this;
+            //  let that = this;
+            //  let arr = [];
              switch(type){
                 case 'year':
                 this.searchData.selYear = obj;
@@ -155,22 +159,13 @@ export default {
                 case 'color':
                 this.searchData.colorRange = obj;
                 break;
-             }
-
-             this.$http.get(`api/?c=index&a=showPcList&from=index`,{
-                 params:that.searchData
-             }).then((res) => {
-               that.PcLists = res.data.errmsg;
-            //   console.log(lists)
-            })
-             .catch(e => {
-                  console.log(e)
-                })
+             };
+              this.imgsArr = this.initImgsArr()
+           }
         }
         
         }
        
-          }
 </script>
 
 

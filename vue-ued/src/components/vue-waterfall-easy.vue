@@ -116,13 +116,11 @@
       div.img-wraper(:style="{width:imgWidthC+'px',height:v.height?v.height+'px':''}")
         img(:src="v.src")
       .img-info
-        slot(:index="i",:value="v")
+       slot(:index="i",:value="v")
 
   .loading(v-if="isPreloadingC",:class="{'first-loading':isFirstTIme}")
     div.double-bounce1
     div.double-bounce2
-
-
 </template>
 
 <!-- ——————————————↓JS—————————分界线———————————————————————— -->
@@ -166,6 +164,7 @@ export default {
       imgsArrC: [], // 预加载完之后再才开始
       loadedCount: 0, // 已经加载图片数量
       isFirstTIme: true, // 首次加载
+      PcLists:[]
     }
   },
   computed: {
@@ -194,13 +193,12 @@ export default {
     },
 
     loadFn(e, oImg, i) { // 每张图片预加载完成执行函数
-      this.loadedCount++
+      this.loadedCount++;
       if (e.type === 'load') { // 使用图片原始宽度计算图片的高度
         this.$set(this.imgsArr[i], 'height', Math.round(this.imgWidthC / (oImg.width / oImg.height)))
       }
       if (this.loadedCount === this.imgsArr.length) {
         this.imgsArrC = this.imgsArr.concat([])
-
 
         this.isPreloading = false
         this.isFirstTIme = false
@@ -295,8 +293,9 @@ export default {
 
       // this.preload()
       // },1000)
-
+      //  this.waterfall()
     },
+  
     isPreloading(v) {
       if (v) {
         setTimeout(() => {

@@ -5,6 +5,9 @@
 $(function() {
     /*瀑布流开始*/
     var container = $('.waterfull ul');
+    var m = 2;
+    var type1 = 0;
+    var type2 = 0;
     var loading = $('#imloading');
     // 初始化loading状态
     loading.data("on", true);
@@ -39,32 +42,33 @@ $(function() {
         });
     });
     var ajaxFlag = true;
-    var sqlJson = (function() {
-        var returnData;
+    var sJson;
+   function initImgsArr(m) {
         if (ajaxFlag) {
             ajaxFlag = false;
             $.ajax({
                 type: "GET",
-                url: "https://bird.ioliu.cn/v1/?url=http://testued.light.fang.com/?c=index&a=showAppList&page=current&from=index&pagesize=25",
+                url: "https://bird.ioliu.cn/v1/?url=http://testued.light.fang.com/?c=index&a=showAppList&from=index",
+                data:{
+                    page:m,
+                    type1:'',
+                    type2:''
+                },
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 async: false,
                 success: function(data) {
-                    returnData = data;
-                    return returnData;
+                    sJson = data.errmsg;
+                    return sJson;
                     
                 },
                 complete: function() {
                     ajaxFlag = true;
                 }
             });
-            return returnData;
-            console.log(returnData)
+            return sJson;
         }
-         
-    })();
-    var sJson = sqlJson.stories;
-    /*本应该通过ajax从后台请求过来类似sqljson的数据然后，便利，进行填充，这里我们用sqlJson来模拟一下数据*/
+    };
     $(window).scroll(function() {
         if (!loading.data("on")) return;
         // 计算所有瀑布流块中距离顶部最大，进而在滚动条滚动时，来进行ajax请求，方法很多这里只列举最简单一种，最易理解一种
@@ -77,14 +81,15 @@ $(function() {
         if (maxTop < $(window).height() + $(document).scrollTop()) {
             //加载更多数据
             loading.data("on", false).fadeIn(800);
-            (function(sJson) {
-                /*这里会根据后台返回的数据来判断是否你进行分页或者数据加载完毕这里假设大于30就不在加载数据*/
+                initImgsArr(m++)
+                console.log(type1);
+                console.log(sJson);
                 if (itemNum > 300) {
                     loading.text('就有这么多了！');
                 } else {
                     var html = "";
                     for (var i = 0, len = sJson.length; i < len; i++) {
-                        html += "<li class='item'><a href='#' class='a-img'><img src='" + sJson[i].images + "'></a>";
+                        html += "<li class='item'><a href='#' class='a-img'><img src='" + 'https://images.weserv.nl/?url=' +sJson[i].coverImg.substr(7)  + "'></a>";
                         html += "<p class='description'><a href='#' >" + sJson[i].title + "</a></p><div class='qianm clearfloat'>";
                         html += "<span class='sp1'>" + sJson[i].title + "</span>";
                         html += "<span class='sp3'>" + sJson[i].title + "</span></div></li>";
@@ -102,8 +107,7 @@ $(function() {
                             clearTimeout(time);
                         });
                     }, 800)
-                }
-            })(sJson);
+                };
         }
     });
 

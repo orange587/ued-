@@ -18,7 +18,8 @@
     "vue": "^2.5.2",
     "vue-paginate": "^3.5.1",
     "vue-router": "^2.2.0",
-    "vue-style-loader": "^3.0.3"
+    "vue-style-loader": "^3.0.3",
+    "vue-waterfall": "^1.0.6"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

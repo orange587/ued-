@@ -20,12 +20,22 @@
         </ul>
         </div>
         <div class="fang_responsive">        
-            <div class="listBox">
-                <div class="tit">{{title}}</div>
+            <div class="listBox"  v-show="sjdh">
+                <div class="tit">{{titleSj}}</div>
                 <div class="con">
                     <div class="cBox">
                         <ul>
-                            <li v-for="story in PcLists" :key="story.id"><i></i><a :href="story.link">{{story.title}}</a></li>
+                            <li v-for="story in PcListsSj" :key="story.id"><i></i><a :href="story.link">{{story.title}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="listBox"  v-show="qddh">
+                <div class="tit">{{titleQd}}</div>
+                <div class="con">
+                    <div class="cBox">
+                        <ul>
+                            <li v-for="story in PcListsQd" :key="story.id"><i></i><a :href="story.link">{{story.title}}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -51,9 +61,10 @@ export default {
   },
   data () {
         return {
-          PcLists: [],
+          PcListsSj: [],
+          PcListsQd: [],
           designs:[
-              {titleTab:'全部'},
+              {titleTab:'设计全部'},
               {titleTab:'设计导航'},
               {titleTab:'设计资讯'},
               {titleTab:'设计素材'},
@@ -66,7 +77,7 @@ export default {
               {titleTab:'其他'}
           ],
           webs:[
-              {titleTab:'全部'},
+              {titleTab:'制作全部'},
               {titleTab:'H5实例'},
               {titleTab:'图片代码'},
               {titleTab:'导航菜单'},
@@ -81,16 +92,28 @@ export default {
           typeIndex:0,
           typesIndex:0,
           index:0,
-          title:'全部导航'
+          titleSj:'设计导航',
+          titleQd:'制作导航',
+          sjdh: true,
+          qddh: true
         }
       },
-      mounted () {
-        this.getList()
+      created () {
+        this.getListSj(),
+        this.getListQd()
       },
       methods: {
-        getList () {
-       this.$http.get(`api/?c=index&a=showElseList&from=index&pagesize=100`).then((res) => {
-               this.PcLists = res.data.errmsg;
+        getListSj () {
+       this.$http.get(`api/?c=index&a=showElseList&type1=1&from=index&pagesize=100`).then((res) => {
+               this.PcListsSj = res.data.errmsg;
+            })
+             .catch(e => {
+                  console.log(e)
+                })
+        },
+        getListQd () {
+       this.$http.get(`api/?c=index&a=showElseList&type1=2&from=index&pagesize=100`).then((res) => {
+               this.PcListsQd = res.data.errmsg;
             })
              .catch(e => {
                   console.log(e)
@@ -99,11 +122,13 @@ export default {
          // 设计切换展示
         worksAll (num,index) {
           this.typeIndex = index;
-          this.title = num.titleTab;
+          this.titleSj = num.titleTab;
           this.iscur1 = 0;
+          this.sjdh = true;
+          this.qddh = false;
           this.$http.get(`api/?c=index&a=showElseList&type1=1&type2=${this.typeIndex}from=index`)
           .then((res) => {
-            this.PcLists = res.data.errmsg;
+            this.PcListsSj = res.data.errmsg;
             })
             .catch(e => {
                   console.log(e)
@@ -112,11 +137,13 @@ export default {
         // 制作切换展示
         worksAllType (num,index) {
           this.typesIndex = index;
-          this.title = num.titleTab;
+          this.titleQd = num.titleTab;
           this.iscur = 0;
+           this.qddh = true;
+          this.sjdh = false;
           this.$http.get(`api/?c=index&a=showElseList&type1=2&type2=${this.typesIndex}&from=index`)
           .then((res) => {
-            this.PcLists = res.data.errmsg;
+            this.PcListsQd = res.data.errmsg;
     
             })
             .catch(e => {

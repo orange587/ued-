@@ -128,14 +128,13 @@ export default {
           }
         }
       },
-       mounted () {
+       mounted() {
         this.getList()
       },
       methods: {
         getList () {
-        this.$http.get(`api/?c=index&a=showBannerList&from=index&from=index&pagesize=30`).then((res) => {
+        this.$http.get(`api/?c=index&a=showBannerList&from=index`).then((res) => {
                this.PcLists = res.data.errmsg;
-            //   console.log(res.data.errmsg)
             })
              .catch(e => {
                   console.log(e)
@@ -156,8 +155,7 @@ export default {
            break;
            
          }
-
-          this.$http.get(`api/?c=index&a=showBannerList&page=current&from=index&pagesize=25`,{
+          this.$http.get(`api/?c=index&a=showBannerList&from=index`,{
               params:that.searchData
           })
           .then((res) => {
@@ -167,8 +165,6 @@ export default {
                   console.log(e)
             });
         },
-       
-        
         }
 }
 </script>

@@ -54,7 +54,6 @@ import TopFan from '../components/topFan.vue'
 import JqueryMasonryMin from '../utils/jquery_masonry_min.js'
 import JQeasing from '../utils/jQeasing.js'
 import Pubuliu from '../utils/pubuliu_uiix.js'
-import Index from '../utils/index'
 export default {
   name:'list_uiix',
   components:{
@@ -97,7 +96,7 @@ export default {
   },
       methods: {
         getSubject () {
-        this.$http.get(`api/?c=index&a=showAppList&page=current&from=index&pagesize=25`)
+        this.$http.get(`api/?c=index&a=showAppList&from=index`)
        .then(res => {
                    this.stories = res.data.errmsg
                 })
@@ -108,7 +107,7 @@ export default {
          // 项目切换展示
         worksAll (index) {
           this.typeIndex = index;
-          this.$http.get(`api/?c=index&a=showAppList&type1=${this.typeIndex}&page=current&from=index&pagesize=25`)
+          this.$http.get(`api/?c=index&a=showAppList&type1=${this.typeIndex}from=index`)
           .then((res) => {
             this.stories = res.data.errmsg;
             //   console.log(this.typeIndex)
@@ -120,7 +119,7 @@ export default {
         // 类型切换展示
         worksAllType (index) {
           this.typesIndex = index;
-          this.$http.get(`api/?c=index&a=showAppList&type1=${this.typeIndex}&type2=${this.typesIndex}&page=current&from=index&pagesize=25`)
+          this.$http.get(`api/?c=index&a=showAppList&type1=${this.typeIndex}&type2=${this.typesIndex}&from=index`)
           .then((res) => {
             this.stories = res.data.errmsg;
             //   console.log(res.data.errmsg)

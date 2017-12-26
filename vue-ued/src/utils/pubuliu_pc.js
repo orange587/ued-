@@ -6,6 +6,15 @@ $(function() {
     /*瀑布流开始*/
     var container = $('.waterfull ul');
     var loading = $('#imloading');
+    var m = 1;
+    var typeindex = 0 ;
+    var typetext = 0 ;
+    $('.choice_xuan li:first-child a:not(:first-child)').click(function(){
+        typetext = $(this).text();
+    });
+    $('.choice_xuan li a').click(function(){
+        typeindex = $(this).index();
+    });
     // 初始化loading状态
     loading.data("on", true);
     /*判断瀑布流最大布局宽度，最大为1380*/
@@ -38,34 +47,29 @@ $(function() {
             }
         });
     });
-    /*模拟从后台获取到的数据*/
-    // var sqlJson = $.getJSON("https://bird.ioliu.cn/v1/?url=http://news-at.zhihu.com/api/4/news/latest", function(data) {
-    //     return data;
-    // });
     var ajaxFlag = true;
-    var sqlJson = (function() {
-        var returnData;
-        if (ajaxFlag) {
-            ajaxFlag = false;
+    var sJson;
+    function getJson(m) {
             $.ajax({
                 type: "GET",
                 url: "https://bird.ioliu.cn/v1/?url=http://testued.light.fang.com/?c=index&a=showPcList&from=index",
+                data:{
+                    selYear:typetext,
+                    ownGroup:typeindex,
+                    colorRange:typeindex,
+                    page: m
+                },
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
-                async: false,
                 success: function(data) {
-                    returnData = data;
+                    sJson = data.errmsg;
+                    return sJson;
                 },
-                complete: function() {
-                    ajaxFlag = true;
-                }
+                
             });
-            return returnData;
-        }
-
-    })();
-    var sJson = sqlJson.stories;
-
+            return sJson;
+      console.log(sJson)
+    };
     /*本应该通过ajax从后台请求过来类似sqljson的数据然后，便利，进行填充，这里我们用sqlJson来模拟一下数据*/
     $(window).scroll(function() {
         if (!loading.data("on")) return;
@@ -79,9 +83,11 @@ $(function() {
         if (maxTop < $(window).height() + $(document).scrollTop()) {
             //加载更多数据
             loading.data("on", false).fadeIn(800);
-            (function(sJson) {
+            m = ++m;
+            console.log(m);
+            getJson(m);
                 /*这里会根据后台返回的数据来判断是否你进行分页或者数据加载完毕这里假设大于30就不在加载数据*/
-                if (itemNum > itemNum) {
+                if (itemNum > 6) {
                     loading.text('就有这么多了！');
                 } else {
                     var html = "";
@@ -105,9 +111,9 @@ $(function() {
                         });
                     }, 800)
                 }
-            })(sJson);
+            };
         }
-    });
+    );
 
     function loadImage(url) {
         var img = new Image();

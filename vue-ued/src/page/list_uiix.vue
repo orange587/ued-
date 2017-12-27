@@ -8,10 +8,10 @@
        <div class="choice_wrap">
             <ul class="choice_xuan">
                 <li>
-                    <a  v-for="(num,index) in projects" @click="iscur = index,worksAll(index)"  :class="{active:iscur==index}" :key="num.index" >{{num.titleTab }}</a>
+                    <a  v-for="(num,index) in projects" @click="iscur = index,searchList(index,'lei1')"  :class="{active:iscur==index}" :key="num.index" >{{num.titleTab }}</a>
                 </li>
                 <li style="margin-bottom:0">
-                    <a  v-for="(num,index) in numsType" @click="iscur1 = index,worksAllType(index)"  :class="{active:iscur1==index}" :key="num.index" >{{num.titleTab }}</a>
+                    <a  v-for="(num,index) in numsType" @click="iscur1 = index,searchList(index,'lei2')"  :class="{active:iscur1==index}" :key="num.index" >{{num.titleTab }}</a>
                 </li>
 
             </ul>
@@ -19,25 +19,16 @@
         </div>
         <!--选择头 end-->
         <div class="content">
-            <!-- 瀑布流样式开始 -->
-            <div class="waterfull clearfloat" id="waterfull">
-                <ul>
-                    <li class="item" v-for="story in stories" :key="story.id">
-                        <router-link   class="a-img"  :to="'/detail_share_uiix/'+ story.id" >
-                           <img :src="story.coverImg | imageUrlPrefix" />
-                        </router-link>
-                        <p class="description"><router-link  :to="'/detail_share_uiix/'+ story.id">{{ story.title }}</router-link></p>
-                        <div class="qianm clearfloat">
-                            <span class="sp1">作者：{{story.author | dataFilter}}</span>
-                            <span class="sp3">{{story.shareTime}}</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <!-- loading按钮自己通过样式调整 -->
-            <div id="imloading" style="width:150px;height:30px;line-height:30px;font-size:16px;text-align:center;border-radius:3px;opacity:0.7;background:#000;margin:10px auto 30px;color:#fff;display:none">
-                素材加载中.....
-            </div>
+            <!-- 瀑布流开始 -->
+           <vue-waterfall-easy :imgsArr="imgsArr" @scrollLoadImg="fetchImgsData">
+               <template slot-scope="props">
+                <p class="description"><router-link  :to="'/detail_share_uiix/'+ props.value.id">{{ props.value.title }}</router-link></p>
+                <div class="qianm clearfloat">
+                 <span class="sp1">作者：{{props.value.author }}</span>
+                   <span class="sp3">{{ props.value.shareTime }}</span>
+                 </div>
+              </template>
+            </vue-waterfall-easy>
         </div>
     </div>
     <!--全部作品end -->
@@ -51,16 +42,15 @@
 <script>
 import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
-import JqueryMasonryMin from '../utils/jquery_masonry_min.js'
-import JQeasing from '../utils/jQeasing.js'
-import Pubuliu from '../utils/pubuliu_uiix.js'
+import vueWaterfallEasy from '../components/vue-waterfall-easy.vue'
 export default {
   name:'list_uiix',
   components:{
-    TopNav,TopFan
+    TopNav,TopFan,vueWaterfallEasy
   },
   created () {
-        this.getSubject()
+        this.getSubject(),
+        this.imgsArr = this.initImgsArr()
   },
   data () {
         return {
@@ -84,50 +74,92 @@ export default {
           iscur1:0 ,
           typeIndex:0,
           typesIndex:0,
-          index:0
+          index:0,
+          searchData:{
+              type1:'',
+              type2:''
+          },
+          n:1,
+          m:0,
+          nn:1,
+          pagesize:15,
+          total:0,
+          imgsArr: [],         //存放所有已加载图片的数组（即当前页面会加载的所有图片）
+          fetchImgsArr: []
         }
       }, 
-      filters: {
-        dataFilter: function (value) { 
-            if (!value) return ''
-            value = value.toString().substr(0,6);
-            return value;
-        }
-  },
+     
       methods: {
+        //   获取数据
         getSubject () {
-        this.$http.get(`api/?c=index&a=showAppList&page=1&from=index`)
+        this.$http.get(`api/?c=index&a=showAppList&from=index`)
        .then(res => {
-                   this.stories = res.data.errmsg
+                   this.stories = res.data.errmsg,
+                   this.total = res.data.total
                 })
                 .catch(e => {
                   console.log(e)
                 })
         },
-         // 项目切换展示
-        worksAll (index) {
-          this.typeIndex = index;
-          this.$http.get(`api/?c=index&a=showAppList&type1=${this.typeIndex}&page=1&from=index`)
-          .then((res) => {
-            this.stories = res.data.errmsg;
-            //   console.log(this.typeIndex)
-            })
-            .catch(e => {
-                  console.log(e)
-            });
-        },
-        // 类型切换展示
-        worksAllType (index) {
-          this.typesIndex = index;
-          this.$http.get(`api/?c=index&a=showAppList&type1=${this.typeIndex}&type2=${this.typesIndex}&page=1&from=index&pagesize=25`)
-          .then((res) => {
-            this.stories = res.data.errmsg;
-            //   console.log(res.data.errmsg)
-            })
-            .catch(e => {
-                  console.log(e)
-            });
-        },
+        //   pubuliu
+          initImgsArr(n) { 
+          let arr = [];
+           $.ajax({
+            type:'get',
+            url:'api/?c=index&a=showAppList&from=index&page='+ n,
+            contentType: "application/json;charset=utf-8",
+            data:{
+               'type1':this.searchData.type1,
+               'type2':this.searchData.type2,
+               'pagesize':this.pagesize
+            },
+            dataType: "json",
+            async: false,
+            success: function(data) {
+              this.stories = data.errmsg;
+                for (let i =0; i <this.stories.length; i++) {
+                    arr.push({ 
+                    src: 'https://images.weserv.nl/?url='+ this.stories[i].coverImg.substr(7),
+                    author: this.stories[i].author, 
+                    title: this.stories[i].title,
+                    shareTime:this.stories[i].shareTime,
+                    id:this.stories[i].id,
+                    link1:'http://localhost:8080/detail_share_uiix/' + this.stories[i].id
+                    }) 
+                };
+            }     
+          });
+        //   console.log(arr)
+            return arr ;
+
+          },
+           fetchImgsData() {
+                console.log(this.total);
+                if(this.m< Math.ceil(this.total/this.pagesize) ){
+                this.m = (this.n)++;
+                this.fetchImgsArr = this.initImgsArr(this.m),
+                this.imgsArr = this.imgsArr.concat(this.fetchImgsArr)
+                }else{
+                  $('#more').show()
+                }
+            },
+             // 筛选函数
+        searchList(obj,type){
+             let that = this;
+            //  let arr = [];
+             switch(type){
+                case 'lei1':
+                this.searchData.type1 = obj;
+                break;
+                case 'lei2':
+                this.searchData.type2 = obj;
+                break;
+                
+             };
+              this.imgsArr = this.initImgsArr(that.nn)
+           }
+       
+        
         }
 }
 </script>

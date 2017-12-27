@@ -29,23 +29,23 @@ $(function() {
         //下一张
         $(".photo-panel .photo-div .arrow-next").click(function() {
             img_index++;
-            if (img_index >= $(".a-img img").length) {
+            if (img_index >= $(".img-box img").length) {
                 img_index = 0;
             }
-            img_src = $(".a-img img").eq(img_index).attr("src");
-            photoView($(".a-img img"));
+            img_src = $(".img-box img").eq(img_index).attr("src");
+            photoView($(".img-box img"));
         });
         //上一张
         $(".photo-panel .photo-div .arrow-prv").click(function() {
             img_index--;
             if (img_index < 0) {
-                img_index = $(".a-img img").length - 1;
+                img_index = $(".img-box img").length - 1;
             }
-            img_src = $(".a-img img").eq(img_index).attr("src");
-            photoView($(".a-img img"));
+            img_src = $(".img-box img").eq(img_index).attr("src");
+            photoView($(".img-box img"));
         });
         //如何调用？
-        $(".a-img img").click(function() {
+        $(".img-box img").click(function() {
             $(".mask").show();
             $(".photo-panel").show();
             img_src = $(this).attr("src");

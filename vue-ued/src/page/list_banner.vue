@@ -22,24 +22,15 @@
         <!--选择头 end-->
         <div class="content">
             <!-- 瀑布流样式开始 -->
-            <div class="waterfull clearfloat" id="waterfull">
-                <ul>
-                    <li class="item" v-for="story in PcLists" :key="story.id">
-                        <a  class="a-img" href="javascript:;">
-                           <img :src="story.content[0] | imageUrlPrefix" />
-                        </a>
-                        <p class="description"><a  href="javascript:;">{{ story.title }}</a></p>
-                        <div class="qianm clearfloat">
-                            <span class="sp1">作者：{{story.author}}</span>
-                            <span class="sp3">{{story.publishTime}}</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <!-- loading按钮自己通过样式调整 -->
-            <div id="imloading" style="width:150px;height:30px;line-height:30px;font-size:16px;text-align:center;border-radius:3px;opacity:0.7;background:#000;margin:10px auto 30px;color:#fff;display:none">
-                素材加载中.....
-            </div>
+             <vue-waterfall-easy :imgsArr="imgsArr" @scrollLoadImg="fetchImgsData">
+               <template slot-scope="props">
+                <p class="description"><a href="javascript:;">{{ props.value.title }}</a></p>
+                <div class="qianm clearfloat">
+                 <span class="sp1">作者：{{props.value.author }}</span>
+                   <span class="sp3">{{props.value.publishTime}}</span>
+                 </div>
+              </template>
+            </vue-waterfall-easy>
         </div>
     </div>
     <!--全部作品end -->
@@ -73,14 +64,16 @@
 <script>
 import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
-import JqueryMasonryMin from '../utils/jquery_masonry_min.js'
-import JQeasing from '../utils/jQeasing.js'
-import Pubuliu from '../utils/pubuliu_banner.js'
+import vueWaterfallEasy from '../components/vue-waterfall-easy.vue'
 import Index from '../utils/index'
 export default {
   name:'list_banner',
   components:{
-   TopNav,TopFan
+   TopNav,TopFan,vueWaterfallEasy
+  },
+   created () {
+        this.getList();
+        this.imgsArr = this.initImgsArr()
   },
   data () {
         return {
@@ -115,6 +108,11 @@ export default {
                {titleTab:''},
                {titleTab:''},
           ],
+           n:1,
+          m:0,
+          nn:1,
+          pagesize:15,
+          total:0,
           iscur:0 ,
           iscur1:0 ,
           iscur2:0 ,
@@ -125,22 +123,63 @@ export default {
               selYear:'',
               ownGroup:'',
               colorRange:''
-          }
+          },
+           imgsArr: [],         //存放所有已加载图片的数组（即当前页面会加载的所有图片）
+          fetchImgsArr: [] 
         }
       },
-       mounted () {
-        this.getList()
-      },
       methods: {
+        //   获取数据
         getList () {
-        this.$http.get(`api/?c=index&a=showBannerList&from=index&from=index&pagesize=30`).then((res) => {
+        this.$http.get(`api/?c=index&a=showBannerList&from=index`).then((res) => {
                this.PcLists = res.data.errmsg;
-            //   console.log(res.data.errmsg)
+               this.total = res.data.total;
             })
              .catch(e => {
                   console.log(e)
                 })
         },
+         //   pubuliu
+          initImgsArr(n) { 
+          let arr = [];
+          $.ajax({
+            type:'get',
+            url:'api/?c=index&a=showBannerList&from=index&page='+ n,
+            contentType: "application/json;charset=utf-8",
+            data:{
+               'selYear':this.searchData.selYear,
+               'ownGroup':this.searchData.ownGroup,
+               'colorRange':this.searchData.colorRange,
+               'pagesize':this.pagesize
+            },
+            dataType: "json",
+            async: false,
+            success: function(data) {
+              this.PcLists = data.errmsg;
+                for (let i =0; i <this.PcLists.length; i++) {
+                    arr.push({ 
+                    src: 'https://images.weserv.nl/?url='+ this.PcLists[i].content[0].substr(7),
+                    author: this.PcLists[i].author, 
+                    title: this.PcLists[i].title,
+                    publishTime:this.PcLists[i].publishTime,
+                    link:'javascript:;'
+                    }) 
+                };
+            }     
+          });
+        //   console.log(arr)
+            return arr ;
+          },
+           fetchImgsData() {
+                console.log(this.total);
+                if(this.m< Math.ceil(this.total/this.pagesize) ){
+                this.m = (this.n)++;
+                this.fetchImgsArr = this.initImgsArr(this.m),
+                this.imgsArr = this.imgsArr.concat(this.fetchImgsArr)
+                }else{
+                  $('#more').show()
+                }
+            },
           // 筛选函数
         searchList(obj,type)  {
          let that = this;
@@ -156,19 +195,8 @@ export default {
            break;
            
          }
-
-          this.$http.get(`api/?c=index&a=showBannerList&page=current&from=index&pagesize=25`,{
-              params:that.searchData
-          })
-          .then((res) => {
-            that.PcLists = res.data.errmsg;
-            })
-            .catch(e => {
-                  console.log(e)
-            });
+          this.imgsArr = this.initImgsArr(that.nn)
         },
-       
-        
         }
 }
 </script>

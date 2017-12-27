@@ -22,7 +22,7 @@
         <!--选择头 end-->
         <div class="content">
             <!-- 瀑布流样式开始 -->
-            <div class="waterfull clearfloat" id="waterfull">
+            <div class="waterfull clearfloat" >
                 <ul>
                     <li class="item" v-for="story in PcLists" :key="story.id" @click="getTuList(story.id)">
                          <a  class="a-img" href="javascript:;">
@@ -37,13 +37,12 @@
 
                 </ul>
             </div>
-            <!-- loading按钮自己通过样式调整 -->
-            <div id="imloading" style="display:none">
-                素材加载中.....
-            </div>
+           
         </div>
     </div>
     <!--全部作品end -->
+     <!-- 分页 -->
+        <Page :total="total" :current-page='current' @pagechange="pagechange"  :get-parent="typeIndex"></Page>
     <!--主体 end-->
         <!--弹窗 st-->
     <div class="mask" style="display: none;"></div>
@@ -94,16 +93,14 @@
 <script>
 import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
-import JqueryMasonryMin from '../utils/jquery_masonry_min.js'
-import JQeasing from '../utils/jQeasing.js'
-import Pubuliu from '../utils/pubuliu_h5.js'
+import Page from '../components/page.vue'
 import Index from '../utils/index'
 import swiper_min from '../utils/swiper_min'
 import h5_pop from '../utils/h5_pop'
 export default {
   name:'list_h5',
   components:{
-    TopNav,TopFan
+    TopNav,TopFan,Page
   },
   data () {
         return {
@@ -152,7 +149,10 @@ export default {
               ownGroup:'',
               colorRange:''
 
-          }
+          },
+          total: 200,// 记录总条数
+          display: 15,   // 每页显示条数
+          current: 1, // 当前的页数 
         }
       },
       mounted () {
@@ -163,8 +163,6 @@ export default {
           getList () {
           this.$http.get(`api/?c=index&a=showH5List&from=index&pagesize=25`).then((res) => {
             this.PcLists = res.data.errmsg;
-            // console.log(this.PcLists);
-            //   console.log(res.data.errmsg);
              
             })
              .catch(e => {
@@ -185,7 +183,6 @@ export default {
                 this.searchData.colorRange = obj;
                 break;
             }
-            // console.log(that.searchData);
            this.$http.get(`api/?c=index&a=showH5List&page=current&from=index&pagesize=25`,{
                params:that.searchData
            })
@@ -200,12 +197,24 @@ export default {
          getTuList (storyId) {
             this.$http.get(`api/?c=index&a=getOneH5Data&from=index&id=${storyId}`).then((res) => {
                this.tuLists = res.data.errmsg;
-            //    console.log(this.tuLists)
             })
             .catch(e => {
                   console.log(e)
             })
         },
+          // 分页
+      pagechange:function(currentPage){
+        this.current = currentPage;
+        this.$http.get(`api/?c=index&a=showH5List&page=${this.current}&from=index&pagesize=25`,{
+             params:this.searchData
+        })
+            .then(res => {
+                this.PcLists = res.data.errmsg;
+            })
+            .catch(e => {
+            console.log(e)
+        })
+    },
         
     }
 }

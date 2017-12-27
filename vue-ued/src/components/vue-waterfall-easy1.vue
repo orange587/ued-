@@ -108,7 +108,7 @@
   :style="isMobile? '':{width:colWidth*columnCount+'px',left:'50%',marginLeft: -1*colWidth*columnCount/2 +'px'}"
 )
   a.img-box(
-    v-for="(v,i) in imgsArrC",:href="v.link1",
+    v-for="(v,i) in imgsArrC",
     :style="{padding:gap/2+'px',width: isMobile ? '' : colWidth+'px'}"
   )
     .img-inner-box

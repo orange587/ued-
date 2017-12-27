@@ -3,7 +3,7 @@
   <TopNav></TopNav>
      <!--主体 st-->
     <div class="fang_responsive">
-    	<BreadCrumb /></BreadCrumb>
+    	<div class="crumb"><a href="http://localhost:8080">首页</a> ><a href="http://localhost:8080/list_uiix">UIIX列表页</a> ><span>正文</span></div>
         <div class="xq-share">
         	<div class="leftBox">
             	<div class="titBox">
@@ -38,12 +38,11 @@
 <script>
 import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
-import BreadCrumb from '../components/breadcrumb.vue'
 import top_hui from '../utils/top_hui'
 export default {
   name:'detail_share_uiix',
   components:{
-    TopNav,TopFan,BreadCrumb
+    TopNav,TopFan
   },
   data () {
         return {

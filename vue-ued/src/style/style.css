@@ -416,7 +416,9 @@
 .choice_xuan li.sexi a.active {
     position: relative;
 }
-
+.choice_xuan li.sexi a:nth-child(1){    margin-top: -3px;
+    margin-right: 10px}
+.choice_xuan li.sexi a:nth-child(1).active:after {background: none}
 .choice_xuan li.sexi a.active:after {
     position: absolute;
     content: "";

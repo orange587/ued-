@@ -24,7 +24,7 @@
         <div class="content">
            <vue-waterfall-easy :imgsArr="imgsArr" @scrollLoadImg="fetchImgsData">
                <template slot-scope="props">
-                <p class="description"><a  :href="props.value.link">{{ props.value.title }}</a></p>
+                <p class="description"><a :href="props.value.link">{{ props.value.title }}</a></p>
                 <div class="qianm clearfloat">
                  <span class="sp1">作者：{{props.value.author }}</span>
                    <span class="sp3">{{props.value.publishTime}}</span>
@@ -52,9 +52,8 @@ export default {
     TopNav,TopFan,vueWaterfallEasy
   },
   created () {
+        this.getSubject();
         this.imgsArr = this.initImgsArr()
-        // this.fetchImgsArr = this.initImgsArr(n)
-        // this.fetchImgsArr = this.initImgsArr(10,20) // 模拟每次请求的新的图片的数据数据
   },
  
   data () {
@@ -67,7 +66,7 @@ export default {
               {titleTab:'2018'}
           ],
           departs:[
-               {titleTab:'全部'},
+              {titleTab:'全部'},
               {titleTab:'新房DL'},
               {titleTab:'新房AI'},
               {titleTab:'平台运营'},
@@ -104,18 +103,52 @@ export default {
           n:1,
           m:0,
           nn:1,
+          pagesize:15,
+          total:0,
           imgsArr: [],         //存放所有已加载图片的数组（即当前页面会加载的所有图片）
           fetchImgsArr: []     //存放每次滚动时下一批要加载的图片的数组
         }
       },
-      computed:{
-     
-      },
-      methods: {         
+      methods: {  
+        //   获取数据
+           getSubject () {
+                this.$http.get(`api/?c=index&a=showPcList&from=index`
+                )
+            .then(res => {
+                        this.PcLists = res.data.errmsg,
+                        this.total = res.data.total;
+                        })
+                        .catch(e => {
+                        console.log(e)
+                        })
+         },       
          //   pubuliu
           initImgsArr(n) { 
           let arr = [];
-          let that = this;
+        //    this.$http.get(`api/?c=index&a=showPcList&from=index`,{
+        //        params:{
+        //             'selYear':this.searchData.selYear,
+        //             'ownGroup':this.searchData.ownGroup,
+        //             'colorRange':this.searchData.colorRange,
+        //             'pagesize':this.pagesize
+        //        }
+        //         }).then(res => {
+        //                 this.PcLists = res.data.errmsg,
+        //                 this.total = res.data.total;
+        //                 for (let i =0; i <this.PcLists.length; i++) {
+        //                     arr.push({ 
+        //                     src: 'https://images.weserv.nl/?url='+ this.PcLists[i].coverImg.substr(7),
+        //                     author: this.PcLists[i].author, 
+        //                     title: this.PcLists[i].title,
+        //                     publishTime:this.PcLists[i].publishTime
+        //                     }) 
+        //                 };
+        //                 //   console.log(arr);
+        //                   return arr ;
+        //                 })
+        //                 .catch(e => {
+        //                 console.log(e)
+        //                 })
           $.ajax({
             type:'get',
             url:'api/?c=index&a=showPcList&from=index&page='+ n,
@@ -123,7 +156,8 @@ export default {
             data:{
                'selYear':this.searchData.selYear,
                'ownGroup':this.searchData.ownGroup,
-               'colorRange':this.searchData.colorRange
+               'colorRange':this.searchData.colorRange,
+               'pagesize':this.pagesize
             },
             dataType: "json",
             async: false,
@@ -134,25 +168,25 @@ export default {
                     src: 'https://images.weserv.nl/?url='+ this.PcLists[i].coverImg.substr(7),
                     author: this.PcLists[i].author, 
                     title: this.PcLists[i].title,
-                    publishTime:this.PcLists[i].publishTime
+                    publishTime:this.PcLists[i].publishTime,
+                    link:this.PcLists[i].locateLink
                     }) 
                 };
             }     
           });
-    
+        //   console.log(arr)
             return arr ;
             },
             fetchImgsData() {
-                if(this.m< 4 ){
+                console.log(this.total);
+                if(this.m< Math.ceil(this.total/this.pagesize) ){
                 this.m = (this.n)++;
                 this.fetchImgsArr = this.initImgsArr(this.m),
                 this.imgsArr = this.imgsArr.concat(this.fetchImgsArr)
                 }else{
                   $('#more').show()
                 }
-                
             },
-
          // 筛选函数
         searchList(obj,type){
              let that = this;
@@ -169,10 +203,8 @@ export default {
                 break;
              };
               this.imgsArr = this.initImgsArr(that.nn)
-              console.log(that.nn)
            }
-        }
-        
+          }
         }
        
 </script>

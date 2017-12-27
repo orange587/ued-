@@ -108,10 +108,10 @@ export default {
                {titleTab:''},
                {titleTab:''},
           ],
-           n:1,
+          n:1,
           m:0,
           nn:1,
-          pagesize:15,
+          pagesize:10,
           total:0,
           iscur:0 ,
           iscur1:0 ,
@@ -171,7 +171,7 @@ export default {
             return arr ;
           },
            fetchImgsData() {
-                console.log(this.total);
+               console.log(this.total);
                 if(this.m< Math.ceil(this.total/this.pagesize) ){
                 this.m = (this.n)++;
                 this.fetchImgsArr = this.initImgsArr(this.m),

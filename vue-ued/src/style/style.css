@@ -1230,32 +1230,6 @@
 .wf_item .title a{color:#060;}
 .wf_item .desc{word-wrap:break-word;word-break:break-all;color:#888;}
 .wf_result{height:32px;line-height:32px;margin-top:15px;text-align:center;color:#666;}
-.wf_loading{background:url(../assets/images/loading.gif) center center no-repeat;}
 #more{ width:150px;height:30px;line-height:30px;font-size:16px;text-align:center;border-radius:3px;opacity:0.7;background:#000;
     margin:10px auto 30px;color:#fff;position: fixed;bottom: 0;left: 50%;margin-left: -75px;
 }
-/* .item {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
-    font-size: 1.2em;
-    color: rgb(0,158,107);
-  }
-  .item:after {
-    content: attr(index);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-  }
-  .wf-transition {
-    transition: opacity .3s ease;
-    -webkit-transition: opacity .3s ease;
-  }
-  .wf-enter {
-    opacity: 0;
-  } */

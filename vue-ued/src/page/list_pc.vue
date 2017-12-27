@@ -103,7 +103,7 @@ export default {
           n:1,
           m:0,
           nn:1,
-          pagesize:15,
+          pagesize:10,
           total:0,
           imgsArr: [],         //存放所有已加载图片的数组（即当前页面会加载的所有图片）
           fetchImgsArr: []     //存放每次滚动时下一批要加载的图片的数组
@@ -116,7 +116,7 @@ export default {
                 )
             .then(res => {
                         this.PcLists = res.data.errmsg,
-                        this.total = res.data.total;
+                         this.total = res.data.total;
                         })
                         .catch(e => {
                         console.log(e)
@@ -125,33 +125,9 @@ export default {
          //   pubuliu
           initImgsArr(n) { 
           let arr = [];
-        //    this.$http.get(`api/?c=index&a=showPcList&from=index`,{
-        //        params:{
-        //             'selYear':this.searchData.selYear,
-        //             'ownGroup':this.searchData.ownGroup,
-        //             'colorRange':this.searchData.colorRange,
-        //             'pagesize':this.pagesize
-        //        }
-        //         }).then(res => {
-        //                 this.PcLists = res.data.errmsg,
-        //                 this.total = res.data.total;
-        //                 for (let i =0; i <this.PcLists.length; i++) {
-        //                     arr.push({ 
-        //                     src: 'https://images.weserv.nl/?url='+ this.PcLists[i].coverImg.substr(7),
-        //                     author: this.PcLists[i].author, 
-        //                     title: this.PcLists[i].title,
-        //                     publishTime:this.PcLists[i].publishTime
-        //                     }) 
-        //                 };
-        //                 //   console.log(arr);
-        //                   return arr ;
-        //                 })
-        //                 .catch(e => {
-        //                 console.log(e)
-        //                 })
           $.ajax({
             type:'get',
-            url:'api/?c=index&a=showPcList&from=index&page='+ n,
+            url:'api/?c=index&a=showPcList&from=index' + n,
             contentType: "application/json;charset=utf-8",
             data:{
                'selYear':this.searchData.selYear,
@@ -163,6 +139,7 @@ export default {
             async: false,
             success: function(data) {
               this.PcLists = data.errmsg;
+
                 for (let i =0; i <this.PcLists.length; i++) {
                     arr.push({ 
                     src: 'https://images.weserv.nl/?url='+ this.PcLists[i].coverImg.substr(7),
@@ -178,7 +155,7 @@ export default {
             return arr ;
             },
             fetchImgsData() {
-                console.log(this.total);
+             console.log(this.total);
                 if(this.m< Math.ceil(this.total/this.pagesize) ){
                 this.m = (this.n)++;
                 this.fetchImgsArr = this.initImgsArr(this.m),

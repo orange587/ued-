@@ -76,13 +76,13 @@ export default {
           typesIndex:0,
           index:0,
           searchData:{
-              type1:'',
-              type2:''
+              type1:0,
+              type2:0
           },
           n:1,
           m:0,
           nn:1,
-          pagesize:15,
+          pagesize:10,
           total:0,
           imgsArr: [],         //存放所有已加载图片的数组（即当前页面会加载的所有图片）
           fetchImgsArr: []
@@ -95,7 +95,7 @@ export default {
         this.$http.get(`api/?c=index&a=showAppList&from=index`)
        .then(res => {
                    this.stories = res.data.errmsg,
-                   this.total = res.data.total
+                   this.total = res.data.total;
                 })
                 .catch(e => {
                   console.log(e)
@@ -106,7 +106,7 @@ export default {
           let arr = [];
            $.ajax({
             type:'get',
-            url:'api/?c=index&a=showAppList&from=index&page='+ n,
+            url:'api/?c=index&a=showAppList&from=index&page=' + n,
             contentType: "application/json;charset=utf-8",
             data:{
                'type1':this.searchData.type1,
@@ -134,8 +134,8 @@ export default {
 
           },
            fetchImgsData() {
-                console.log(this.total);
-                if(this.m< Math.ceil(this.total/this.pagesize) ){
+                //  console.log(this.total)
+                if(this.m< Math.ceil(this.total/this.pagesize)){
                 this.m = (this.n)++;
                 this.fetchImgsArr = this.initImgsArr(this.m),
                 this.imgsArr = this.imgsArr.concat(this.fetchImgsArr)

@@ -111,7 +111,7 @@ export default {
           n:1,
           m:0,
           nn:1,
-          pagesize:10,
+          pagesize:20,
           total:0,
           iscur:0 ,
           iscur1:0 ,

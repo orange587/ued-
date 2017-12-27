@@ -112,9 +112,7 @@ export default {
       methods: {  
         //   获取数据
            getSubject () {
-                this.$http.get(`api/?c=index&a=showPcList&from=index`
-                )
-            .then(res => {
+             this.$http.get(`api/?c=index&a=showPcList&from=index`).then((res) => {
                         this.PcLists = res.data.errmsg,
                          this.total = res.data.total;
                         })
@@ -127,7 +125,7 @@ export default {
           let arr = [];
           $.ajax({
             type:'get',
-            url:'api/?c=index&a=showPcList&from=index' + n,
+            url:'api/?c=index&a=showPcList&from=index&page=' + n,
             contentType: "application/json;charset=utf-8",
             data:{
                'selYear':this.searchData.selYear,

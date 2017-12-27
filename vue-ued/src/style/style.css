@@ -1215,21 +1215,3 @@
 }
 /* 瀑布流 */
  .waterfall{overflow:hidden;zoom:1;width:100%;}
-.wf_inner{margin:15px auto;}
-.wf_col{position:relative;min-height:473px;_height:473px;}
-.wf_item{
-	box-sizing:border-box;width:235px;
-	border:1px solid #d2d2d2;box-shadow:5px 3px 3px rgba(221,221,221,.32);color:#565656;
-	float:left;overflow:hidden;zoom:1;
-	position:absolute;
-}
-.wf_item_inner{margin:15px;}
-.wf_item .thumb{background:#E9E9E9;position:relative;display:block;overflow:hidden;font-size:0;}
-.wf_item .thumb_img{width:100%;max-width:100%;-ms-interpolation-mode:bicubic;}
-.wf_item .title{height:27px;margin:7px 0 0;color:#538700;font-size:17px;font-family:\5FAE\8F6F\96C5\9ED1;}
-.wf_item .title a{color:#060;}
-.wf_item .desc{word-wrap:break-word;word-break:break-all;color:#888;}
-.wf_result{height:32px;line-height:32px;margin-top:15px;text-align:center;color:#666;}
-#more{ width:150px;height:30px;line-height:30px;font-size:16px;text-align:center;border-radius:3px;opacity:0.7;background:#000;
-    margin:10px auto 30px;color:#fff;position: fixed;bottom: 0;left: 50%;margin-left: -75px;
-}

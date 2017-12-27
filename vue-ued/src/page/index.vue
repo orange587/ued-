@@ -60,8 +60,8 @@ export default {
         return {
           list: [],
           stories: [],
-          total: 200,// 记录总条数
-          display: 15,   // 每页显示条数
+          total: 0,// 记录总条数
+          display: 25,   // 每页显示条数
           current: 1, // 当前的页数 
           nums:[
               {titleTab:'全部'},
@@ -94,9 +94,10 @@ export default {
         },
         // 作品展示
         getStories(){
-        this.$http.get(`api/?c=index&a=showArticleList&type=&page=current&from=index&pagesize=25`)
+        this.$http.get(`api/?c=index&a=showArticleList&type=&page=current&from=index&pagesize=${this.display}`)
                       .then(res => {
                           this.stories = res.data.errmsg;
+                            this.total = res.data.total;
                         //   console.log(res.data.errmsg)
                       })
                       .catch(e => {
@@ -107,9 +108,10 @@ export default {
     // 作品切换展示
      worksAll (index) {
           this.typeIndex = index;
-          this.$http.get(`api/?c=index&a=showArticleList&type=${this.typeIndex}&page=current&from=index&pagesize=25`)
+          this.$http.get(`api/?c=index&a=showArticleList&type=${this.typeIndex}&page=current&from=index&pagesize=${this.display}`)
           .then((res) => {
             this.stories = res.data.errmsg;
+            this.total = res.data.total;
             //   console.log(res.data.errmsg)
             })
             .catch(e => {
@@ -120,9 +122,10 @@ export default {
         // 分页
       pagechange:function(currentPage){
         this.current = currentPage;
-        this.$http.get(`api/?c=index&a=showArticleList&type=${this.typeIndex}&page=${this.current}&from=index&pagesize=25`)
+        this.$http.get(`api/?c=index&a=showArticleList&type=${this.typeIndex}&page=${this.current}&from=index&pagesize=${this.display}`)
                       .then(res => {
                           this.stories = res.data.errmsg;
+                          this.total = res.data.total;
                       })
                       .catch(e => {
                         console.log(e)

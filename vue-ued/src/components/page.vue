@@ -26,7 +26,7 @@
        },
       display: {
        // 每页显示条数
-      type: Number,default: 15 
+      type: Number,default: 25 
        },
       currentPage: {
       // 当前页码   

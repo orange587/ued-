@@ -106,8 +106,9 @@ export default {
         return {
           PcLists: [],
           tuLists:{},
-          indexlist:0,
-          loading: true,
+           total: 0,// 记录总条数
+          display: 25,   // 每页显示条数
+          current: 1, // 当前的页数 
            years:[
               {titleTab:'全部'},
               {titleTab:'2016'},
@@ -149,10 +150,8 @@ export default {
               ownGroup:'',
               colorRange:''
 
-          },
-          total: 200,// 记录总条数
-          display: 15,   // 每页显示条数
-          current: 1, // 当前的页数 
+          }
+         
         }
       },
       mounted () {
@@ -161,9 +160,9 @@ export default {
     
       methods: {
           getList () {
-          this.$http.get(`api/?c=index&a=showH5List&from=index&pagesize=25`).then((res) => {
+          this.$http.get(`api/?c=index&a=showH5List&from=index&pagesize=${this.display}`).then((res) => {
             this.PcLists = res.data.errmsg;
-             
+             this.total = res.data.total;
             })
              .catch(e => {
                   console.log(e)
@@ -183,11 +182,12 @@ export default {
                 this.searchData.colorRange = obj;
                 break;
             }
-           this.$http.get(`api/?c=index&a=showH5List&page=current&from=index&pagesize=25`,{
+           this.$http.get(`api/?c=index&a=showH5List&page=current&from=index&pagesize=${this.display}`,{
                params:that.searchData
            })
           .then((res) => {
             that.PcLists = res.data.errmsg;
+            this.total = res.data.total;
             })
             .catch(e => {
                   console.log(e)
@@ -205,11 +205,12 @@ export default {
           // 分页
       pagechange:function(currentPage){
         this.current = currentPage;
-        this.$http.get(`api/?c=index&a=showH5List&page=${this.current}&from=index&pagesize=25`,{
+        this.$http.get(`api/?c=index&a=showH5List&page=${this.current}&from=index&pagesize=${this.display}`,{
              params:this.searchData
         })
             .then(res => {
                 this.PcLists = res.data.errmsg;
+                this.total = res.data.total;
             })
             .catch(e => {
             console.log(e)

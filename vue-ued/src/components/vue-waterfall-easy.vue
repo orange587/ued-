@@ -113,7 +113,7 @@
   )
     .img-inner-box
       div.img-wraper(:style="{width:imgWidthC+'px',height:v.height?v.height+'px':''}",:href="v.link")
-        img(:src="v.src")
+        img(:src="v.src" v-lazy="v.src")
       .img-info
        slot(:index="i",:value="v")
 

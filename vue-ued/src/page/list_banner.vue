@@ -131,7 +131,7 @@ export default {
       methods: {
         //   获取数据
         getList () {
-        this.$http.get(`api/?c=index&a=showBannerList&from=index`).then((res) => {
+        this.$http.get(`${this.$url}/?c=index&a=showBannerList&from=index`).then((res) => {
                this.PcLists = res.data.errmsg;
                this.total = res.data.total;
             })
@@ -144,7 +144,7 @@ export default {
           let arr = [];
           $.ajax({
             type:'get',
-            url:'api/?c=index&a=showBannerList&from=index&page='+ n,
+            url:'https://bird.ioliu.cn/v1/?url=http://testued.light.fang.com/?c=index&a=showBannerList&from=index&page='+ n,
             contentType: "application/json;charset=utf-8",
             data:{
                'selYear':this.searchData.selYear,

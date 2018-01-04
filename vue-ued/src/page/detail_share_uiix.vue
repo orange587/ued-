@@ -3,7 +3,7 @@
   <TopNav></TopNav>
      <!--主体 st-->
     <div class="fang_responsive">
-    	<div class="crumb"><a href="http://localhost:8080">首页</a> ><a href="http://localhost:8080/list_uiix">UIIX列表页</a> ><span>正文</span></div>
+    	<div class="crumb"><a href="http://testued.light.fang.com/">首页</a> ><a href="http://testued.light.fang.com/list_uiix">UIIX列表页</a> ><span>正文</span></div>
         <div class="xq-share">
         	<div class="leftBox">
             	<div class="titBox">
@@ -38,7 +38,6 @@
 <script>
 import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
-import top_hui from '../utils/top_hui'
 export default {
   name:'detail_share_uiix',
   components:{
@@ -61,7 +60,7 @@ export default {
       methods:{  
      // 获取文章图片
     getStory(storyId) {
-      this.$http.get(`${this.$url}?c=index&a=getoneArticleInfo&a=getOneAppInfo&from=index&id=${storyId}`)
+      this.$http.get(`${this.$url}/?c=index&a=getoneArticleInfo&a=getOneAppInfo&from=index&id=${storyId}`)
                 .then(res => {
                   this.longComments = res.data.errmsg
                 })
@@ -76,7 +75,7 @@ export default {
           this.likeNum++;
           let numlike = this.likeNum;
           // let param = new URLSearchParams();
-          this.$http.post(`${this.$url}?c=index&a=addLikeInfo`,
+          this.$http.post(`${this.$url}/?c=index&a=addLikeInfo`,
               {
                   params:{
                   like:numlike,

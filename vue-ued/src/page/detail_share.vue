@@ -3,7 +3,7 @@
   <TopNav></TopNav>
      <!--主体 st-->
     <div class="fang_responsive">
-    	<div class="crumb"><a href="http://localhost:8080">首页</a> ><span>正文</span></div>
+    	<div class="crumb"><a href="http://testued.light.fang.com/">首页</a> ><span>正文</span></div>
 
         <div class="xq-share">
         	<div class="leftBox">
@@ -39,7 +39,6 @@
 <script>
 import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
-import top_hui from '../utils/top_hui'
 export default {
   name:'detail_share',
   components:{
@@ -91,7 +90,7 @@ export default {
           //       })
           $.ajax({
             type:'post',
-            url:`http://localhost:8080/api/?c=index&a=addLikeInfo`,
+            url:`http://testued.light.fang.com/?c=index&a=addLikeInfo`,
             data:{
                   like:numlike,
                   id:storyId

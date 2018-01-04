@@ -12,7 +12,7 @@ import DetailShareUiix from '@/page/detail_share_uiix'
 // import Page404 from '@/page/page404'
 Vue.use(Router)
 export default new Router({
-    mode: 'history',
+    // mode: 'history',
     routes: [{
             path: '/',
             name: 'index',

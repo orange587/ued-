@@ -104,7 +104,7 @@ export default {
       },
       methods: {
         getListSj () {
-       this.$http.get(`api/?c=index&a=showElseList&type1=1&from=index&pagesize=100`).then((res) => {
+       this.$http.get(`${this.$url}/?c=index&a=showElseList&type1=1&from=index&pagesize=100`).then((res) => {
                this.PcListsSj = res.data.errmsg;
             })
              .catch(e => {
@@ -112,7 +112,7 @@ export default {
                 })
         },
         getListQd () {
-       this.$http.get(`api/?c=index&a=showElseList&type1=2&from=index&pagesize=100`).then((res) => {
+       this.$http.get(`${this.$url}/?c=index&a=showElseList&type1=2&from=index&pagesize=100`).then((res) => {
                this.PcListsQd = res.data.errmsg;
             })
              .catch(e => {
@@ -126,7 +126,7 @@ export default {
           this.iscur1 = 0;
           this.sjdh = true;
           this.qddh = false;
-          this.$http.get(`api/?c=index&a=showElseList&type1=1&type2=${this.typeIndex}from=index`)
+          this.$http.get(`${this.$url}/?c=index&a=showElseList&type1=1&type2=${this.typeIndex}from=index`)
           .then((res) => {
             this.PcListsSj = res.data.errmsg;
             })
@@ -141,7 +141,7 @@ export default {
           this.iscur = 0;
            this.qddh = true;
           this.sjdh = false;
-          this.$http.get(`api/?c=index&a=showElseList&type1=2&type2=${this.typesIndex}&from=index`)
+          this.$http.get(`${this.$url}/?c=index&a=showElseList&type1=2&type2=${this.typesIndex}&from=index`)
           .then((res) => {
             this.PcListsQd = res.data.errmsg;
     

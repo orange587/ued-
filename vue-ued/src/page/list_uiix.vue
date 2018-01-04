@@ -92,7 +92,7 @@ export default {
       methods: {
         //   获取数据
         getSubject () {
-        this.$http.get(`api/?c=index&a=showAppList&from=index`)
+        this.$http.get(`${this.$url}/?c=index&a=showAppList&from=index`)
        .then(res => {
                    this.stories = res.data.errmsg,
                    this.total = res.data.total;
@@ -106,7 +106,7 @@ export default {
           let arr = [];
            $.ajax({
             type:'get',
-            url:'api/?c=index&a=showAppList&from=index&page=' + n,
+            url:'https://bird.ioliu.cn/v1/?url=http://testued.light.fang.com/?c=index&a=showAppList&from=index&page=' + n,
             contentType: "application/json;charset=utf-8",
             data:{
                'type1':this.searchData.type1,
@@ -124,7 +124,7 @@ export default {
                     title: this.stories[i].title,
                     shareTime:this.stories[i].shareTime,
                     id:this.stories[i].id,
-                    link1:'http://localhost:8080/detail_share_uiix/' + this.stories[i].id
+                    link1:'http://testued.light.fang.com/detail_share_uiix/' + this.stories[i].id
                     }) 
                 };
             }     

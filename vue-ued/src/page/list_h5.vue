@@ -26,7 +26,7 @@
                 <ul>
                     <li class="item" v-for="story in PcLists" :key="story.id" @click="getTuList(story.id)">
                          <a  class="a-img" href="javascript:;">
-                           <img :src="story.coverImg | imageUrlPrefix" />
+                           <img :src="story.coverImg | imageUrlPrefix"  v-lazy="story.coverImg" />
                         </a>
                         <p class="description"><a  href="javascript:;">{{ story.title }}</a></p>
                         <div class="qianm clearfloat">
@@ -53,7 +53,7 @@
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
                             <div class="swiper-slide"  v-for="imglist in tuLists.content" :key="imglist.index">
-                                <img :src="imglist" alt="">
+                                <img :src="imglist | imageUrlPrefix" alt=""  v-lazy="imglist">
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@ import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
 import Page from '../components/page.vue'
 import Index from '../utils/index'
-import swiper_min from '../utils/swiper_min'
+import swiper from 'swipe'
 import h5_pop from '../utils/h5_pop'
 export default {
   name:'list_h5',
@@ -160,7 +160,7 @@ export default {
     
       methods: {
           getList () {
-          this.$http.get(`api/?c=index&a=showH5List&from=index&pagesize=${this.display}`).then((res) => {
+          this.$http.get(`${this.$url}/?c=index&a=showH5List&from=index&pagesize=${this.display}`).then((res) => {
             this.PcLists = res.data.errmsg;
              this.total = res.data.total;
             })
@@ -182,7 +182,7 @@ export default {
                 this.searchData.colorRange = obj;
                 break;
             }
-           this.$http.get(`api/?c=index&a=showH5List&page=current&from=index&pagesize=${this.display}`,{
+           this.$http.get(`${this.$url}/?c=index&a=showH5List&page=current&from=index&pagesize=${this.display}`,{
                params:that.searchData
            })
           .then((res) => {
@@ -195,7 +195,7 @@ export default {
         },
         // 弹窗函数
          getTuList (storyId) {
-            this.$http.get(`api/?c=index&a=getOneH5Data&from=index&id=${storyId}`).then((res) => {
+            this.$http.get(`${this.$url}/?c=index&a=getOneH5Data&from=index&id=${storyId}`).then((res) => {
                this.tuLists = res.data.errmsg;
             })
             .catch(e => {
@@ -205,7 +205,7 @@ export default {
           // 分页
       pagechange:function(currentPage){
         this.current = currentPage;
-        this.$http.get(`api/?c=index&a=showH5List&page=${this.current}&from=index&pagesize=${this.display}`,{
+        this.$http.get(`${this.$url}/?c=index&a=showH5List&page=${this.current}&from=index&pagesize=${this.display}`,{
              params:this.searchData
         })
             .then(res => {

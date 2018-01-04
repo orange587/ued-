@@ -4,11 +4,21 @@
   <!--主体 st-->
   <!--轮播图开始-->
   <div class="lunbo clearfix">
-    <div id="owl-demo" class="owl-carousel">
+    <!-- <div id="owl-demo" class="owl-carousel">
       <router-link v-for="item in list" :key="item.id" :to="'/detail_share/'+ item.id">
           <img :src="item.carousel | imageUrlPrefix"  />
       </router-link>   
-    </div>
+    </div> -->
+    <swiper :options="swiperOption" ref="mySwiper">  
+            <swiper-slide v-for="item in list" :key="item.id">
+                   <router-link  :to="'/detail_share/'+ item.id">
+                    <img :src="item.carousel | imageUrlPrefix" />
+                </router-link> 
+            </swiper-slide>  
+            <div class="swiper-pagination"  slot="pagination"></div>
+            <div class="swiper-button-prev" slot="button-prev"></div>
+            <div class="swiper-button-next" slot="button-next"></div>  
+    </swiper> 
   </div>
   <!--轮播图结束-->
    <!--全部作品st -->
@@ -20,7 +30,7 @@
             <ul  class="list_ul">
                 <li v-for="story in stories" :key="story.id">
                     <router-link   class="jiantu"  :to="'/detail_share/'+ story.id">
-                        <img :src="story.coverImg | imageUrlPrefix" />
+                        <img :src="story.coverImg | imageUrlPrefix"  v-lazy="story.coverImg"/>
                     </router-link>
                     <div class="bot_all_zuo_con">
                         <a href="" class="f14 gray3 desc">{{story.title}}</a>
@@ -45,13 +55,10 @@
 import TopNav from '../components/topnav.vue'
 import topFan from '../components/topFan.vue'
 import Page from '../components/page.vue'
-import top_hui from '../utils/top_hui'
-import owl_carousel from '../utils/owl_carousel'
-import index from '../utils/index'
-
+import { swiper, swiperSlide } from 'vue-awesome-swiper'  
 export default {
     name:'index',
-     components: { TopNav,Page,topFan },
+     components: { TopNav,Page,topFan ,swiper, swiperSlide  },
      created () {
         this.getList(),
         this.getStories()
@@ -76,14 +83,45 @@ export default {
           ],
           iscur:0 ,
           typeIndex:0,
-          index:0
-        }
+          index:0,
+          swiperOption: {  
+              notNextTick: true,  
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable :true
+                },
+                centeredSlides: true,  
+                spaceBetween: 30,  
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                on: {
+                    slideChange: function(){
+                    if(this.isEnd){
+                        this.navigation.$nextEl.css('display','none');
+                    }else{
+                        this.navigation.$nextEl.css('display','block');  
+                    };
+                    if(this.isBeginning){
+                        this.navigation.$prevEl.css('display','none');
+                    }else{
+                        this.navigation.$prevEl.css('display','block');  
+                    }
+                    },
+                },
+         }  
+         }      
       },
-      
+       computed: {
+      swiper() {
+        return this.$refs.mySwiper.swiper
+      }
+    },
       methods: {
         // 轮播图
         getList () {
-        this.$http.get(`api/?c=index&a=showCarousal&from=index`)
+        this.$http.get(`${this.$url}/?c=index&a=showCarousal&from=index`)
         .then((res) => {
                this.list = res.data.errmsg;
             //    console.log(this.list)
@@ -94,7 +132,7 @@ export default {
         },
         // 作品展示
         getStories(){
-        this.$http.get(`api/?c=index&a=showArticleList&type=&page=current&from=index&pagesize=${this.display}`)
+        this.$http.get(`${this.$url}/?c=index&a=showArticleList&type=&page=current&from=index&pagesize=${this.display}`)
                       .then(res => {
                           this.stories = res.data.errmsg;
                             this.total = res.data.total;
@@ -108,7 +146,7 @@ export default {
     // 作品切换展示
      worksAll (index) {
           this.typeIndex = index;
-          this.$http.get(`api/?c=index&a=showArticleList&type=${this.typeIndex}&page=current&from=index&pagesize=${this.display}`)
+          this.$http.get(`${this.$url}/?c=index&a=showArticleList&type=${this.typeIndex}&page=current&from=index&pagesize=${this.display}`)
           .then((res) => {
             this.stories = res.data.errmsg;
             this.total = res.data.total;
@@ -122,7 +160,7 @@ export default {
         // 分页
       pagechange:function(currentPage){
         this.current = currentPage;
-        this.$http.get(`api/?c=index&a=showArticleList&type=${this.typeIndex}&page=${this.current}&from=index&pagesize=${this.display}`)
+        this.$http.get(`${this.$url}/?c=index&a=showArticleList&type=${this.typeIndex}&page=${this.current}&from=index&pagesize=${this.display}`)
                       .then(res => {
                           this.stories = res.data.errmsg;
                           this.total = res.data.total;
@@ -136,3 +174,4 @@ export default {
  
   }
 </script>
+

@@ -8,9 +8,20 @@ import store from './store'
 import { Breadcrumb, BreadcrumbItem } from 'element-ui'
 import 'babel-polyfill'
 import $ from 'jquery'
-
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
+Vue.use(VueAwesomeSwiper)
 Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
+
+import VueLazyload from 'vue-lazyload'
+Vue.use(VueLazyload, {
+    preLoad: 1,    //预加载高度的比例
+    error: 'static/images/error.jpg',  //图像的src加载失败
+    loading: 'static/images/fang_loading.gif', //src的图像加载
+    attempt: 1,  //尝试计数
+    listenEvents: [ 'scroll', 'mousewheel' ] //你想要监听的事件,我个人喜欢全部监听，方便
+    });
 
 //记录路由 ->
 let routeList = [];
@@ -46,8 +57,8 @@ router.afterEach(function(to, from, next) {
     })
     //记录路由 <-
 const jsonBird = 'https://bird.ioliu.cn/v1/?url='
-const zhihu = 'http://testued.light.fang.com/'
-Vue.prototype.$url = `${jsonBird}${zhihu}`
+const test = 'http://testued.light.fang.com/'
+Vue.prototype.$url = `${jsonBird}${test}`
 Vue.prototype.$http = axios
 Vue.filter('imageUrlPrefix', (value) => {
     const url = value.substr(7)

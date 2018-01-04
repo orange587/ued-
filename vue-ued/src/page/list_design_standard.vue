@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     getList () {
-    this.$http.get(`api/?c=index&a=showRuleList&from=index`).then((res) => {
+    this.$http.get(`${this.$url}/?c=index&a=showRuleList&from=index`).then((res) => {
             this.PcLists = res.data.errmsg;
         //   console.log(res.data.recent)
         })

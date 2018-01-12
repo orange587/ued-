@@ -25,7 +25,7 @@
                 <div class="con">
                     <div class="cBox">
                         <ul>
-                            <li v-for="story in PcListsSj" :key="story.id"><i></i><a :href="story.link">{{story.title}}</a></li>
+                            <li v-for="story in PcListsSj" :key="story.id"><i></i><a :href="story.link" target="_blank">{{story.title}}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                 <div class="con">
                     <div class="cBox">
                         <ul>
-                            <li v-for="story in PcListsQd" :key="story.id"><i></i><a :href="story.link">{{story.title}}</a></li>
+                            <li v-for="story in PcListsQd" :key="story.id"><i></i><a :href="story.link" target="_blank">{{story.title}}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -123,7 +123,7 @@ export default {
         worksAll (num,index) {
           this.typeIndex = index;
           this.titleSj = num.titleTab;
-          this.iscur1 = 0;
+          this.iscur1 = -1;
           this.sjdh = true;
           this.qddh = false;
           this.$http.get(`${this.$url}/?c=index&a=showElseList&type1=1&type2=${this.typeIndex}from=index`)
@@ -138,13 +138,12 @@ export default {
         worksAllType (num,index) {
           this.typesIndex = index;
           this.titleQd = num.titleTab;
-          this.iscur = 0;
+          this.iscur = -1;
            this.qddh = true;
           this.sjdh = false;
           this.$http.get(`${this.$url}/?c=index&a=showElseList&type1=2&type2=${this.typesIndex}&from=index`)
           .then((res) => {
             this.PcListsQd = res.data.errmsg;
-    
             })
             .catch(e => {
                   console.log(e)

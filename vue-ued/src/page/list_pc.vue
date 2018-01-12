@@ -24,7 +24,7 @@
         <div class="content">
            <vue-waterfall-easy :imgsArr="imgsArr" @scrollLoadImg="fetchImgsData">
                <template slot-scope="props">
-                <p class="description"><a :href="props.value.link">{{ props.value.title }}</a></p>
+                <p class="description"><a :href="props.value.link" target="_blank">{{ props.value.title }}</a></p>
                 <div class="qianm clearfloat">
                  <span class="sp1">作者：{{props.value.author }}</span>
                    <span class="sp3">{{props.value.publishTime}}</span>
@@ -137,14 +137,13 @@ export default {
             async: false,
             success: function(data) {
               this.PcLists = data.errmsg;
-
                 for (let i =0; i <this.PcLists.length; i++) {
                     arr.push({ 
-                    src: 'https://images.weserv.nl/?url='+ this.PcLists[i].coverImg.substr(7),
+                    src: this.PcLists[i].coverImg,
                     author: this.PcLists[i].author, 
                     title: this.PcLists[i].title,
                     publishTime:this.PcLists[i].publishTime,
-                    link:this.PcLists[i].locateLink
+                    link1:'/#/detail_share/' + this.PcLists[i].id
                     }) 
                 };
             }     
@@ -153,7 +152,6 @@ export default {
             return arr ;
             },
             fetchImgsData() {
-             console.log(this.total);
                 if(this.m< Math.ceil(this.total/this.pagesize) ){
                 this.m = (this.n)++;
                 this.fetchImgsArr = this.initImgsArr(this.m),

@@ -22,7 +22,7 @@
             <!-- 瀑布流开始 -->
            <vue-waterfall-easy :imgsArr="imgsArr" @scrollLoadImg="fetchImgsData">
                <template slot-scope="props">
-                <p class="description"><router-link  :to="'/detail_share_uiix/'+ props.value.id">{{ props.value.title }}</router-link></p>
+                <p class="description"><a  :href="'/#/detail_share_uiix/'+ props.value.id" target="_blank">{{ props.value.title }}</a></p>
                 <div class="qianm clearfloat">
                  <span class="sp1">作者：{{props.value.author }}</span>
                    <span class="sp3">{{ props.value.shareTime }}</span>
@@ -119,12 +119,12 @@ export default {
               this.stories = data.errmsg;
                 for (let i =0; i <this.stories.length; i++) {
                     arr.push({ 
-                    src: 'https://images.weserv.nl/?url='+ this.stories[i].coverImg.substr(7),
+                    src: this.stories[i].coverImg,
                     author: this.stories[i].author, 
                     title: this.stories[i].title,
                     shareTime:this.stories[i].shareTime,
                     id:this.stories[i].id,
-                    link1:'http://testued.light.fang.com/detail_share_uiix/' + this.stories[i].id
+                    link1:'/#/detail_share_uiix/' + this.stories[i].id
                     }) 
                 };
             }     

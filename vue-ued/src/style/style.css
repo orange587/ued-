@@ -40,7 +40,7 @@
         height: 380px;
     }
 }
-
+.lunbo img{max-width: 100%;width: 100%}
 .owl-pagination {
     position: absolute;
     left: 45%;
@@ -623,6 +623,8 @@
     width: 760px;
     padding: 60px 0 0;
     margin: 0 auto;
+    overflow: hidden;
+    text-align: center;
 }
 
 .xq-share .leftBox .conBox .content {
@@ -643,12 +645,12 @@
     display: block;
     width: 64px;
     height: 64px;
-    background: url(../assets/images/vote.png) no-repeat;
+    background: url(../assets/images/vote.png) no-repeat 0 -64px;
     margin: 0 auto;
 }
 
 .xq-share .vote-icon.cur {
-    background-position: 0 -64px;
+    background-position: 0px 0px;
 }
 
 .xq-share .vote p {
@@ -796,9 +798,8 @@
     width: 980px;
     height: 826px;
     left: 50%;
-    top:50%;
+    top:50px;
     margin-left: -490px;
-    margin-top: -413px;
     background-color: #ffffff;
     z-index: 99;
     display: none;
@@ -892,7 +893,7 @@
 .popDetail .rightcolumn .h2 {
     padding-top: 50px;
     padding-bottom: 10px;
-    line-height: 44px;
+    line-height: 38px;
     font-size: 24px;
     color: #333333;
     border-bottom: 1px solid #f4f4f4;
@@ -974,6 +975,31 @@
 .pin-view-arrows a.next:active {
     background-position: -210px -340px
 }
+.popDetail_small{width:825px;left:50%; margin-left:-412px;height:650px;}
+.popDetail_small .leftcolumn{width:382px;}
+.popDetail_small .picMain{width:305px; margin:20px 0 0 20px; position:relative;}
+.popDetail_small .picMain .top, .popDetail_small .picMain .bottom{}
+.popDetail_small .picMain .top{height:24px;}
+.popDetail_small .picMain .bottom{height:45px;}
+.popDetail_small .picMain .body{height:542px; background-color:#000; width:100%; position:relative; overflow:hidden; position:relative;}
+.popDetail_small .picMain .swiper-container img{height: 542px;}
+
+.popDetail_small .rightcolumn{    width: 342px;padding: 0 50px;}
+.popDetail_small .rightcolumn .h2{padding-top:20px;line-height:40px;}
+.popDetail_small .rightcolumn .h3{margin-bottom:0px;}
+.popDetail_small .rightcolumn .txt p{min-height:10px;}
+.popDetail_small .rightcolumn .ewm_box{margin: 10px 0 0 0;}
+.popDetail_small .rightcolumn .title_ewm{line-height:36px; margin-top:3px; text-align:center; color:#4ba7dc; font-size:18px;padding-top: 70px;position: relative;}
+.popDetail_small .rightcolumn .title_ewm i{display:block; font-size:0; line-height:0; width:37px; height:30px; position:absolute; left:50%; top:50%; margin-top:-5px;margin-left: -28px; background-image:url(/5hui/template/5hui/s/css/title_ewm.png);}
+.popDetail_small .rightcolumn .ewm{width:114px; height:114px;float: left;margin-left: 50px;}
+.popDetail_small .rightcolumn .line{height:0; font-size:0; line-height:0; border-width:1px 0; border-style:solid; border-color:#e6e6e6 #e6e6e6 #fff #fff; margin:12px 0 6px 0;}
+
+.popDetail_small .rightcolumn .title_more{line-height:30px; position:relative; height:30px; padding-left:14px; font-size:18px; color:#57b9f1;}
+.popDetail_small .rightcolumn .title_more i{display:block; font-size:0; line-height:0; width:3px; height:18px; position:absolute; left:2px; top:50%; margin-top:-9px; background-color:#57b9f1;}
+
+.popDetail_small .rightcolumn li{width:120px; float:left; margin-right:9px;}
+.popDetail_small .rightcolumn li img{display:block; width:100%;}
+
 
 @media screen and (min-width:1200px) {
     .pin-view-arrows a {
@@ -1084,9 +1110,8 @@
         text-align: center;
         max-height: 580px;
         margin: 10px;
-        -moz-box-shadow: 5px 5px 5px #a6a6a6;
         /* 老的 Firefox */
-        box-shadow: 5px 5px 5px #a6a6a6;
+
         -webkit-animation: swing 1s .2s ease both;
         -moz-animation: swing 1s .2s ease both;
     }
@@ -1094,9 +1119,8 @@
         max-width: 1380px;
         height: 600px;
         margin: 10px;
-        -moz-box-shadow: 5px 5px 5px #a6a6a6;
         /* 老的 Firefox */
-        box-shadow: 5px 5px 5px #a6a6a6;
+  
         -webkit-animation: swing 1s .2s ease both;
         -moz-animation: swing 1s .2s ease both;
     }
@@ -1121,9 +1145,8 @@
         text-align: center;
         max-height: 580px;
         margin: 10px;
-        -moz-box-shadow: 5px 5px 5px #a6a6a6;
-        /* 老的 Firefox */
-        box-shadow: 5px 5px 5px #a6a6a6;
+  
+
         -webkit-animation: swing 1s .2s ease both;
         -moz-animation: swing 1s .2s ease both;
     }
@@ -1134,9 +1157,7 @@
         max-width: 1200px;
         height: 600px;
         margin: 10px;
-        -moz-box-shadow: 5px 5px 5px #a6a6a6;
-        /* 老的 Firefox */
-        box-shadow: 5px 5px 5px #a6a6a6;
+  
         -webkit-animation: swing 1s .2s ease both;
         -moz-animation: swing 1s .2s ease both;
     }

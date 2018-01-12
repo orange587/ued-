@@ -3,7 +3,7 @@
   <TopNav></TopNav>
      <!--主体 st-->
     <div class="fang_responsive">
-    	<div class="crumb"><a href="http://testued.light.fang.com/">首页</a> ><a href="http://testued.light.fang.com/list_uiix">UIIX列表页</a> ><span>正文</span></div>
+    	<div class="crumb"><a href="http://testued.light.fang.com/">首页</a> ><a href="http://testued.light.fang.com/#/list_uiix">UIIX列表页</a> ><span>正文</span></div>
         <div class="xq-share">
         	<div class="leftBox">
             	<div class="titBox">
@@ -11,7 +11,7 @@
                     <p class="time">{{ longComments.createTime }}</p>
                 </div>
                 <div class="conBox" v-for="item in longComments.content" :key="item.index">
-                  <img :src="item | imageUrlPrefix" alt="">
+                  <img :src="item" alt="">
                 </div>
                 <div class="vote">
                 	<a class="vote-icon" @click="flag && submitAgree(longComments.id)"  :class="{cur:agreeS}"></a>
@@ -93,6 +93,7 @@ export default {
          this.agreeS = false;
          alert('您已经点过赞了！！');
           this.flag = false; 
+           this.agreeS = true;
        };
        
      }

@@ -47,7 +47,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                include: [resolve('src'), resolve('test')]
+                include: [resolve('src'), resolve('test'), resolve('/node_modules/iview/src'), resolve('/node_modules/iview/packages')]
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -69,7 +69,7 @@ module.exports = {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
-                    limit: 10000,
+                    limit: 200000,
                     name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
                 }
             }
@@ -86,8 +86,8 @@ module.exports = {
     plugins: [
         new webpack.optimize.CommonsChunkPlugin('common'),
         new webpack.ProvidePlugin({
-            jQuery: "jquery",
-            $: "jquery"
+            $: "jquery",
+            jQuery: 'jquery'
         })
     ]
 }

@@ -11,7 +11,7 @@
     transition: left 1s, top 1s;
 
     .img-inner-box {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+     
       .img-wraper {
         width: 100%;
       }
@@ -108,12 +108,12 @@
   :style="isMobile? '':{width:colWidth*columnCount+'px',left:'50%',marginLeft: -1*colWidth*columnCount/2 +'px'}"
 )
   a.img-box(
-    v-for="(v,i) in imgsArrC",:href="v.link1",
+    v-for="(v,i) in imgsArrC",:href="v.link1",target="_blank",
     :style="{padding:gap/2+'px',width: isMobile ? '' : colWidth+'px'}"
   )
     .img-inner-box
       div.img-wraper(:style="{width:imgWidthC+'px',height:v.height?v.height+'px':''}",:href="v.link")
-        img(:src="v.src" v-lazy="v.src")
+        img(:src="v.src", v-lazy="v.src")
       .img-info
        slot(:index="i",:value="v")
 
@@ -143,7 +143,7 @@ export default {
     },
     imgWidth: {
       type: Number,
-      default: 240
+      default: 260
     },
     timeOut: { // 预加载事件小于500毫秒就不显示加载动画，增加用户体验
       type: Number,

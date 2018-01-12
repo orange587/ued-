@@ -5,7 +5,7 @@
   <div class="fang_responsive">        
         <div class="gfBox">
         	<div class="gfList">
-            	  <a :href="item.link"  v-for="item in PcLists" :key="item.id" >{{ item.programName | dataFilter  }}</a>
+            	  <a :href="item.link"  v-for="item in PcLists" :key="item.id" target="_blank" >{{ item.programName | dataFilter  }}</a>
             </div>
         </div>
     </div>
@@ -35,7 +35,7 @@ export default {
   filters: {
         dataFilter: function (value) { 
             if (!value) return ''
-            value = value.toString().substr(1,10);
+            value = value.toString().substr(0,10);
             return value;
         }
   },

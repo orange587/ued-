@@ -5,22 +5,19 @@ import App from './App'
 import axios from 'axios'
 import router from './router'
 import store from './store'
-import { Breadcrumb, BreadcrumbItem } from 'element-ui'
 import 'babel-polyfill'
 import $ from 'jquery'
-import VueAwesomeSwiper from 'vue-awesome-swiper'
-import 'swiper/dist/css/swiper.css'
-Vue.use(VueAwesomeSwiper)
-Vue.use(Breadcrumb)
-Vue.use(BreadcrumbItem)
-
+import 'element-ui/lib/theme-chalk/index.css'
+import { Carousel, CarouselItem } from 'element-ui'
+Vue.use(Carousel)
+Vue.use(CarouselItem)
 import VueLazyload from 'vue-lazyload'
 Vue.use(VueLazyload, {
     preLoad: 1,    //预加载高度的比例
-    error: 'static/images/error.jpg',  //图像的src加载失败
-    loading: 'static/images/fang_loading.gif', //src的图像加载
+    error: 'http://static.test.soufunimg.com/common_m/pc_public/ued/static/images/error.jpg',  //图像的src加载失败
+    loading: 'http://static.test.soufunimg.com/common_m/pc_public/ued/static/images/fang_loading.gif', //src的图像加载
     attempt: 1,  //尝试计数
-    listenEvents: [ 'scroll', 'mousewheel' ] //你想要监听的事件,我个人喜欢全部监听，方便
+    listenEvents: [ 'scroll', 'mousewheel' ] //你想要监听的事件
     });
 
 //记录路由 ->
@@ -54,7 +51,8 @@ router.afterEach(function(to, from, next) {
         if (from.path != to.path) {
             store.state.breadListState = [fromRoute]
         }
-    })
+})
+
     //记录路由 <-
 const jsonBird = 'https://bird.ioliu.cn/v1/?url='
 const test = 'http://testued.light.fang.com/'

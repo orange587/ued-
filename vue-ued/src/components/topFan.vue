@@ -1,19 +1,22 @@
-<template>   
+<template>
     <div class="top_hui">
         <a href="javascript:;" id="hui"></a>
     </div>
 </template>
 <script>
-export default {
-  name: 'topFan',
-  data () {
+    export default {
+    name: 'TopFan',
+    data(){
     return {
+      
     }
-  },
-  created (){
-  this.fanding()
-  },
-  methods: {
+    },
+     created () {
+         this.$nextTick(function() {
+             this.fanding()
+         })
+      },  
+     methods: {
      fanding(){
       let gotop = $("#hui");
    	  gotop.hide();
@@ -34,10 +37,9 @@ export default {
       });
     });
      }
-  }
-}
+    }
+    }
 </script>
-
 
 <style >
 @import "../style/common.css"

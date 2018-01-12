@@ -46,7 +46,7 @@
                     <div class="photo-close"></div>
                 </div>
                 <div class="photo-view-h">
-                    <img src="http://b.zol-img.com.cn/sjbizhi/images/9/800x1280/1471524533521.jpg" />
+                    <img src="" />
                 </div>
             </div>
             <div class="photo-right">
@@ -65,7 +65,6 @@
 import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
 import vueWaterfallEasy from '../components/vue-waterfall-easy.vue'
-import Index from '../utils/index'
 export default {
   name:'list_banner',
   components:{
@@ -73,7 +72,10 @@ export default {
   },
    created () {
         this.getList();
-        this.imgsArr = this.initImgsArr()
+        this.imgsArr = this.initImgsArr();
+        this.$nextTick(function() {
+             this.bannerTan()
+         })
   },
   data () {
         return {
@@ -129,6 +131,59 @@ export default {
         }
       },
       methods: {
+        // 弹窗特效
+        bannerTan (){
+        var img_index = 0;
+        var img_src = "";
+        var $mask = $('.mask');
+        var $photoPanel =$(".photo-panel");
+        //计算居中位置
+        var mg_top = ((parseInt($(window).height()) - parseInt($(".photo-div").height())) / 2);
+        $(".photo-div").css({
+            "margin-top": "" + mg_top + "px"
+        });
+        //关闭
+        $(".photo-close").click(function() {
+            $(".mask").hide();
+            $(".photo-panel").hide();
+        });
+        //下一张
+        $(".photo-panel .photo-div .arrow-next").click(function() {
+            img_index++;
+            if (img_index >= $(".img-box img").length) {
+                img_index = 0;
+            }
+            img_src = $(".img-box img").eq(img_index).attr("src");
+            photoView($(".img-box img"));
+        });
+        //上一张
+        $(".photo-panel .photo-div .arrow-prv").click(function() {
+            img_index--;
+            if (img_index < 0) {
+                img_index = $(".img-box img").length - 1;
+            }
+            img_src = $(".img-box img").eq(img_index).attr("src");
+            photoView($(".img-box img"));
+        });
+        //如何调用？
+        $('body').on('click','.img-box img',function() {
+            $mask.show();
+            $photoPanel.show();
+            img_src = $(this).attr("src");
+            img_index = $(this).index();
+            photoView($(this));
+        });
+         //自适应预览
+    function photoView(obj) {
+        if ($(obj).width() >= $(obj).height()) {
+            $(".photo-panel .photo-div .photo-img .photo-view-h").attr("class", "photo-view-w");
+            $(".photo-panel .photo-div .photo-img .photo-view-w img").attr("src", img_src);
+        } else {
+            $(".photo-panel .photo-div .photo-img .photo-view-w").attr("class", "photo-view-h");
+            $(".photo-panel .photo-div .photo-img .photo-view-h img").attr("src", img_src);
+        }
+       }
+        },
         //   获取数据
         getList () {
         this.$http.get(`${this.$url}/?c=index&a=showBannerList&from=index`).then((res) => {
@@ -158,7 +213,7 @@ export default {
               this.PcLists = data.errmsg;
                 for (let i =0; i <this.PcLists.length; i++) {
                     arr.push({ 
-                    src: 'https://images.weserv.nl/?url='+ this.PcLists[i].content[0].substr(7),
+                    src: this.PcLists[i].content[0],
                     author: this.PcLists[i].author, 
                     title: this.PcLists[i].title,
                     publishTime:this.PcLists[i].publishTime,
@@ -171,7 +226,6 @@ export default {
             return arr ;
           },
            fetchImgsData() {
-               console.log(this.total);
                 if(this.m< Math.ceil(this.total/this.pagesize) ){
                 this.m = (this.n)++;
                 this.fetchImgsArr = this.initImgsArr(this.m),

@@ -37,8 +37,8 @@ hr {
 }
 
 body {
-    font-family: "Microsoft Yahei";
-    background-color: #f4f4f4;
+    font-family: "Microsoft Yahei"!important;
+    background-color: #f4f4f4!important;
     overflow-x: hidden;
 }
 
@@ -193,7 +193,7 @@ img {
 .red {
     color: #df3031;
 }
-
+a:hover{color: #df3031!important;}
 
 /*响应式类名 st*/
 
@@ -236,7 +236,7 @@ img {
     display: inline;
     padding: 0 15px;
 }
-
+.nav_category a:hover{color: #FFFFFF!important}
 .nav_category a.fang_nav_h5 {
     background: url(../assets/images/fang_nav_h5.png) no-repeat!important;
     width: 88px;

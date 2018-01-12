@@ -89,19 +89,19 @@
       }
       .pagination li{
         display: inline-block;
-        margin:0 5px;
+        margin:0 3px;
         vertical-align: top;
       }
       .pagination li a{
             width: 40px;
     height: 40px;
     line-height: 38px;
-    margin: 0 3px;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
         color: #999;
     border-radius: 4px;
+    font-size: 14px;
         display: inline-block;
             background-color: #fff;
     border: 1px solid #E9E9E9;
@@ -116,7 +116,7 @@
 .pagination li a.next:hover { background-position: 13px -55px;} 
       .pagination li a:hover{
         font-weight: 400;
-    color: #fff;
+    color: #fff!important;
     background: #df3031;
     border: 1px solid #df3031;
     border-radius: 4px;

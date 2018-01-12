@@ -12,7 +12,7 @@
                     <p class="time">{{ longComments.createTime }}</p>
                 </div>
                 <div class="conBox" v-for="item in longComments.content" :key="item.index">
-                  <img :src="item | imageUrlPrefix" alt="">
+                  <img :src="item" alt="">
                 </div>
                 <div class="vote">
                 	<a class="vote-icon"  @click="flag && submitAgree(longComments.id)"  :class="{cur:agreeS}"></a>
@@ -105,6 +105,7 @@ export default {
          this.agreeS = false;
          alert('您已经点过赞了！！');
           this.flag = false; 
+          this.agreeS = true;
        };
        
      }

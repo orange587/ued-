@@ -1,5 +1,6 @@
 <template >
 <div>
+
   <TopNav></TopNav>
   <!--主体 st-->
   <!--轮播图开始-->
@@ -9,16 +10,13 @@
           <img :src="item.carousel | imageUrlPrefix"  />
       </router-link>   
     </div> -->
-    <swiper :options="swiperOption" ref="mySwiper">  
-            <swiper-slide v-for="item in list" :key="item.id">
-                   <router-link  :to="'/detail_share/'+ item.id">
-                    <img :src="item.carousel | imageUrlPrefix" />
-                </router-link> 
-            </swiper-slide>  
-            <div class="swiper-pagination"  slot="pagination"></div>
-            <div class="swiper-button-prev" slot="button-prev"></div>
-            <div class="swiper-button-next" slot="button-next"></div>  
-    </swiper> 
+    <el-carousel >
+      <el-carousel-item v-for="item in list" :key="item.id">
+        <a   :href="'/#/detail_share/'+ item.id"  target="_blank">
+           <img :src="item.carousel | imageUrlPrefix"  v-lazy="item.carousel"/>
+           </a> 
+      </el-carousel-item>
+    </el-carousel>
   </div>
   <!--轮播图结束-->
    <!--全部作品st -->
@@ -29,11 +27,11 @@
         <div class="all_zuo_con fang_responsive">
             <ul  class="list_ul">
                 <li v-for="story in stories" :key="story.id">
-                    <router-link   class="jiantu"  :to="'/detail_share/'+ story.id">
-                        <img :src="story.coverImg | imageUrlPrefix"  v-lazy="story.coverImg"/>
-                    </router-link>
+                    <a   class="jiantu"  :href="'/#/detail_share/'+ story.id" target="_blank">
+                        <img :src="story.coverImg"  v-lazy="story.coverImg"/>
+                    </a>
                     <div class="bot_all_zuo_con">
-                        <a href="" class="f14 gray3 desc">{{story.title}}</a>
+                        <a :href="'/#/detail_share/'+ story.id" target="_blank" class="f14 gray3 desc">{{story.title}}</a>
                         <p class="author_mes"><span class="fl f12 gray6">作者：{{story.author}}</span><span class="fr f12 gray9" >{{story.like}}</span></p>
                     </div>
                 </li>
@@ -55,14 +53,9 @@
 import TopNav from '../components/topnav.vue'
 import topFan from '../components/topFan.vue'
 import Page from '../components/page.vue'
-import { swiper, swiperSlide } from 'vue-awesome-swiper'  
 export default {
     name:'index',
-     components: { TopNav,Page,topFan ,swiper, swiperSlide  },
-     created () {
-        this.getList(),
-        this.getStories()
-      },
+     components: { TopNav,Page,topFan },
      data () {
         return {
           list: [],
@@ -84,40 +77,18 @@ export default {
           iscur:0 ,
           typeIndex:0,
           index:0,
-          swiperOption: {  
-              notNextTick: true,  
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable :true
-                },
-                centeredSlides: true,  
-                spaceBetween: 30,  
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                on: {
-                    slideChange: function(){
-                    if(this.isEnd){
-                        this.navigation.$nextEl.css('display','none');
-                    }else{
-                        this.navigation.$nextEl.css('display','block');  
-                    };
-                    if(this.isBeginning){
-                        this.navigation.$prevEl.css('display','none');
-                    }else{
-                        this.navigation.$prevEl.css('display','block');  
-                    }
-                    },
-                },
-         }  
+           value2: 0
          }      
       },
-       computed: {
-      swiper() {
-        return this.$refs.mySwiper.swiper
-      }
-    },
+    //    computed: {
+    //   swiper() {
+    //     return this.$refs.mySwiper.swiper
+    //   }
+    // },
+     created () {
+        this.getList(),
+        this.getStories()
+      },
       methods: {
         // 轮播图
         getList () {
@@ -159,6 +130,10 @@ export default {
         },
         // 分页
       pagechange:function(currentPage){
+         $('body,html').animate({
+          scrollTop: $(".all_zuop").offset().top
+        },
+        10);
         this.current = currentPage;
         this.$http.get(`${this.$url}/?c=index&a=showArticleList&type=${this.typeIndex}&page=${this.current}&from=index&pagesize=${this.display}`)
                       .then(res => {
@@ -168,10 +143,24 @@ export default {
                       .catch(e => {
                         console.log(e)
                     })
-    },
-    
+    },  
  }
- 
   }
 </script>
+<style>
+@media screen and (max-width: 1600px) {
+.el-carousel__container {
+    position: relative;
+    height: 300px!important;
+}
+  }  
+@media screen and (min-width: 1601px) {
+.el-carousel__container {
+    position: relative;
+    height: 380px!important;
+}
+}
+
+</style>
+
 

@@ -1,19 +1,14 @@
 <template >
-<div>
+<div class="bg_f4f4">
 
   <TopNav></TopNav>
   <!--主体 st-->
   <!--轮播图开始-->
   <div class="lunbo clearfix">
-    <!-- <div id="owl-demo" class="owl-carousel">
-      <router-link v-for="item in list" :key="item.id" :to="'/detail_share/'+ item.id">
-          <img :src="item.carousel | imageUrlPrefix"  />
-      </router-link>   
-    </div> -->
     <el-carousel >
-      <el-carousel-item v-for="item in list" :key="item.id">
+      <el-carousel-item v-for="item in list" :key="item.index">
         <a   :href="'/#/detail_share/'+ item.id"  target="_blank">
-           <img :src="item.carousel | imageUrlPrefix"  v-lazy="item.carousel"/>
+           <img :src="item.carousel"  v-lazy="item.carousel"/>
            </a> 
       </el-carousel-item>
     </el-carousel>
@@ -26,9 +21,9 @@
         </div>
         <div class="all_zuo_con fang_responsive">
             <ul  class="list_ul">
-                <li v-for="story in stories" :key="story.id">
+                <li v-for="story in stories" :key="story.index" >
                     <a   class="jiantu"  :href="'/#/detail_share/'+ story.id" target="_blank">
-                        <img :src="story.coverImg"  v-lazy="story.coverImg"/>
+                        <img :src="story.coverImg.id"  v-lazy="story.coverImg.id"/>
                     </a>
                     <div class="bot_all_zuo_con">
                         <a :href="'/#/detail_share/'+ story.id" target="_blank" class="f14 gray3 desc">{{story.title}}</a>
@@ -53,6 +48,7 @@
 import TopNav from '../components/topnav.vue'
 import topFan from '../components/topFan.vue'
 import Page from '../components/page.vue'
+import axios from 'axios'
 export default {
     name:'index',
      components: { TopNav,Page,topFan },
@@ -77,7 +73,8 @@ export default {
           iscur:0 ,
           typeIndex:0,
           index:0,
-           value2: 0
+           value2: 0,
+           imgUrl:''
          }      
       },
     //    computed: {
@@ -85,17 +82,17 @@ export default {
     //     return this.$refs.mySwiper.swiper
     //   }
     // },
-     created () {
+      created () {
         this.getList(),
         this.getStories()
       },
       methods: {
         // 轮播图
         getList () {
-        this.$http.get(`${this.$url}/?c=index&a=showCarousal&from=index`)
+        this.$http.get(`/?c=index&a=showCarousal&from=index&r=`+ Math.random())
         .then((res) => {
                this.list = res.data.errmsg;
-            //    console.log(this.list)
+                // console.log(this.list);
             })
             .catch(e => {
                   console.log(e)
@@ -103,11 +100,14 @@ export default {
         },
         // 作品展示
         getStories(){
-        this.$http.get(`${this.$url}/?c=index&a=showArticleList&type=&page=current&from=index&pagesize=${this.display}`)
+        this.$http.get(`/?c=index&a=showArticleList&type=&page=current&from=index&pagesize=${this.display}&r=`+ Math.random())
                       .then(res => {
                           this.stories = res.data.errmsg;
+                          console.log(typeof(this.stories));
                             this.total = res.data.total;
-                        //   console.log(res.data.errmsg)
+                            // console.log(this.stories[2].coverImg.id);
+                            // this.imgUrl = res.data.errmsg[2].coverImg;
+
                       })
                       .catch(e => {
                         console.log(e)
@@ -117,7 +117,7 @@ export default {
     // 作品切换展示
      worksAll (index) {
           this.typeIndex = index;
-          this.$http.get(`${this.$url}/?c=index&a=showArticleList&type=${this.typeIndex}&page=current&from=index&pagesize=${this.display}`)
+          this.$http.get(`/?c=index&a=showArticleList&type=${this.typeIndex}&page=current&from=index&pagesize=${this.display}&r=`+ Math.random())
           .then((res) => {
             this.stories = res.data.errmsg;
             this.total = res.data.total;
@@ -135,7 +135,7 @@ export default {
         },
         10);
         this.current = currentPage;
-        this.$http.get(`${this.$url}/?c=index&a=showArticleList&type=${this.typeIndex}&page=${this.current}&from=index&pagesize=${this.display}`)
+        this.$http.get(`/?c=index&a=showArticleList&type=${this.typeIndex}&page=${this.current}&from=index&pagesize=${this.display}&r=`+ Math.random())
                       .then(res => {
                           this.stories = res.data.errmsg;
                           this.total = res.data.total;

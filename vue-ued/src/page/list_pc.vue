@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="bg_f4f4">
   <TopNav></TopNav>
      <!--主体 st-->
     <!--全部作品st -->
@@ -21,17 +21,12 @@
 
         </div>
         <!--选择头 end-->
-        <div class="content">
-           <vue-waterfall-easy :imgsArr="imgsArr" @scrollLoadImg="fetchImgsData">
-               <template slot-scope="props">
-                <p class="description"><a :href="props.value.link" target="_blank">{{ props.value.title }}</a></p>
-                <div class="qianm clearfloat">
-                 <span class="sp1">作者：{{props.value.author }}</span>
-                   <span class="sp3">{{props.value.publishTime}}</span>
-                 </div>
-              </template>
-            </vue-waterfall-easy>
-             
+        <div class="content fang_responsive">
+             <div class="contentUlWrap clearfloat " id="contentUlWrap">
+               <ul id="contentUL" style="position:relative; display:block; margin:0 auto;min-height:100px;">
+            </ul>
+            <!-- <div class="wumore" v-show="more">没有素材了。。。</div> -->
+            </div> 
         </div>
     </div>
     <!--全部作品end -->
@@ -45,15 +40,18 @@
 <script>
 import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
-import vueWaterfallEasy from '../components/vue-waterfall-easy.vue'
 export default {
   name:'list_pc',
   components:{
-    TopNav,TopFan,vueWaterfallEasy
+    TopNav,TopFan
+  },
+  mounted () {
+      let _this = this;
+    this.doConfig();
+    this.scrollBottom(_this.noPic);
   },
   created () {
-        this.getSubject();
-        this.imgsArr = this.initImgsArr()
+        this.getSubject()
   },
  
   data () {
@@ -100,70 +98,154 @@ export default {
               ownGroup:'',
               colorRange:'',
           },
-          n:1,
+          n:1, 
           m:0,
           nn:1,
           pagesize:10,
           total:0,
-          imgsArr: [],         //存放所有已加载图片的数组（即当前页面会加载的所有图片）
-          fetchImgsArr: []     //存放每次滚动时下一批要加载的图片的数组
+           box : null,
+            gap  : 20,
+            page : 1,
+            listArr : [],
+            noPic : false,
+            picHeight:0,
+            picWidth:0
         }
       },
       methods: {  
-        //   获取数据
-           getSubject () {
-             this.$http.get(`${this.$url}/?c=index&a=showPcList&from=index`).then((res) => {
-                        this.PcLists = res.data.errmsg,
-                         this.total = res.data.total;
-                        })
-                        .catch(e => {
-                        console.log(e)
-                        })
-         },       
-         //   pubuliu
-          initImgsArr(n) { 
-          let arr = [];
-          $.ajax({
-            type:'get',
-            url:'https://bird.ioliu.cn/v1/?url=http://testued.light.fang.com/?c=index&a=showPcList&from=index&page=' + n,
-            contentType: "application/json;charset=utf-8",
-            data:{
-               'selYear':this.searchData.selYear,
-               'ownGroup':this.searchData.ownGroup,
-               'colorRange':this.searchData.colorRange,
-               'pagesize':this.pagesize
-            },
-            dataType: "json",
-            async: false,
-            success: function(data) {
-              this.PcLists = data.errmsg;
-                for (let i =0; i <this.PcLists.length; i++) {
-                    arr.push({ 
-                    src: this.PcLists[i].coverImg,
-                    author: this.PcLists[i].author, 
-                    title: this.PcLists[i].title,
-                    publishTime:this.PcLists[i].publishTime,
-                    link1:'/#/detail_share/' + this.PcLists[i].id
-                    }) 
-                };
-            }     
-          });
-        //   console.log(arr)
-            return arr ;
-            },
-            fetchImgsData() {
-                if(this.m< Math.ceil(this.total/this.pagesize) ){
-                this.m = (this.n)++;
-                this.fetchImgsArr = this.initImgsArr(this.m),
-                this.imgsArr = this.imgsArr.concat(this.fetchImgsArr)
-                }else{
-                  $('#more').show()
+        scrollBottom(val) {
+            let _this = this;
+            if(val) { //没有图片了
+                // alert('没有图片了！')
+            }else {
+                window.onscroll = function() {
+                    var items = document.getElementById('contentUL').children;
+                    if (_this.getClient().height + _this.getScrollTop() >= items[items.length - 1].offsetTop) {
+                        _this.page++;
+                     if(_this.page < Math.ceil(_this.total/_this.pagesize)+1){
+                         _this.getSubject();
+                        _this.waterFall();
+                        }else{
+                            //  _this.more = true ;
+                        }
+
+                    } ;
                 }
-            },
+
+            }
+        },
+            //初始化数据
+        doConfig() {
+            let _this = this;
+            this.box = document.getElementById('contentUL');
+            window.onresize = _this.waterFall;
+        },
+        waterFall() {
+
+          // 1- 确定列数  = 页面的宽度 / 图片的宽度
+          var items = document.getElementById('contentUL').children;
+          var pageWidth =$('.contentUlWrap').width();
+          document.getElementById('contentUL').style.width = pageWidth + 'px';
+          var itemWidth = 260;
+          var columns = Math.ceil(pageWidth / (itemWidth + this.gap ));
+          var arr = [];
+        //    console.log(arrWh[0]);
+        //  console.log(arrWh[0].picHeighth);
+          for (var i = 0; i < items.length; i++) {
+              if (i < columns) {
+                  // 2- 确定第一行
+                  items[i].style.top = 0;
+                //   items[i].style.height = (arrWh[i].picHeight/arrWh[i].picWidth) * itemWidth + 'px';
+                  items[i].style.left = (itemWidth + this.gap ) * i + 'px';
+                  arr.push(items[i].offsetHeight);
+
+              } else {
+                  // 其他行
+                  // 3- 找到数组中最小高度  和 它的索引
+                  var minHeight = arr[0];
+                  var index = 0;
+                  for (var j = 0; j < arr.length; j++) {
+                      if (minHeight > arr[j]) {
+                          minHeight = arr[j];
+                          index = j;
+                      }
+                  }
+                  // 4- 设置下一行的第一个盒子位置
+                  // top值就是最小列的高度 + this.gap 
+                  items[i].style.top = arr[index] + this.gap  + 'px';
+                  // left值就是最小列距离左边的距离
+                  items[i].style.left = items[index].offsetLeft + 'px';
+
+                  // 5- 修改最小列的高度 
+                  // 最小列的高度 = 当前自己的高度 + 拼接过来的高度 + 间隙的高度
+                  arr[index] = arr[index] + items[i].offsetHeight + this.gap ;
+              }
+          }
+                    // alert(1)
+
+      },
+    // clientWidth 处理兼容性
+    getClient() {
+        return {
+            width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+    },
+    // scrollTop兼容性处理
+    getScrollTop() {
+        return window.pageYOffset || document.documentElement.scrollTop;
+    },
+        //   获取数据      
+         getSubject () {
+        let _this = this;
+        this.$http.get(`/?c=index&a=showPcList&from=index&r=`+ Math.random(),{
+            params:{
+                selYear:this.searchData.selYear,
+                ownGroup:this.searchData.ownGroup,
+                colorRange:this.searchData.colorRange,
+                pagesize:this.pagesize,
+                page : this.page
+            }
+        }).then((res) => {
+            if(res.data.errmsg.length) {
+                let arr = [];
+                let str = '';
+                arr = res.data.errmsg;
+                this.total = res.data.total;
+                this.listArr = _this.listArr.concat(arr);
+                if(arr.length) {
+                    for(var k=0;k<_this.listArr.length;k++) {
+                        var heightNew = 'height:' +parseInt((_this.listArr[k]['coverImg'].height * 260) / (_this.listArr[k]['coverImg'].width)) + 'px';
+                        str+= '<li class="item img-box" style="width:260px; overflow:hidden; position:absolute;">';
+                        str+= '	<a href="http://testued.light.fang.com/#/detail_share_special/' + _this.listArr[k].id + '" class="a-img" target="_blank"'+ 'style = '+ heightNew +'>';
+                        str+= '		<img style="width:100%;" src="https://images.weserv.nl/?url=' + _this.listArr[k]['coverImg'].id.substr(7) + '" alt="">';
+                        str+= '	</a>';
+                         str+= '<div class="img-info">';
+                        str+= '	<p class="description"><a href="http://testued.light.fang.com/#/detail_share_special/' + _this.listArr[k].id + '" target="_blank">'+_this.listArr[k]['title'] +'</a></p>';
+                        str+= '	<div class="qianm clearfloat">';
+                        str+= '		<span class="sp1">'+_this.listArr[k]['author']+'</span>';
+                        str+= '		<span class="sp3">'+_this.listArr[k]['publishTime']+ '</span>';
+                        str+= '	</div>';
+                         str+= '	</div>';
+                        str+= '</li>';
+                        
+                    };
+                    document.getElementById('contentUL').innerHTML += str;
+                    this.waterFall(); 
+                }
+            }else {
+               _this.noPic = true;
+            }
+        }).catch(e => {
+            console.log(e)
+        })
+    },
          // 筛选函数
         searchList(obj,type){
              let that = this;
-            //  let arr = [];
+            that.listArr = [];
+         that.page = 1;
+         document.getElementById('contentUL').innerHTML = '';
              switch(type){
                 case 'year':
                 this.searchData.selYear = obj;
@@ -175,7 +257,7 @@ export default {
                 this.searchData.colorRange = obj;
                 break;
              };
-              this.imgsArr = this.initImgsArr(that.nn)
+            this.getSubject ();
            }
           }
         }

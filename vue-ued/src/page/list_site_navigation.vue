@@ -1,4 +1,5 @@
 <template>
+<div class="bg_f4f4">
 <div class="bmBox">
   <TopNav></TopNav>
      <!--主体 st-->
@@ -19,8 +20,9 @@
                 </li>
         </ul>
         </div>
-        <div class="fang_responsive">        
-            <div class="listBox"  v-show="sjdh">
+        <div class="fang_responsive">   
+            <transition name="box">
+            <div class="listBox box"  v-show="sjdh" >
                 <div class="tit">{{titleSj}}</div>
                 <div class="con">
                     <div class="cBox">
@@ -29,8 +31,10 @@
                         </ul>
                     </div>
                 </div>
-            </div>
-            <div class="listBox"  v-show="qddh">
+            </div>            
+            </transition> 
+            <transition name="box">  
+            <div class="listBox box"  v-show="qddh">
                 <div class="tit">{{titleQd}}</div>
                 <div class="con">
                     <div class="cBox">
@@ -40,7 +44,7 @@
                     </div>
                 </div>
             </div>
-
+         </transition> 
         </div>
     
     <!--全部作品end -->
@@ -49,6 +53,7 @@
       <topFan></topFan>
     <!--返回顶部 end-->
   </div>
+    </div>
 </template>
 
 <script>
@@ -95,7 +100,10 @@ export default {
           titleSj:'设计导航',
           titleQd:'制作导航',
           sjdh: true,
-          qddh: true
+          qddh: true,
+         isloading : false,
+         currentpage: 1,
+         pagenum:40
         }
       },
       created () {
@@ -104,16 +112,26 @@ export default {
       },
       methods: {
         getListSj () {
-       this.$http.get(`${this.$url}/?c=index&a=showElseList&type1=1&from=index&pagesize=100`).then((res) => {
+       this.$http.get(`/?c=index&a=showElseList&type1=1&from=index&pagesize=100&r=`+ Math.random()).then((res) => {
                this.PcListsSj = res.data.errmsg;
+                   if(this.PcListsSj){
+               this.isloading = true;
+            } else {
+            //    this.scrollWeb()
+            } 
             })
              .catch(e => {
                   console.log(e)
                 })
         },
         getListQd () {
-       this.$http.get(`${this.$url}/?c=index&a=showElseList&type1=2&from=index&pagesize=100`).then((res) => {
+       this.$http.get(`/?c=index&a=showElseList&type1=2&from=index&pagesize=100&r=`+ Math.random()).then((res) => {
                this.PcListsQd = res.data.errmsg;
+                if(this.PcListsQd){
+               this.isloading = true;
+            } else {
+            //    this.scrollWeb()
+            } 
             })
              .catch(e => {
                   console.log(e)
@@ -126,9 +144,14 @@ export default {
           this.iscur1 = -1;
           this.sjdh = true;
           this.qddh = false;
-          this.$http.get(`${this.$url}/?c=index&a=showElseList&type1=1&type2=${this.typeIndex}from=index`)
+          this.$http.get(`/?c=index&a=showElseList&type1=1&type2=${this.typeIndex}from=index&pagesize=100&r=`+ Math.random())
           .then((res) => {
             this.PcListsSj = res.data.errmsg;
+             if(this.PcListsSj){
+               this.isloading = true;
+            } else {
+            //    this.scrollWeb()
+            } 
             })
             .catch(e => {
                   console.log(e)
@@ -139,17 +162,41 @@ export default {
           this.typesIndex = index;
           this.titleQd = num.titleTab;
           this.iscur = -1;
-           this.qddh = true;
+          this.qddh = true;
           this.sjdh = false;
-          this.$http.get(`${this.$url}/?c=index&a=showElseList&type1=2&type2=${this.typesIndex}&from=index`)
+          this.$http.get(`/?c=index&a=showElseList&type1=2&type2=${this.typesIndex}&from=index&pagesize=100&r=`+ Math.random())
           .then((res) => {
             this.PcListsQd = res.data.errmsg;
+            if(this.PcListsQd){
+               this.isloading = true;
+            } else {
+            //    this.scrollWeb()
+            } 
             })
             .catch(e => {
                   console.log(e)
             });
         },
+        // 滚动加载
+    //     scrollWeb(){
+    //      let _this = this;
+    //         $(window).bind("scroll", function () {
+    //     if ($(document).scrollTop() + $(window).height() > $(document).height() - 10 && !this.isloading) {
+    //         _this.currentpage++;
+    //     }
+    //    });
+    //     }
         }
 }
 </script>
+<style scoped>
+   .box{
+       opacity: 1;
+   }
+  .box-enter-active,.box-leave-active{
+    transition: all .8s;
+  }
+   .box-enter,.box-leave{opacity: 0;}
+</style>
+
 

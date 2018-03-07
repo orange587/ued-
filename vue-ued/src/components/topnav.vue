@@ -12,7 +12,7 @@
     </div>
 </template>
 
-<script>
+<script> 
 export default {
   name: 'TopNav',
   data () {
@@ -29,7 +29,7 @@ export default {
                class:''
            },
            {
-               title:'Pc专题',
+               title:'专题',
                url:'/list_pc',
                class:''
            },

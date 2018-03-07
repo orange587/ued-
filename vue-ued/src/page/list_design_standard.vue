@@ -1,4 +1,5 @@
 <template>
+<div class="bg_f4f4">
 <div class="bmBox">
   <TopNav></TopNav>
      <!--主体 st-->
@@ -13,6 +14,7 @@
     <!--返回顶部 st-->
       <topFan></topFan>
     <!--返回顶部 end-->
+  </div>
   </div>
 </template>
 
@@ -41,7 +43,7 @@ export default {
   },
   methods: {
     getList () {
-    this.$http.get(`${this.$url}/?c=index&a=showRuleList&from=index`).then((res) => {
+    this.$http.get(`/?c=index&a=showRuleList&from=index&r=`+ Math.random()).then((res) => {
             this.PcLists = res.data.errmsg;
         //   console.log(res.data.recent)
         })

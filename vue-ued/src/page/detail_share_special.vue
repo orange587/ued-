@@ -1,17 +1,17 @@
 <template>
 <div class="bg_white">
-  <TopNav></TopNav>
+  <TopNav ></TopNav>
      <!--主体 st-->
     <div class="fang_responsive">
-    	<div class="crumb bdb_spe"><div class="crumb_con"><a href="http://ued.light.fang.com/">首页</a> ><a href="http://ued.light.fang.com/#/list_uiix">UIIX列表</a> ><span>正文</span></div></div>
+    	<div class="crumb bdb_spe"><div class="crumb_con"><a href="http://ued.light.fang.com/">首页</a> ><a href="http://ued.light.fang.com/#/list_pc">专题</a> ><span>正文</span></div></div>
         <div class="xq-share">
         	<div class="manbox">
             	<div class="titBox ">
-                	  <h1>{{ longComments.title }}</h1>
-                    <p class="time"><span class="fl"><span>作者：{{ longComments.author }}</span><span>标签：{{ longComments.type2 }}</span><span class="bgnone">完成日期：{{ longComments.shareTime }}</span></span><span class="fr">{{ longComments.createTime | formatDate }}发布</span></p>
+                	  <h1>{{ longComments.title }} <a :href = "longComments.locateLink" class="fr gray6 f14" target="_blank">查看详情>></a></h1>
+                    <p class="time"><span class="fl"><span>作者：{{ longComments.author }}</span><span>标签：{{ longComments.ownGroup }}</span><span class="bgnone">完成日期：{{ longComments.publishTime }}</span></span><span class="fr">{{ longComments.createTime | formatDate }}发布</span></p>
                 </div>
                 <div class="conBox fang_responsive" v-for="item in longComments.content" :key="item.index">
-                  <img :src="item.id" alt="" v-lazy="item.id">
+                  <img :src="item.id" alt=""  v-lazy="item.id">
                 </div>
                
             </div>
@@ -30,7 +30,7 @@ import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
 import { formatDate } from '../utils/date.js'
 export default {
-  name:'detail_share_uiix',
+  name:'detail_share_special',
   components:{
     TopNav,TopFan
   },
@@ -38,6 +38,7 @@ export default {
         return {
         story: {},
         comment:{},
+        classA:'',
         longComments: []
         }
       },
@@ -51,31 +52,30 @@ export default {
       created(){
           this.getStory(this.$route.params.id);
           this.$nextTick(function(){
-            this.jiaClass2();
+            this.jiaClass3();
           })
       },
       
       methods:{  
      // 获取文章图片
-    getStory(storyId) {
-      this.$http.get(`/?c=index&a=getoneArticleInfo&a=getOneAppInfo&from=index&id=${storyId}&r=`+ Math.random())
-                .then(res => {
-                  this.longComments = res.data.errmsg;
-                })
-                .catch(e => {
-                  console.log(e)
-                })
-    },
-      jiaClass2(){
-           $('.nav_category a:nth-child(2)').addClass('router-link-exact-active');
+      getStory(storyId) {
+        this.$http.get(`/?c=index&from=index&a=showOnePcInfo&id=${storyId}&r=`+ Math.random())
+                  .then(res => {
+                    this.longComments = res.data.errmsg
+                  })
+                  .catch(e => {
+                    console.log(e)
+                  })
+      },
+       jiaClass3(){
+           $('.nav_category a:nth-child(3)').addClass('router-link-exact-active');
       }
     },
    
-        }
+}
 </script>
 
 <style scoped>
-   .bg_white{background-color: #ffffff;}
    .bdb_spe{border-bottom: 1px solid #f4f4f4}
    .xq-share .manbox .titBox {
     padding: 24px 0px 30px;
@@ -99,13 +99,11 @@ export default {
    }
    .xq-share .manbox span.fl span.bgnone {background: none}
    .xq-share .manbox .conBox {
-   padding-top: 30px;
+    padding-top: 20px;
     margin: 0 auto;
     overflow: hidden;
     text-align: center;
     }
-
-
     .xq-share .manbox .conBox img {
         max-width: 100%;
         margin-bottom: 30px;

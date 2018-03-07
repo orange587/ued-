@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="bg_f4f4">
   <TopNav></TopNav>
      <!--主体 st-->
     <!--全部作品st -->
@@ -20,12 +20,12 @@
 
         </div>
         <!--选择头 end-->
-        <div class="content">
-            <div class="waterfull clearfloat" >
+        <div class="content fang_responsive">
+            <div class="waterfull clearfloat " >
                 <ul>
                     <li class="item" v-for="story in PcLists" :key="story.id" @click="getTuList(story.id)">
                          <a  class="a-img" href="javascript:;">
-                           <img :src="story.coverImg"  v-lazy="story.coverImg" />
+                           <img :src="story.coverImg.id"  v-lazy="story.coverImg.id" />
                         </a>
                         <p class="description"><a  href="javascript:;">{{ story.title }}</a></p>
                         <div class="qianm clearfloat">
@@ -51,8 +51,8 @@
                 <div class="body">
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide"  v-for="imglist in tuLists.content" :key="imglist.index">
-                                <img :src="imglist" alt=""  v-lazy="imglist">
+                            <div class="swiper-slide"  v-for="imglist in tuContent" :key="imglist.index">
+                                <img :src="imglist.id | imageUrlPrefix" alt="" >
                             </div>
                         </div>
                     </div>
@@ -60,7 +60,6 @@
                 <div class="op">
                     <a href="javascript:void(0);" class="ac_turn t_l ">上一页</a>
                     <a href="javascript:void(0);" class="ac_turn t_r">下一页</a>
-                    <span class="red" style="display:none;position:absolute;bottom:18px;right:-20px;">+1</span>
                 </div>
             </div>
         </div>
@@ -71,7 +70,7 @@
                 <span>作者：{{tuLists.author}}</span>
             </p>
             <div class="ewm-box clearfix">
-                <img :src="tuLists.qr_code" alt="" class="ewm">
+                <img :src="tuEwm.id" alt="" class="ewm" v-lazy="tuEwm.id">
                 <p class="title-ewm"><i></i>扫一扫，手机欣赏</p>
             </div>
         </div>
@@ -83,8 +82,8 @@
                 <div class="body">
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide"  v-for="imglist in tuLists.content" :key="imglist.index">
-                                <img :src="imglist" alt=""  v-lazy="imglist">
+                            <div class="swiper-slide"  v-for="imglist in tuContent" :key="imglist.index">
+                                <img :src="imglist.id | imageUrlPrefix" alt="" >
                             </div>
                         </div>
                     </div>
@@ -92,7 +91,7 @@
                 <div class="op">
                     <a href="javascript:void(0);" class="ac_turn t_l ">上一页</a>
                     <a href="javascript:void(0);" class="ac_turn t_r">下一页</a>
-                    <span class="red" style="display:none;position:absolute;bottom:18px;right:-20px;">+1</span>
+                  
                 </div>
             </div>
         </div>
@@ -103,7 +102,7 @@
                 <span>作者：{{tuLists.author}}</span>
             </p>
             <div class="ewm-box clearfix">
-                <img :src="tuLists.qr_code" alt="" class="ewm">
+                <img :src="tuEwm.id" alt="" class="ewm" v-lazy="tuEwm.id">
                 <p class="title-ewm"><i></i>扫一扫，手机欣赏</p>
             </div>
         </div>
@@ -169,6 +168,8 @@ export default {
           typeIndex:0,
           typesIndex:0,
           index:0,
+          tuEwm:{},
+          tuContent:'',
           searchData:{
               selYear:'',
               ownGroup:'',
@@ -176,9 +177,9 @@ export default {
           }
         }
       },
-      created () {
+      mounted () {
             this.getList();
-         this.$nextTick(function() {
+            this.$nextTick(function() {
              this.h5Pop()
          })
       },  
@@ -211,24 +212,25 @@ export default {
                     setUl();
                 });
             //detail pop
-            $('body').on('click','.a-img img ',__detail);
+            $('body').on('click','.item',__detail);
             function __detail(){
                 $popDetail.fadeOut();
-                var $t = $(this);
+                var $t = $(this).find('img');
                     $popDetail.fadeIn();
                     $mask.fadeIn();
                     var swiper_container = '.pop_1 .swiper-container',swiper_btn_next = '.pop_1 .t_r',swiper_btn_prev = '.pop_1 .t_l';
                     if($popDetail.is('.pop_2')){
                         swiper_container = '.pop_2 .swiper-container',swiper_btn_next='.pop_2 .t_r',swiper_btn_prev = '.pop_2 .t_l';
                     }
+                    // $(swiper_btn_prev).addClass('swiper-button-disabled');
                     $('.swiper-container').each(function(){
                         var $t = $(this);
                         var $li = $t.find('.swiper-slide');
                         var len = $li.length;
                         var liheight = $li.eq(0).outerHeight(true);
-                        if(len==1){
-                            $(swiper_btn_next).addClass('swiper-button-disabled');
-                        }
+                        //  if( len == 1 ){
+                        //     $(swiper_btn_next).addClass('swiper-button-disabled');
+                        //  };
                         $t.find('.swiper-wrapper').css({
                             'height':len*liheight,
                             'position':'absolute',
@@ -248,7 +250,7 @@ export default {
                             ultop = $ul.css('top'),
                             ulheight = liheight*(len-2)
                         ;
-                        if(len<2) return;
+                        if(len<1) return;
                         if($t.is('.swiper-button-disabled')) return;
                         if(parseInt(ultop) == -liheight){
                             if($ul.is(':animated')) return
@@ -275,7 +277,7 @@ export default {
                             ultop = $ul.css('top'),
                             ulheight = liheight*(len-2)
                         ;
-                        if(len<2) return;
+                        if(len<1) return;
                         if($t.is('.swiper-button-disabled')) return;
                         if(parseInt(ultop) == -parseInt(ulheight)){
                             if($ul.is(':animated')) return
@@ -291,6 +293,7 @@ export default {
                     }
                     $(swiper_btn_next).click(__turnright);
 
+
             };
             var $pop_close = $('.pop-close');
             $('body').on('click','.pop-close',function(){
@@ -302,7 +305,7 @@ export default {
             });
             },
           getList () {
-          this.$http.get(`${this.$url}/?c=index&a=showH5List&from=index&pagesize=${this.display}`).then((res) => {
+          this.$http.get(`/?c=index&a=showH5List&from=index&pagesize=${this.display}&r=`+ Math.random()).then((res) => {
             this.PcLists = res.data.errmsg;
              this.total = res.data.total;
             })
@@ -324,7 +327,7 @@ export default {
                 this.searchData.colorRange = obj;
                 break;
             }
-           this.$http.get(`${this.$url}/?c=index&a=showH5List&page=current&from=index&pagesize=${this.display}`,{
+           this.$http.get(`/?c=index&a=showH5List&page=current&from=index&pagesize=${this.display}&r=`+ Math.random(),{
                params:that.searchData
            })
           .then((res) => {
@@ -337,8 +340,18 @@ export default {
         },
         // 弹窗函数
          getTuList (storyId) {
-            this.$http.get(`${this.$url}/?c=index&a=getOneH5Data&from=index&id=${storyId}`).then((res) => {
+            this.$http.get(`/?c=index&a=getOneH5Data&from=index&id=${storyId}&r=`+ Math.random()).then((res) => {
                this.tuLists = res.data.errmsg;
+               this.tuContent = this.tuLists.content;
+                this.tuEwm = this.tuLists.qr_code;
+               console.log(this.tuEwm);
+               if(this.tuLists.content.length == 1){
+                   $('.t_l').addClass('swiper-button-disabled');
+                    $('.t_r').addClass('swiper-button-disabled');
+               }else{
+                   $('.t_l').addClass('swiper-button-disabled');
+                   $('.t_r').removeClass('swiper-button-disabled');
+               };
             })
             .catch(e => {
                   console.log(e)
@@ -350,7 +363,7 @@ export default {
           scrollTop: $(".all_zuop").offset().top
         },10);
         this.current = currentPage;
-        this.$http.get(`${this.$url}/?c=index&a=showH5List&page=${this.current}&from=index&pagesize=${this.display}`,{
+        this.$http.get(`/?c=index&a=showH5List&page=${this.current}&from=index&pagesize=${this.display}&r=`+ Math.random(),{
              params:this.searchData
         })
             .then(res => {

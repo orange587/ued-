@@ -37,11 +37,11 @@ hr {
 }
 
 body {
-    font-family: "Microsoft Yahei"!important;
-    background-color: #f4f4f4!important;
-    overflow-x: hidden;
+    font-family: "Microsoft Yahei";
+    overflow-x: hidden;background-color: #f4f4f4;
 }
-
+.bg_white{background-color: #ffffff;width: 100%;height: 100%}
+.bg_f4f4{background-color: #f4f4f4;}
 ul,
 ol,
 li {
@@ -271,4 +271,22 @@ a:hover{color: #df3031!important;}
 
 .nav_category .router-link-exact-active {
     background: url(../assets/images/nav_gang.png) repeat-x center bottom;
+}
+/* 返回顶部 */
+.top_hui a {
+    display: block;
+    background: url(../assets/images/top_fan.png) no-repeat;
+    width: 40px;
+    height: 40px;
+}
+.top_hui a:hover {
+    display: block;
+    background: url(../assets/images/top_fan1.png) no-repeat;
+    width: 40px;
+    height: 40px;
+}
+.top_hui {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
 }

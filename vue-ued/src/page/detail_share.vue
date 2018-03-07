@@ -1,18 +1,17 @@
 <template>
-<div>
+<div class="bg_f4f4">
   <TopNav></TopNav>
      <!--主体 st-->
     <div class="fang_responsive">
-    	<div class="crumb"><a href="http://testued.light.fang.com/">首页</a> ><span>正文</span></div>
-
+    	<div class="crumb"><div class="crumb_con"><a href="http://ued.light.fang.com/">首页</a> ><span>正文</span></div></div>
         <div class="xq-share">
         	<div class="leftBox">
             	<div class="titBox">
                 	<h1>{{ longComments.title }}</h1>
-                    <p class="time">{{ longComments.createTime }}</p>
+                    <p class="time">{{ longComments.createTime | formatDate }}</p>
                 </div>
                 <div class="conBox" v-for="item in longComments.content" :key="item.index">
-                  <img :src="item" alt="">
+                  <img :src="item.id" alt="" v-lazy="item.id">
                 </div>
                 <div class="vote">
                 	<a class="vote-icon"  @click="flag && submitAgree(longComments.id)"  :class="{cur:agreeS}"></a>
@@ -39,6 +38,8 @@
 <script>
 import TopNav from '../components/topnav.vue'
 import TopFan from '../components/topFan.vue'
+import { formatDate } from '../utils/date.js'
+
 export default {
   name:'detail_share',
   components:{
@@ -57,10 +58,18 @@ export default {
         flag:true
         }
       },
+      filters: {
+       formatDate(time) {
+            var date = new Date(time*1000);
+            return formatDate(date, "yyyy-MM-dd hh:mm");
+        }
+
+       },
+
       methods:{  
      // 获取文章
     getStory(storyId) {
-      this.$http.get(`${this.$url}/?c=index&a=getoneArticleInfo&from=index&id=${storyId}`)
+      this.$http.get(`/?c=index&a=getoneArticleInfo&from=index&id=${storyId}&r=`+ Math.random())
                 .then(res => {
                   this.longComments = res.data.errmsg,
                   // console.log(this.res.data.errmsg)
@@ -76,7 +85,7 @@ export default {
           this.agreeS = true;
           this.likeNum++;
           let numlike = this.likeNum;
-          // this.$http.post(`http://localhost:8080/api/?c=index&a=addLikeInfo`,
+          // this.$http.post(`http://localhost:8080//?c=index&a=addLikeInfo`,
           //     {
           //         params:{
           //         like:numlike,
@@ -90,7 +99,7 @@ export default {
           //       })
           $.ajax({
             type:'post',
-            url:`http://testued.light.fang.com/?c=index&a=addLikeInfo`,
+            url:`http://ued.light.fang.com/?c=index&a=addLikeInfo`,
             data:{
                   like:numlike,
                   id:storyId

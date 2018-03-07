@@ -57,12 +57,13 @@ router.afterEach(function(to, from, next) {
 const jsonBird = 'https://bird.ioliu.cn/v1/?url='
 const test = 'http://testued.light.fang.com/'
 Vue.prototype.$url = `${jsonBird}${test}`
+// Vue.prototype.$url = `${test}`
 Vue.prototype.$http = axios
 Vue.filter('imageUrlPrefix', (value) => {
     const url = value.substr(7)
     const prefix = 'https://images.weserv.nl/?url='
     return prefix + url
-  })
+})
 
 Vue.config.productionTip = false
 

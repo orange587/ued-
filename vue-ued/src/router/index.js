@@ -9,6 +9,8 @@ import ListSiteNavigation from '@/page/list_site_navigation'
 import ListH5 from '@/page/list_h5'
 import DetailShare from '@/page/detail_share'
 import DetailShareUiix from '@/page/detail_share_uiix'
+import DetailSharePro from '@/page/detail_share_special'
+
 // import Page404 from '@/page/page404'
 Vue.use(Router)
 export default new Router({
@@ -75,7 +77,7 @@ export default new Router({
             name: 'detail_share',
             component: DetailShare,
             meta: {
-                title: '详情'
+                title: '文章详情'
             },
         },
         {
@@ -84,6 +86,14 @@ export default new Router({
             component: DetailShareUiix,
             meta: {
                 title: 'uiix详情'
+            },
+        },
+        {
+            path: '/detail_share_special/:id',
+            name: 'detail_share_special',
+            component: DetailSharePro,
+            meta: {
+                title: '专题详情'
             },
         },
         { path: '*', redirect: '/' }
